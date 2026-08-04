@@ -111,13 +111,15 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/belwin_erp
 
 const { initializeEmployeeIds } = require('./controllers/employeeController');
 
+// Start listening immediately so Render detects the open port
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
 mongoose.connect(MONGO_URI)
     .then(async () => {
         // console.log('Connected to MongoDB');
         await initializeEmployeeIds();
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
     })
     .catch((error) => {
         console.error('MongoDB connection error:', error);
