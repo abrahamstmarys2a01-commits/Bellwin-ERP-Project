@@ -115,12 +115,15 @@ mongoose.connect(MONGO_URI)
     .then(async () => {
         // console.log('Connected to MongoDB');
         await initializeEmployeeIds();
-        app.listen(PORT, () => {
-            // console.log(`Server running on port ${PORT}`);
-        });
+        if (process.env.NODE_ENV !== 'production') {
+            app.listen(PORT, () => {
+                // console.log(`Server running on port ${PORT}`);
+            });
+        }
     })
     .catch((error) => {
         console.error('MongoDB connection error:', error);
     });
 
-
+// Export the app for Vercel serverless functions
+module.exports = app;
