@@ -115,11 +115,9 @@ mongoose.connect(MONGO_URI)
     .then(async () => {
         // console.log('Connected to MongoDB');
         await initializeEmployeeIds();
-        if (process.env.NODE_ENV !== 'production') {
-            app.listen(PORT, () => {
-                // console.log(`Server running on port ${PORT}`);
-            });
-        }
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
     })
     .catch((error) => {
         console.error('MongoDB connection error:', error);
