@@ -8,7 +8,7 @@ const {
   rejectTopUp,
   getTopUpHistory,
   getTopUpDashboardStats
-} = require('../controllers/topUpController');
+} = require('../controllers/topupController');
 
 // Define Routes
 router.get('/eligible/:loanId', getEligibleLoanDetails);
