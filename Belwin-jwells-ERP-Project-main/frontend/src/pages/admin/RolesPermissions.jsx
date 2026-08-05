@@ -29,12 +29,7 @@ export default function RolesPermissions() {
 
   const headers = { 'x-auth-token': getToken() };
 
-  useEffect(() => {
-    // Fetch loan schemes for permissions
-    api.get('/schemes', { headers })
-      .then(res => setLoanSchemes(res.data || []))
-      .catch(e => console.error('Failed to fetch schemes', e));
-  }, []);
+
 
 
 
@@ -241,17 +236,18 @@ export default function RolesPermissions() {
             <div className="p-6 grid grid-cols-1 gap-6">
               {(() => {
                 const ALL_MODULES = [...ADMIN_NAV.filter(nav => nav.id !== 'dashboard' && nav.id !== 'access_control')];
-                if (loanSchemes && loanSchemes.length > 0) {
-                  ALL_MODULES.push({
-                    id: 'loan_schemes_access',
-                    label: 'Loan Schemes Access',
-                    icon: BadgeInfo,
-                    children: loanSchemes.map(s => ({
-                      label: s.schemeName || s.name || `Scheme ${s.schemeId}`,
-                      path: `scheme_${s._id}`
-                    }))
-                  });
-                }
+                ALL_MODULES.push({
+                  id: 'loan_schemes_access',
+                  label: 'Loan Schemes Access',
+                  icon: BadgeInfo,
+                  children: [
+                    { label: 'Chit Fund Loan', path: 'loan_scheme_chit_fund' },
+                    { label: 'Gold Loan', path: 'loan_scheme_gold' },
+                    { label: 'Personal Loan', path: 'loan_scheme_personal' },
+                    { label: 'MFI Loan', path: 'loan_scheme_mfi' },
+                    { label: 'Two Wheeler Loan', path: 'loan_scheme_two_wheeler' }
+                  ]
+                });
                 return ALL_MODULES.map((parent) => {
                 const children = parent.children || [{ label: parent.label, path: parent.path || parent.id }];
                 const Icon = parent.icon;
