@@ -36,7 +36,7 @@ export default function RolesPermissions() {
       .catch(e => console.error('Failed to fetch schemes', e));
   }, []);
 
-  const headers = { 'x-auth-token': getToken() };
+
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
