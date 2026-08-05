@@ -1,263 +1,469 @@
-import { useState } from 'react';
-import api from '../../../services/api';
-import toast from 'react-hot-toast';
-import { FileText, Search, Download, Eye, Building2, Phone, ArrowLeft, Printer } from 'lucide-react';
-import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
-import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
-import Input from '../../../components/ui/Input';
-import Button from '../../../components/ui/Button';
-import DataTable from '../../../components/ui/DataTable';
-import { TD, TR } from '../../../components/ui/Table';
+import React, { useState } from 'react';
+import './LoanAccountLedger.css';
+import { 
+  Printer, FileText, FileSpreadsheet, RefreshCcw, Search, RotateCcw, 
+  IndianRupee, Scale, History, FileCheck, Landmark, CheckCircle, 
+  Eye, Download, BadgeCheck
+} from 'lucide-react';
 
 const LoanAccountLedger = () => {
-  const [view, setView] = useState('search'); // 'search' | 'customerDetails'
-  
-  // Search State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [customers, setCustomers] = useState([]);
-  const [searching, setSearching] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [loanType, setLoanType] = useState('Gold Loan'); // Switch this to test
 
-  // Customer Details State
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [loans, setLoans] = useState([]);
-  const [ledgerData, setLedgerData] = useState([]);
-  const [loadingDetails, setLoadingDetails] = useState(false);
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
-      toast.error('Please enter a phone number or name to search');
-      return;
-    }
+  // MOCK DATA as requested (No Backend)
+  const mockData = {
+    loanNumber: 'LN-GL-2026-08991',
+    loanAccountNo: 'ACC-8991-GL',
+    borrowerId: 'BOR-0002',
+    borrowerName: 'Abraham',
+    memberId: 'MEM-445',
+    mobileNumber: '+91 9876543210',
+    branch: 'Main Branch',
+    loanScheme: 'Gold Premium Scheme',
+    loanType: loanType,
+    loanStatus: 'Active',
+    applicationDate: '01 Aug 2026',
+    approvalDate: '02 Aug 2026',
+    disbursementDate: '03 Aug 2026',
+    requestedAmount: 500000,
+    approvedAmount: 480000,
+    disbursedAmount: 475000,
+    interestRate: 12.5,
+    loanTenure: 12,
+    maturityDate: '03 Aug 2027',
     
-    setSearching(true);
-    try {
-      const res = await api.get(`/customers/search?search=${searchQuery}`);
-      setCustomers(res.data.data || res.data); // Adjust based on API format
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to search customers');
-    } finally {
-      setSearching(false);
-    }
+    // Summary
+    totalCollection: 55000,
+    principalPaid: 25000,
+    interestPaid: 30000,
+    penaltyCollected: 0,
+    outstandingPrincipal: 455000,
+    outstandingInterest: 5000,
+    outstandingBalance: 460000,
+
+    goldValue: 650000
   };
 
-  const handleSelectCustomer = async (customer) => {
-    setSelectedCustomer(customer);
-    setView('customerDetails');
-    setLoadingDetails(true);
-    
-    try {
-      // 1. Fetch Loans for this customer
-      const loansRes = await api.get(`/loans/customer/${customer._id}`);
-      setLoans(loansRes.data.data || loansRes.data || []);
-      
-      // 2. Fetch Ledger for this customer (using mobileNo as per backend logic)
-      const ledgerRes = await api.get(`/reports/ledger?mobileNo=${customer.mobileNumber}`);
-      
-      const formattedLedger = ledgerRes.data.map(item => ({
-        _id: item._id,
-        loanNo: item.loanNo,
-        date: new Date(item.date).toLocaleDateString(),
-        description: item.description || 'Transaction',
-        debit: item.debit || 0,
-        credit: item.credit || 0,
-        balance: `${item.balance} ${item.balance >= 0 ? 'Dr' : 'Cr'}`,
-        status: item.status
-      }));
-      setLedgerData(formattedLedger);
-      
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to load customer details');
-    } finally {
-      setLoadingDetails(false);
-    }
-  };
-
-  const handleBack = () => {
-    setView('search');
-    setSelectedCustomer(null);
-    setLoans([]);
-    setLedgerData([]);
-  };
+  const tabs = [
+    { id: 'overview', label: 'Overview' },
+    ...(loanType === 'Gold Loan' ? [{ id: 'gold_details', label: 'Gold Details' }] : []),
+    ...(loanType !== 'Gold Loan' ? [{ id: 'emi_details', label: 'EMI Details' }] : []),
+    { id: 'transaction_history', label: 'Transaction History' },
+    { id: 'collection_summary', label: 'Collection Summary' },
+    { id: 'documents', label: 'Documents' },
+    { id: 'approval_history', label: 'Approval History' },
+    { id: 'timeline', label: 'Timeline' },
+    { id: 'loan_closing', label: 'Loan Closing' }
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 animate-fade-in">
-      <PageHeader 
-        title="Loan Account Ledger" 
-        subtitle="Search a customer to view their total loan details and ledger." 
-        icon={FileText} 
-        actions={view === 'customerDetails' ? (
-          <div className="flex gap-2">
-            <Button variant="secondary" icon={Printer} onClick={handlePrint}>Print</Button>
-            <Button variant="secondary" icon={Download} onClick={() => {
-              const headers = [
-                { label: 'Loan No', key: 'loanNo' },
-                { label: 'Date', key: 'date' },
-                { label: 'Description', key: 'description' },
-                { label: 'Debit', key: 'debit' },
-                { label: 'Credit', key: 'credit' },
-                { label: 'Balance', key: 'balance' },
-                { label: 'Status', key: 'status' }
-              ];
-              exportToExcel(ledgerData, headers, null, 'Ledger_Statement');
-            }}>Export Excel</Button>
-            <Button variant="primary" icon={Download} onClick={() => {
-              const headers = [
-                { label: 'Loan No', key: 'loanNo' },
-                { label: 'Date', key: 'date' },
-                { label: 'Description', key: 'description' },
-                { label: 'Debit', key: 'debit' },
-                { label: 'Credit', key: 'credit' },
-                { label: 'Balance', key: 'balance' },
-                { label: 'Status', key: 'status' }
-              ];
-              exportTableToPDF('Combined Ledger Statement', headers, ledgerData, 'Ledger_Statement');
-            }}>Export PDF</Button>
+    <div className="ledger-container">
+      {/* PAGE HEADER */}
+      <div className="ledger-header">
+        <div className="header-title-section">
+          <h1>Loan Account Ledger</h1>
+          <div className="header-subtitle">
+            <span>{mockData.loanNumber}</span>
+            <span>•</span>
+            <span>{mockData.borrowerName}</span>
+            <span>•</span>
+            <span>{mockData.loanType}</span>
+            <span>•</span>
+            <span>{mockData.branch}</span>
+            <span className="status-badge">{mockData.loanStatus}</span>
           </div>
-        ) : null}
-      />
-      
-      {view === 'search' && (
-        <div className="space-y-6">
-          <Card className="p-6 shadow-sm border border-gray-100">
-            <form onSubmit={handleSearch} className="flex gap-4 items-end max-w-2xl">
-              <div className="flex-1">
-                <Input 
-                  label="Search Customer" 
-                  value={searchQuery} 
-                  onChange={e => setSearchQuery(e.target.value)} 
-                  placeholder="Enter Phone Number or Name..." 
-                />
-              </div>
-              <Button type="submit" variant="primary" icon={Search} loading={searching}>
-                Search
-              </Button>
-            </form>
-          </Card>
-
-          {customers.length > 0 && (
-            <Card className="shadow-sm border border-gray-100">
-              <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-                <h3 className="text-lg font-semibold text-gray-800">Search Results</h3>
-              </div>
-              <DataTable
-                headers={['Customer Name', 'Customer ID', 'Phone Number', 'Branch', 'Action']}
-                data={customers}
-                loading={searching}
-                renderRow={(customer) => (
-                  <TR key={customer._id}>
-                    <TD className="font-semibold text-gray-800">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                          {customer.customerName?.charAt(0)}
-                        </div>
-                        {customer.customerName}
-                      </div>
-                    </TD>
-                    <TD className="text-gray-600 font-medium">{customer.customerId}</TD>
-                    <TD className="text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Phone size={14} className="text-gray-400" />
-                        {customer.mobileNumber}
-                      </div>
-                    </TD>
-                    <TD>
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <Building2 size={14} className="text-gray-400" />
-                        {customer.branchName || 'Head Office'}
-                      </div>
-                    </TD>
-                    <TD>
-                      <Button variant="secondary" size="sm" onClick={() => handleSelectCustomer(customer)}>
-                        View Details
-                      </Button>
-                    </TD>
-                  </TR>
-                )}
-              />
-            </Card>
-          )}
         </div>
-      )}
+        <div className="header-actions">
+          <button className="btn"><Printer size={16} /> Print</button>
+          <button className="btn"><FileText size={16} /> Export PDF</button>
+          <button className="btn"><FileSpreadsheet size={16} /> Export Excel</button>
+          <button className="btn btn-primary"><RefreshCcw size={16} /> Refresh</button>
+        </div>
+      </div>
 
-      {view === 'customerDetails' && selectedCustomer && (
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={handleBack}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"
-              title="Back to Search"
-            >
-              <ArrowLeft size={24} />
-            </button>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">{selectedCustomer.customerName}</h2>
-              <p className="text-gray-500">{selectedCustomer.mobileNumber} • {selectedCustomer.customerId}</p>
+      {/* SEARCH & FILTER */}
+      <div className="card">
+        <div className="filter-grid">
+          <div className="filter-group">
+            <label>Loan Number</label>
+            <input type="text" placeholder="Enter Loan No" defaultValue={mockData.loanNumber} />
+          </div>
+          <div className="filter-group">
+            <label>Borrower Name</label>
+            <input type="text" placeholder="Enter Name" />
+          </div>
+          <div className="filter-group">
+            <label>Mobile Number</label>
+            <input type="text" placeholder="Enter Mobile" />
+          </div>
+          <div className="filter-group">
+            <label>Loan Type</label>
+            <select value={loanType} onChange={(e) => setLoanType(e.target.value)}>
+              <option value="Gold Loan">Gold Loan</option>
+              <option value="Personal Loan">Personal Loan</option>
+              <option value="Vehicle Loan">Vehicle Loan</option>
+              <option value="Business Loan">Business Loan</option>
+            </select>
+          </div>
+          <div className="filter-group">
+            <label>Branch</label>
+            <select><option>Main Branch</option></select>
+          </div>
+          <div className="filter-group">
+            <label>Date Range</label>
+            <input type="date" />
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+          <button className="btn btn-primary"><Search size={16} /> Search</button>
+          <button className="btn"><RotateCcw size={16} /> Reset</button>
+        </div>
+      </div>
+
+      {/* SUMMARY CARDS */}
+      <div className="summary-grid">
+        <div className="card summary-card">
+          <div className="summary-icon"><IndianRupee size={24} /></div>
+          <div className="summary-content">
+            <h3>Loan Amount</h3>
+            <p>₹{mockData.approvedAmount.toLocaleString()}</p>
+          </div>
+        </div>
+        <div className="card summary-card">
+          <div className="summary-icon" style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}><Scale size={24} /></div>
+          <div className="summary-content">
+            <h3>Outstanding Amount</h3>
+            <p>₹{mockData.outstandingBalance.toLocaleString()}</p>
+          </div>
+        </div>
+        <div className="card summary-card">
+          <div className="summary-icon" style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}><Landmark size={24} /></div>
+          <div className="summary-content">
+            <h3>Principal Paid</h3>
+            <p>₹{mockData.principalPaid.toLocaleString()}</p>
+          </div>
+        </div>
+        <div className="card summary-card">
+          <div className="summary-icon" style={{ backgroundColor: '#fefce8', color: '#ca8a04' }}><FileCheck size={24} /></div>
+          <div className="summary-content">
+            <h3>Interest Paid</h3>
+            <p>₹{mockData.interestPaid.toLocaleString()}</p>
+          </div>
+        </div>
+        <div className="card summary-card">
+          <div className="summary-icon" style={{ backgroundColor: '#f5f3ff', color: '#7c3aed' }}><History size={24} /></div>
+          <div className="summary-content">
+            <h3>Total Collection</h3>
+            <p>₹{mockData.totalCollection.toLocaleString()}</p>
+          </div>
+        </div>
+        <div className="card summary-card">
+          <div className="summary-icon" style={{ backgroundColor: '#f0fdfa', color: '#0d9488' }}><CheckCircle size={24} /></div>
+          <div className="summary-content">
+            <h3>Loan Status</h3>
+            <p style={{ fontSize: '18px' }}>{mockData.loanStatus}</p>
+          </div>
+        </div>
+        {loanType === 'Gold Loan' && (
+          <div className="card summary-card">
+            <div className="summary-icon" style={{ backgroundColor: '#fffbeb', color: '#d97706' }}><BadgeCheck size={24} /></div>
+            <div className="summary-content">
+              <h3>Gold Value</h3>
+              <p>₹{mockData.goldValue.toLocaleString()}</p>
             </div>
           </div>
+        )}
+      </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            {/* Customer Loans Table */}
-            <Card className="shadow-sm border border-gray-100">
-              <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-                <h3 className="text-lg font-semibold text-gray-800">Total Loans ({loans.length})</h3>
-              </div>
-              <DataTable
-                headers={['Loan ID', 'Date', 'Type', 'Amount', 'Status']}
-                data={loans}
-                loading={loadingDetails}
-                renderRow={(loan) => (
-                  <TR key={loan._id}>
-                    <TD className="font-bold text-gray-800">{loan.loanId}</TD>
-                    <TD>{new Date(loan.loanDate).toLocaleDateString()}</TD>
-                    <TD className="text-gray-600">{loan.schemeType}</TD>
-                    <TD className="font-bold text-gray-800">₹{loan.loanAmount}</TD>
-                    <TD>
-                      <span className={`px-2 py-1 rounded-none text-xs font-medium ${
-                        loan.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                      }`}>
-                        {loan.status}
-                      </span>
-                    </TD>
-                  </TR>
-                )}
-              />
-            </Card>
+      {/* TAB LAYOUT */}
+      <div className="tabs-container">
+        {tabs.map(tab => (
+          <button 
+            key={tab.id} 
+            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-            {/* Consolidated Ledger Table */}
-            <Card className="shadow-sm border border-gray-100">
-              <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-                <h3 className="text-lg font-semibold text-gray-800">Combined Ledger Statement</h3>
+      {/* TAB CONTENT */}
+      <div className="card">
+        
+        {/* OVERVIEW TAB */}
+        {activeTab === 'overview' && (
+          <div className="detail-grid">
+            {Object.entries(mockData).filter(([k]) => k !== 'loanType' && k !== 'goldValue').map(([key, value]) => (
+              <div className="detail-item" key={key}>
+                <div className="detail-label">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
+                <div className="detail-value">{value}</div>
               </div>
-              <DataTable
-                headers={['Loan No', 'Date', 'Description', 'Debit', 'Credit', 'Balance', 'Status']}
-                data={ledgerData}
-                loading={loadingDetails}
-                renderRow={(item) => (
-                  <TR key={item._id}>
-                    <TD className="font-bold text-gray-800">{item.loanNo}</TD>
-                    <TD>{item.date}</TD>
-                    <TD className="text-gray-600 max-w-xs truncate" title={item.description}>{item.description}</TD>
-                    <TD className="text-red-600 font-medium">{item.debit > 0 ? `₹${item.debit}` : '-'}</TD>
-                    <TD className="text-green-600 font-medium">{item.credit > 0 ? `₹${item.credit}` : '-'}</TD>
-                    <TD className="font-bold">₹{item.balance}</TD>
-                    <TD>
-                      <span className={`px-2 py-1 rounded-none text-xs font-medium ${
-                        item.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                      }`}>
-                        {item.status}
-                      </span>
-                    </TD>
-                  </TR>
-                )}
-              />
-            </Card>
+            ))}
           </div>
-        </div>
-      )}
+        )}
+
+        {/* GOLD DETAILS TAB */}
+        {activeTab === 'gold_details' && loanType === 'Gold Loan' && (
+          <div className="table-wrapper">
+            <table className="erp-table">
+              <thead>
+                <tr>
+                  <th>Ornament Type</th>
+                  <th>Ornament Name</th>
+                  <th>Pieces</th>
+                  <th>Purity</th>
+                  <th>Gross Wt (g)</th>
+                  <th>Stone Wt (g)</th>
+                  <th>Net Wt (g)</th>
+                  <th>Gold Rate</th>
+                  <th>Gold Value</th>
+                  <th>Locker No</th>
+                  <th>Valuer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Bangle</td>
+                  <td>Gold Bangle 22K</td>
+                  <td>2</td>
+                  <td>22K</td>
+                  <td>45.50</td>
+                  <td>2.00</td>
+                  <td>43.50</td>
+                  <td>₹6,500</td>
+                  <td>₹282,750</td>
+                  <td>L-45</td>
+                  <td>Mr. Smith</td>
+                </tr>
+                <tr>
+                  <td>Chain</td>
+                  <td>Thali Chain</td>
+                  <td>1</td>
+                  <td>22K</td>
+                  <td>30.00</td>
+                  <td>0.00</td>
+                  <td>30.00</td>
+                  <td>₹6,500</td>
+                  <td>₹195,000</td>
+                  <td>L-45</td>
+                  <td>Mr. Smith</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* EMI DETAILS TAB */}
+        {activeTab === 'emi_details' && loanType !== 'Gold Loan' && (
+          <div className="table-wrapper">
+            <table className="erp-table">
+              <thead>
+                <tr>
+                  <th>EMI No</th>
+                  <th>Due Date</th>
+                  <th>Paid Date</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Penalty</th>
+                  <th>EMI Amount</th>
+                  <th>Balance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>03 Sep 2026</td>
+                  <td>02 Sep 2026</td>
+                  <td>₹10,000</td>
+                  <td>₹2,500</td>
+                  <td>₹0</td>
+                  <td>₹12,500</td>
+                  <td>₹465,000</td>
+                  <td><span className="status-badge">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>03 Oct 2026</td>
+                  <td>-</td>
+                  <td>₹10,000</td>
+                  <td>₹2,400</td>
+                  <td>₹0</td>
+                  <td>₹12,400</td>
+                  <td>₹455,000</td>
+                  <td><span className="status-badge" style={{backgroundColor: '#fef3c7', color: '#b45309'}}>Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* TRANSACTION HISTORY TAB */}
+        {activeTab === 'transaction_history' && (
+           <div className="table-wrapper">
+             <table className="erp-table">
+               <thead>
+                 <tr>
+                   <th>Date</th>
+                   <th>Type</th>
+                   <th>Debit</th>
+                   <th>Credit</th>
+                   <th>Balance</th>
+                   <th>Mode</th>
+                   <th>Receipt No</th>
+                   <th>Employee</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td>03 Aug 2026</td>
+                   <td>Disbursement</td>
+                   <td>₹475,000</td>
+                   <td>-</td>
+                   <td>₹475,000</td>
+                   <td>Bank Transfer</td>
+                   <td>DIS-001</td>
+                   <td>Admin</td>
+                 </tr>
+                 <tr>
+                   <td>02 Sep 2026</td>
+                   <td>Repayment</td>
+                   <td>-</td>
+                   <td>₹12,500</td>
+                   <td>₹462,500</td>
+                   <td>Cash</td>
+                   <td>REC-909</td>
+                   <td>Cashier 1</td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+        )}
+
+        {/* COLLECTION SUMMARY TAB */}
+        {activeTab === 'collection_summary' && (
+           <div className="detail-grid">
+             <div className="detail-item"><div className="detail-label">Total Principal Paid</div><div className="detail-value">₹{mockData.principalPaid}</div></div>
+             <div className="detail-item"><div className="detail-label">Total Interest Paid</div><div className="detail-value">₹{mockData.interestPaid}</div></div>
+             <div className="detail-item"><div className="detail-label">Penalty Collected</div><div className="detail-value">₹{mockData.penaltyCollected}</div></div>
+             <div className="detail-item"><div className="detail-label">Total Collection</div><div className="detail-value">₹{mockData.totalCollection}</div></div>
+             <div className="detail-item"><div className="detail-label">Outstanding Principal</div><div className="detail-value">₹{mockData.outstandingPrincipal}</div></div>
+             <div className="detail-item"><div className="detail-label">Outstanding Interest</div><div className="detail-value">₹{mockData.outstandingInterest}</div></div>
+             <div className="detail-item"><div className="detail-label">Outstanding Balance</div><div className="detail-value">₹{mockData.outstandingBalance}</div></div>
+           </div>
+        )}
+
+        {/* DOCUMENTS TAB */}
+        {activeTab === 'documents' && (
+          <div className="document-grid">
+            {['Aadhaar', 'PAN', 'Customer Photo', 'Signature', 'Address Proof'].map(doc => (
+              <div className="doc-card" key={doc}>
+                <div className="doc-icon"><FileText size={32} /></div>
+                <div className="doc-title">{doc}</div>
+                <div className="doc-status">Verified</div>
+                <div className="doc-actions">
+                  <button className="btn"><Eye size={14} /> View</button>
+                  <button className="btn"><Download size={14} /> DL</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* APPROVAL HISTORY TAB */}
+        {activeTab === 'approval_history' && (
+          <div className="table-wrapper">
+             <table className="erp-table">
+               <thead>
+                 <tr>
+                   <th>Stage</th>
+                   <th>Employee</th>
+                   <th>Role</th>
+                   <th>Date & Time</th>
+                   <th>Status</th>
+                   <th>Remarks</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td>Employee Submitted</td>
+                   <td>John Doe</td>
+                   <td>Clerk</td>
+                   <td>01 Aug 2026, 10:00 AM</td>
+                   <td><span className="status-badge">Completed</span></td>
+                   <td>All documents attached</td>
+                 </tr>
+                 <tr>
+                   <td>Admin Approved</td>
+                   <td>Super Admin</td>
+                   <td>Admin</td>
+                   <td>02 Aug 2026, 11:30 AM</td>
+                   <td><span className="status-badge">Approved</span></td>
+                   <td>Looks good, proceed</td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+        )}
+
+        {/* TIMELINE TAB */}
+        {activeTab === 'timeline' && (
+          <div className="timeline">
+            <div className="timeline-item">
+              <div className="timeline-icon"></div>
+              <div className="timeline-content">
+                <h4>Loan Created</h4>
+                <p>01 Aug 2026 - By John Doe</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-icon"></div>
+              <div className="timeline-content">
+                <h4>KYC Verified</h4>
+                <p>01 Aug 2026 - By KYC Team</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-icon"></div>
+              <div className="timeline-content">
+                <h4>Loan Approved</h4>
+                <p>02 Aug 2026 - By Super Admin</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-icon" style={{backgroundColor: '#e5e7eb', borderColor: '#e5e7eb'}}></div>
+              <div className="timeline-content">
+                <h4 style={{color: '#9ca3af'}}>Loan Disbursed</h4>
+                <p>Pending</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* LOAN CLOSING TAB */}
+        {activeTab === 'loan_closing' && (
+          <div className="detail-grid">
+             <div className="detail-item"><div className="detail-label">Closure Date</div><div className="detail-value">-</div></div>
+             <div className="detail-item"><div className="detail-label">Closure Type</div><div className="detail-value">-</div></div>
+             <div className="detail-item"><div className="detail-label">Settlement Amount</div><div className="detail-value">-</div></div>
+             <div className="detail-item"><div className="detail-label">Gold Released</div><div className="detail-value">No</div></div>
+             <div className="detail-item"><div className="detail-label">NOC Number</div><div className="detail-value">-</div></div>
+             <div className="detail-item"><div className="detail-label">Closed By</div><div className="detail-value">-</div></div>
+           </div>
+        )}
+
+      </div>
+
+      {/* BOTTOM ACTIONS */}
+      <div className="card" style={{ display: 'flex', gap: '16px', justifyContent: 'flex-end', marginBottom: '0' }}>
+        <button className="btn"><Eye size={16} /> View</button>
+        <button className="btn"><Printer size={16} /> Print</button>
+        <button className="btn"><FileText size={16} /> Export PDF</button>
+        <button className="btn"><FileSpreadsheet size={16} /> Export Excel</button>
+        <button className="btn btn-primary"><Download size={16} /> Download Ledger</button>
+      </div>
+
     </div>
   );
 };
