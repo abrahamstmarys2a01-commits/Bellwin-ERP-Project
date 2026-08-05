@@ -95,6 +95,11 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
       return;
     }
 
+    if (customerData.status !== 'Approved' && customerData.approvalStatus !== 'Approved') {
+      toast.error("Customer KYC is not approved yet. Cannot provide loan.");
+      return;
+    }
+
     try {
       const payload = {
         customerId: customerData.customerId,

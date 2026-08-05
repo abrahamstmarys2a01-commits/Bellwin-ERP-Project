@@ -44,7 +44,9 @@ const ProvideLoan = () => {
           mobile: customer.mobileNumber || '',
           fatherName: customer.guardianName || '',
           address: fullAddress || '',
-          customerId: customer._id || customer.customerId || ''
+          customerId: customer._id || customer.customerId || '',
+          status: customer.status || '',
+          approvalStatus: customer.approvalStatus || ''
         });
         toast.success("Customer details fetched!");
       } else {

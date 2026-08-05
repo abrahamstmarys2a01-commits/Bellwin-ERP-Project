@@ -90,6 +90,12 @@ const PersonalLoanForm = ({ customerData, schemeData }) => {
       toast.error("Please search and select a customer first.");
       return;
     }
+
+    if (customerData.status !== 'Approved' && customerData.approvalStatus !== 'Approved') {
+      toast.error("Customer KYC is not approved yet. Cannot provide loan.");
+      return;
+    }
+
     toast.success("Personal Loan Form Submitted (Demo)");
   };
 
