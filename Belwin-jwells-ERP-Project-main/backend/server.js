@@ -119,6 +119,8 @@ app.listen(PORT, '0.0.0.0', () => {
 mongoose.connect(MONGO_URI)
     .then(async () => {
         // console.log('Connected to MongoDB');
+        const ItemGroup = require('./models/ItemGroup');
+        await ItemGroup.syncIndexes();
         await initializeEmployeeIds();
     })
     .catch((error) => {
