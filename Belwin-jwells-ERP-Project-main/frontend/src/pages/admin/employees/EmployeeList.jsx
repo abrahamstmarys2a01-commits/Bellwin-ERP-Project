@@ -313,9 +313,9 @@ const EmployeeList = () => {
         </div>
 
         {/* Data Table / Card View */}
-        <div className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-none border border-gray-200 shadow-sm">
           {isMobile ? renderEmployeeCards() : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto pb-32">
             <table className="w-full text-left border-collapse text-sm">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
