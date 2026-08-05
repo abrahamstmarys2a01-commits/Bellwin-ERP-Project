@@ -32,7 +32,7 @@ const EmployeeForm = () => {
   const [availableRoles, setAvailableRoles] = useState([]);
 
   const initialFormState = {
-    firstName: '', lastName: '', fatherName: '',
+    firstName: '', lastName: '',
     gender: 'Male', dob: '', age: '', mobile: '', email: '',
     address: '', pincode: '',
     panNo: '', accountNo: '', ifscCode: '', aadharCardNo: '',
@@ -120,7 +120,7 @@ const EmployeeForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'mobile' && value !== '' && !/^[0-9]+$/.test(value)) return;
-    const upper = ['firstName', 'lastName', 'fatherName', 'address', 'panNo', 'ifscCode'];
+    const upper = ['firstName', 'lastName', 'address', 'panNo', 'ifscCode'];
     
     setFormData((p) => {
       const newData = { ...p, [name]: upper.includes(name) ? value.toUpperCase() : value };
@@ -234,7 +234,7 @@ const EmployeeForm = () => {
 
   const progress = useMemo(() => {
     const requiredFields = [
-      'firstName', 'lastName', 'fatherName', 'mobile',
+      'firstName', 'lastName', 'mobile',
       'branch', 'role', 'username'
     ];
     
@@ -317,7 +317,7 @@ const EmployeeForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Input label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} required placeholder="e.g. RAJESH" />
                   <Input label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} required placeholder="e.g. KUMAR" />
-                  <Input label="Guardian Name" name="fatherName" value={formData.fatherName} onChange={handleChange} required />
+
                   <Select label="Gender" name="gender" value={formData.gender} onChange={handleChange}>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>

@@ -127,10 +127,7 @@ const EmployeeView = ({ employeeId, onClose }) => {
               <UserCircle2 size={18} className="text-green-600" /> Personal & Contact
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="sm:col-span-2">
-                <div className={lblClass}>Legal Guardian Name</div>
-                <div className={valClass}>{employee.fatherName || 'Not Provided'}</div>
-              </div>
+
               <div>
                 <div className={lblClass}>Mobile Number</div>
                 <div className={valClass}>{employee.mobile}</div>
