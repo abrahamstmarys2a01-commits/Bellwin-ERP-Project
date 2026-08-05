@@ -46,9 +46,7 @@ const createLoan = async (req, res, next) => {
       maturePeriod,
       interestRepaymentMonths,
       documentCharges,
-      penaltyPercent,
-      branch,
-      loanType
+      penaltyPercent
     } = req.body;
 
     let customerStringId = '';
@@ -119,9 +117,7 @@ const createLoan = async (req, res, next) => {
       maturePeriod,
       interestRepaymentMonths,
       documentCharges,
-      penaltyPercent,
-      branch,
-      loanType
+      penaltyPercent
     });
 
     // --- AUTOMATED GOLD STOCK LEDGER CREATION ---
