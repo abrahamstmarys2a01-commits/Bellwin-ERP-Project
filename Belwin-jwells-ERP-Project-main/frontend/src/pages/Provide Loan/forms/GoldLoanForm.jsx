@@ -52,7 +52,7 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
         loanDate: selectedLoan.loanDate ? new Date(selectedLoan.loanDate).toISOString().split('T')[0] : prev.loanDate,
         loanOfficer: selectedLoan.employeeName || prev.loanOfficer,
         branch: selectedLoan.branch || prev.branch,
-        closeDate: selectedLoan.closeDate ? new Date(selectedLoan.closeDate).toISOString().split('T')[0] : prev.closeDate,
+        closeDate: selectedLoan.loanEndDate ? new Date(selectedLoan.loanEndDate).toISOString().split('T')[0] : prev.closeDate,
         loanScheme: selectedLoan.schemeName || schemeData?.schemeName || prev.loanScheme,
         status: selectedLoan.status || prev.status,
         loanType: selectedLoan.loanType || prev.loanType
@@ -105,8 +105,12 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
 
         loanDate: loanInfo.loanDate,
         loanStartDate: loanInfo.loanDate,
+        loanEndDate: loanInfo.closeDate,
         status: loanInfo.status,
         loanAmount: goldDetails.totalGoldValue,
+        branch: loanInfo.branch,
+        loanType: loanInfo.loanType,
+        employeeName: loanInfo.loanOfficer,
 
         articles: [{
           category: goldDetails.ornamentType,
@@ -129,11 +133,15 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
         documentCharge: schemeData.documentCharges
       };
 
-      // Since we are creating a gold loan from Employee Dashboard, we can hit the /api/loans endpoint
-      const response = await api.post('/loans', payload);
+      let response;
+      if (selectedLoan) {
+        response = await api.put(`/loans/${selectedLoan.loanId}`, payload);
+      } else {
+        response = await api.post('/loans', payload);
+      }
       
-      if (response.status === 201) {
-        toast.success("Loan created successfully!");
+      if (response.status === 201 || response.status === 200) {
+        toast.success(selectedLoan ? "Loan updated successfully!" : "Loan created successfully!");
         // Clear form
         setLoanInfo({
           ...loanInfo,

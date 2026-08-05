@@ -28,6 +28,8 @@ const loanSchema = new mongoose.Schema({
   loanEndDate: { type: Date },
   loanAmount: { type: Number },
   remainingLoanAmount: { type: Number },
+  branch: { type: String },
+  loanType: { type: String },
   status: { type: String, enum: ['Approved', 'Pending', 'Closed', 'Active', 'Overdue', 'Repledged', 'Auction Ready', 'Auctioned', 'TopUp'], default: 'Pending', index: true },
   
   // Calculations
