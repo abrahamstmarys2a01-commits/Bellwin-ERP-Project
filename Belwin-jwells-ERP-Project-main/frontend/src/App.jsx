@@ -104,9 +104,6 @@ import TopUpLoan from './pages/Provide Loan/TopUpLoan';
 import LoanClosure from './pages/Provide Loan/LoanClosure';
 import TopUpApproval from './pages/admin/TopUpApproval';
 
-// Reports Module
-import LoanAccountLedger from './pages/admin/reports/LoanAccountLedger';
-
 function App() {
   return (
     <Router>
