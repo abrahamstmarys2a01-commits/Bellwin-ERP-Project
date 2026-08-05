@@ -131,6 +131,16 @@ export const ADMIN_NAV = [
       { label: 'Repledge Search', icon: FileSearch, path: '/admin/repledge/search' },
     ]
   },
+  {
+    id: 'loan_schemes_access', label: 'Loan Schemes Access', icon: FileText,
+    children: [
+      { label: 'Chit Fund Loan', icon: FileText, path: '/admin/loan-schemes/chit-fund' },
+      { label: 'Gold Loan', icon: Coins, path: '/admin/loan-schemes/gold' },
+      { label: 'Personal Loan', icon: Wallet, path: '/admin/loan-schemes/personal' },
+      { label: 'MFI Loan', icon: Briefcase, path: '/admin/loan-schemes/mfi' },
+      { label: 'Two Wheeler Loan', icon: Car, path: '/admin/loan-schemes/two-wheeler' },
+    ]
+  },
   // { id: 'access_control', label: 'Access and Control', icon: Shield, path: '/admin/roles' },
 ];
 

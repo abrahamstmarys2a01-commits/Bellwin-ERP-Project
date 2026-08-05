@@ -28,6 +28,15 @@ import GoldRateMaster from './pages/admin/loan-config/GoldRateMaster';
 import LockerMaster from './pages/admin/loan-config/LockerMaster';
 import ValuerMaster from './pages/admin/loan-config/ValuerMaster';
 
+// Loan Scheme Managers & Wrapper
+import LoanSchemeStandalone from './pages/admin/loan-config/LoanSchemeStandalone';
+import ChitFundManager from './pages/admin/loan-config/Loanscheme/ChitFundManager';
+import GoldLoanManager from './pages/admin/loan-config/Loanscheme/GoldLoanManager';
+import MicroFinanceManager from './pages/admin/loan-config/Loanscheme/MicroFinanceManager';
+import PersonalLoanManager from './pages/admin/loan-config/Loanscheme/PersonalLoanManager';
+import TwoWheelerLoanManager from './pages/admin/loan-config/Loanscheme/TwoWheelerLoanManager';
+import { Landmark, Coins, Wallet, Briefcase, Car } from 'lucide-react';
+
 import ChittySchemeList from './pages/admin/chitty-scheme/ChittySchemeList';
 import ChittySchemeForm from './pages/admin/chitty-scheme/ChittySchemeForm';
 import SchemeAllocationForm from './pages/admin/chitty-scheme/SchemeAllocationForm';
@@ -139,6 +148,14 @@ function App() {
           
           <Route path="/admin/loan-config/calculator" element={<LoanCalculator />} />
           <Route path="/admin/loan-config/scheme" element={<LoanScheme />} />
+          
+          {/* Standalone Loan Schemes Routes */}
+          <Route path="/admin/loan-schemes/chit-fund" element={<LoanSchemeStandalone title="Chit Fund Loan" icon={Landmark} ActiveComponent={ChitFundManager} />} />
+          <Route path="/admin/loan-schemes/gold" element={<LoanSchemeStandalone title="Gold Loan" icon={Coins} ActiveComponent={GoldLoanManager} />} />
+          <Route path="/admin/loan-schemes/personal" element={<LoanSchemeStandalone title="Personal Loan" icon={Wallet} ActiveComponent={PersonalLoanManager} />} />
+          <Route path="/admin/loan-schemes/mfi" element={<LoanSchemeStandalone title="Micro Finance Loan" icon={Briefcase} ActiveComponent={MicroFinanceManager} />} />
+          <Route path="/admin/loan-schemes/two-wheeler" element={<LoanSchemeStandalone title="Two Wheeler Loan" icon={Car} ActiveComponent={TwoWheelerLoanManager} />} />
+          
           <Route path="/admin/loan-config/vehicle" element={<VehicleMaster />} />
           <Route path="/admin/loan-config/dealer" element={<DealerMaster />} />
           <Route path="/admin/loan-config/item-group" element={<ItemGroupMaster />} />

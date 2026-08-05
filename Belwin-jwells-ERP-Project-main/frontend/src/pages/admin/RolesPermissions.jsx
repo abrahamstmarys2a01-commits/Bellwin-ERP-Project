@@ -234,21 +234,7 @@ export default function RolesPermissions() {
             </div>
 
             <div className="p-6 grid grid-cols-1 gap-6">
-              {(() => {
-                const ALL_MODULES = [...ADMIN_NAV.filter(nav => nav.id !== 'dashboard' && nav.id !== 'access_control')];
-                ALL_MODULES.push({
-                  id: 'loan_schemes_access',
-                  label: 'Loan Schemes Access',
-                  icon: BadgeInfo,
-                  children: [
-                    { label: 'Chit Fund Loan', path: 'loan_scheme_chit_fund' },
-                    { label: 'Gold Loan', path: 'loan_scheme_gold' },
-                    { label: 'Personal Loan', path: 'loan_scheme_personal' },
-                    { label: 'MFI Loan', path: 'loan_scheme_mfi' },
-                    { label: 'Two Wheeler Loan', path: 'loan_scheme_two_wheeler' }
-                  ]
-                });
-                return ALL_MODULES.map((parent) => {
+              {ADMIN_NAV.filter(nav => nav.id !== 'dashboard' && nav.id !== 'access_control').map((parent) => {
                 const children = parent.children || [{ label: parent.label, path: parent.path || parent.id }];
                 const Icon = parent.icon;
                 
@@ -309,8 +295,7 @@ export default function RolesPermissions() {
                     </div>
                   </div>
                 );
-              })
-              })()}
+              })}
             </div>
 
             <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
