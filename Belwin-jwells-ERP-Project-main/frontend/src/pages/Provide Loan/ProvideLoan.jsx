@@ -183,8 +183,8 @@ const ProvideLoan = () => {
             <div className="flex items-center gap-2">
               <input 
                 type="text" 
-                placeholder="Search Name or Phone..." 
-                className="w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-erp-green"
+                placeholder="Search by ID, Name or Phone Number..." 
+                className="search-input w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-erp-green"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}

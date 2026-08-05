@@ -115,8 +115,8 @@ const PromotionDemotion = () => {
           </div>
           <input
             type="text"
-            className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-none text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-            placeholder="Search employee by name, ID, or phone (min 3 chars)..."
+            className="search-input w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-none text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            placeholder="Search by ID, Name or Phone Number..."
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);

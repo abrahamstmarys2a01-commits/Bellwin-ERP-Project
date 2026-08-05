@@ -169,7 +169,7 @@ const PaymentVoucher = () => {
       <Card className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><Search size={16} /></span>
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search vouchers..." className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" />
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by ID, Name or Phone Number..." className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" />
         </div>
       </Card>
       <DataTable

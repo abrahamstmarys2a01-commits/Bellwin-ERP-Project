@@ -64,10 +64,10 @@ const Header = ({ isMobile, onToggleMobileMenu }) => {
                   <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-green-600 transition-colors" />
                   <input
                     type="text"
-                    placeholder="Search employees, customers, loans..."
+                    placeholder="Search Employee, Customer, Accounts..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-none text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white transition-all duration-200"
+                    className="search-input w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-none text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:bg-white transition-all duration-200"
                   />
                 </div>
               </div>
@@ -109,10 +109,10 @@ const Header = ({ isMobile, onToggleMobileMenu }) => {
               <input
                 autoFocus
                 type="text"
-                placeholder="Search employees, loans..."
+                placeholder="Search Employee, Customer, Accounts..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-none text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                className="search-input w-full pl-9 pr-10 py-2 border border-gray-300 rounded-none text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
               />
               <button
                 onClick={() => setSearchOpen(false)}

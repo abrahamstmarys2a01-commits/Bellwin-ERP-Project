@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 const SearchBox = ({
   value,
   onChange,
-  placeholder = "Search...",
+  placeholder = "Search by ID, Name or Phone Number...",
   className = '',
   ...props
 }) => {
@@ -15,7 +15,7 @@ const SearchBox = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="border-none outline-none text-sm flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 w-full"
+        className="search-input border-none outline-none text-sm flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 w-full"
         {...props}
       />
     </div>

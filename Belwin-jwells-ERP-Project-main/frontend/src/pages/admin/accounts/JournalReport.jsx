@@ -86,8 +86,8 @@ const JournalReport = () => {
             <option value="">All Branches</option>
             <option value="Head Office">Head Office</option>
           </Select>
-          <Input label="Voucher No" value={filters.voucherNo} onChange={e => setFilters({...filters, voucherNo: e.target.value})} placeholder="Search..." />
-          <Input label="Ledger" value={filters.ledger} onChange={e => setFilters({...filters, ledger: e.target.value})} placeholder="Search..." />
+          <Input label="Voucher No" value={filters.voucherNo} onChange={e => setFilters({...filters, voucherNo: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
+          <Input label="Ledger" value={filters.ledger} onChange={e => setFilters({...filters, ledger: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
           <div className="lg:col-span-5 flex justify-end">
              <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
           </div>

@@ -186,50 +186,12 @@ const NewBorrower = () => {
         icon={User}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-        
-        {/* Left Column: Photo Upload card */}
-        <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-6">
-          <Card className="p-6 text-center">
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Customer Photo</h4>
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 relative group">
-                {formData.photo ? (
-                  <img src={formData.photo} alt="Customer" className="w-full h-full object-cover" />
-                ) : (
-                  <User size={48} className="text-gray-300" />
-                )}
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <Upload size={20} className="text-white" />
-                </div>
-              </div>
-              <input
-                type="file"
-                ref={fileInputRef}
-                accept="image/*"
-                onChange={handlePhotoUpload}
-                className="hidden"
-                id="photo-upload-input"
-              />
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => fileInputRef.current?.click()}
-                icon={Upload}
-              >
-                Upload Photo
-              </Button>
-            </div>
-          </Card>
-        </div>
-
-        {/* Right Column: Form Inputs */}
-        <div className="lg:col-span-3 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto custom-scrollbar lg:pr-3">
-          <Card className="p-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              
-              {/* Form Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="w-full">
+        <Card className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            
+            {/* Form Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <Input
                   label="Customer ID"
                   disabled
@@ -460,7 +422,7 @@ const NewBorrower = () => {
 
               {/* KYC Upload section */}
               <div className="border-t border-gray-100 pt-4 space-y-4">
-                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">KYC Upload</h4>
+                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">KYC & Photo Upload</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">Aadhaar Card *</label>
@@ -480,6 +442,23 @@ const NewBorrower = () => {
                       onChange={(e) => setPanFile(e.target.files?.[0])}
                       className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer border border-gray-200 rounded-none"
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Customer Photo</label>
+                    <div className="flex flex-row items-center gap-4">
+                      <div className="w-12 h-12 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 relative group shrink-0">
+                        {formData.photo ? (
+                          <img src={formData.photo} alt="Customer" className="w-full h-full object-cover" />
+                        ) : (
+                          <User size={24} className="text-gray-300" />
+                        )}
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                          <Upload size={16} className="text-white" />
+                        </div>
+                      </div>
+                      <input type="file" ref={fileInputRef} accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                      <Button type="button" variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()} icon={Upload}>Upload Photo</Button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -506,8 +485,6 @@ const NewBorrower = () => {
 
             </form>
           </Card>
-        </div>
-
       </div>
     </div>
   );

@@ -276,7 +276,7 @@ const VehicleMaster = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by ID, name or registration..."
+            placeholder="Search by ID, Name or Phone Number..."
             className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-none text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-gray-50"
           />
         </div>

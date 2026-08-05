@@ -132,7 +132,7 @@ export default function RolesPermissions() {
           </div>
           <input 
             type="text" 
-            placeholder="Search by Employee ID, Name or Mobile" 
+            placeholder="Search by ID, Name or Phone Number..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-1 bg-transparent border-none outline-none text-gray-900 font-medium placeholder:text-gray-400 placeholder:font-normal"

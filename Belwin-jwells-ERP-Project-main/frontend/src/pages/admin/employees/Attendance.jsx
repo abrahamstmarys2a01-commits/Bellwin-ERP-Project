@@ -214,8 +214,8 @@ export default function Attendance() {
         {/* Search */}
         <div className="flex-1 w-full flex items-center gap-2 bg-white border border-gray-200 rounded-none px-3 h-10 shadow-sm focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-500/20 transition-all">
           <Search size={15} className="text-gray-400" />
-          <input placeholder="Search employee..." value={search} onChange={e => setSearch(e.target.value)}
-            className="border-none outline-none text-sm flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 w-full" />
+          <input placeholder="employe id and name phone number" value={search} onChange={e => setSearch(e.target.value)}
+            className="border-none outline-none text-sm flex-1 bg-transparent text-gray-900 placeholder-gray-500 w-full" />
         </div>
 
         <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 hide-scrollbar">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Users, ChevronDown, ChevronRight, UserPlus,
@@ -17,7 +17,17 @@ import logo from '../../assets/Logo 1.png';
 const Sidebar = ({ collapsed, setCollapsed, isMobile, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [openMenus, setOpenMenus] = useState({});
+  const [openMenus, setOpenMenus] = useState(() => {
+    const activeParent = ADMIN_NAV.find(item => item.children?.some(c => location.pathname === c.path));
+    return activeParent ? { [activeParent.id]: true } : {};
+  });
+
+  useEffect(() => {
+    const activeParent = ADMIN_NAV.find(item => item.children?.some(c => location.pathname === c.path));
+    if (activeParent) {
+      setOpenMenus({ [activeParent.id]: true });
+    }
+  }, [location.pathname]);
 
   const user = (() => { try { return JSON.parse(localStorage.getItem('user') || '{}'); } catch { return {}; } })();
   const role = user.role || 'employee';
@@ -103,7 +113,7 @@ const Sidebar = ({ collapsed, setCollapsed, isMobile, onClose }) => {
         {NAV.map((item) => {
           const Icon = item.icon;
           const active = item.path ? isActive(item.path) : isParentActive(item);
-          const isOpen = openMenus[item.id] || isParentActive(item);
+          const isOpen = openMenus[item.id];
 
           if (item.children) {
             return (

@@ -5,6 +5,7 @@ const Employee = require('../models/Employee');
 const Expense = require('../models/Expense');
 const AuditLog = require('../models/AuditLog');
 const GoldRate = require('../models/GoldRate');
+const ChittyScheme = require('../models/ChittyScheme');
 
 exports.getEmployeeStats = async (req, res) => {
   try {
@@ -174,6 +175,7 @@ exports.getAdminDashboardData = async (req, res) => {
     const totalCustomers = await Customer.countDocuments({});
     const totalEmployees = await Employee.countDocuments({});
     const activeGoldLoans = await Loan.countDocuments({ status: { $in: ['Active', 'Approved'] } });
+    const activeSchemes = await ChittyScheme.countDocuments({});
 
     // Today's Collection
     const todayCollections = await Payment.aggregate([
@@ -267,7 +269,7 @@ exports.getAdminDashboardData = async (req, res) => {
           todaysCollectionAmount,
           totalEmployees,
           inventoryValue: 'Realtime Calc Pending',
-          activeSchemes: 0 // to implement scheme count
+          activeSchemes: activeSchemes
         },
         recentLoans: formattedRecentLoans,
         summary: {

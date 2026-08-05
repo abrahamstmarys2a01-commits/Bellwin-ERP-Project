@@ -68,7 +68,7 @@ const ChittySchemeList = () => {
 
       <div className="bg-white p-4 rounded-none border border-gray-200 shadow-sm flex items-center justify-between">
         <SearchBox 
-          placeholder="Search by Scheme Code or Name..."
+          placeholder="Search by ID, Name or Phone Number..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md w-full"

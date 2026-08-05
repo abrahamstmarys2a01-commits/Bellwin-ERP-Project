@@ -57,7 +57,7 @@ const BranchMaster = () => {
   const handleOpenAdd = () => {
     setEditingBranch(null);
     setFormData({
-      branchCode: `BR${String(branches.length + 1).padStart(4, '0')}`,
+      branchCode: '',
       branchName: '',
       branchManager: '',
       contactNumber: '',
@@ -140,7 +140,7 @@ const BranchMaster = () => {
         <Card className="p-8 shadow-lg border border-gray-100">
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input label="Branch Code" required disabled value={formData.branchCode} onChange={(e) => setFormData({ ...formData, branchCode: e.target.value })} />
+              <Input label="Branch Code" disabled value={formData.branchCode || 'Auto-generated'} onChange={(e) => setFormData({ ...formData, branchCode: e.target.value })} />
               <Input label="Branch Name" required value={formData.branchName} onChange={(e) => setFormData({ ...formData, branchName: e.target.value })} />
               <Input label="Branch Manager" value={formData.branchManager} onChange={(e) => setFormData({ ...formData, branchManager: e.target.value })} />
               <Input label="Contact Number" value={formData.contactNumber} onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })} />
@@ -180,7 +180,7 @@ const BranchMaster = () => {
       <Card className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><Search size={16} /></span>
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search branches..." className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" />
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by ID, Name or Phone Number..." className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" />
         </div>
       </Card>
       <DataTable

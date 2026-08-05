@@ -127,7 +127,7 @@ export default function RepledgeEntry() {
             
             <div className="flex items-end gap-2">
               <div className="flex-1">
-                <Input label="Old Loan Number" name="oldLoanNumber" value={formData.oldLoanNumber} onChange={handleChange} placeholder="Search Loan No." />
+                <Input label="Old Loan Number" name="oldLoanNumber" value={formData.oldLoanNumber} onChange={handleChange} placeholder="Search by ID, Name or Phone Number..." />
               </div>
               <button className="h-11 w-11 rounded-none bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer mb-[1px]">
                 <Search size={18} />

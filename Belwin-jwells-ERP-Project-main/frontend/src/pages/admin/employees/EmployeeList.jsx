@@ -270,7 +270,7 @@ const EmployeeList = () => {
         <div className="flex flex-col md:flex-row gap-3 mb-4 bg-white p-3.5 rounded-none border border-gray-200 items-center shadow-sm">
           <div className="w-full md:flex-1">
             <SearchBox
-              placeholder="Search by name, ID or phone..."
+              placeholder="Employee ID, Name, Phone Number"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full max-w-none"

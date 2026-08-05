@@ -60,11 +60,10 @@ BranchSchema.statics.getNextId = async function () {
   return `BR${String(counter.seq).padStart(4, '0')}`;
 };
 
-BranchSchema.pre('save', async function (next) {
+BranchSchema.pre('validate', async function () {
   if (this.isNew && !this.branchCode) {
     this.branchCode = await this.constructor.getNextId();
   }
-  next();
 });
 
 module.exports = mongoose.model('Branch', BranchSchema);

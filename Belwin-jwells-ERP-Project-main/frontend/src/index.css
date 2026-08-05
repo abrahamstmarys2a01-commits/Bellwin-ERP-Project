@@ -31,3 +31,15 @@
   }
 }
 
+
+/* Globally hide placeholders across all input and textarea forms */
+::placeholder {
+  color: transparent !important;
+}
+
+/* Except for specific inputs like the login form and search */
+.login-input::placeholder,
+.search-input::placeholder {
+  color: #9ca3af !important;
+}
+

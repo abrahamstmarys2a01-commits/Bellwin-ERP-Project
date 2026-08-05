@@ -191,7 +191,7 @@ const EditLoan = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => { if(e.key === 'Enter') handleSearch(); }}
-              placeholder="Search Customer ID, Loan No or Mobile..." 
+              placeholder="Name, Phone Number, ID" 
               className="w-full px-4 py-2 text-base text-black focus:outline-none"
             />
             <button 

@@ -109,9 +109,9 @@ const LoanRequisitionReport = () => {
       
       <Card className="p-6 mb-6 shadow-sm border border-gray-100">
         <form onSubmit={handleFilter} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-          <Input label="Customer ID" value={filters.customerId} onChange={e => setFilters({...filters, customerId: e.target.value})} placeholder="Search by ID..." />
-          <Input label="Borrower Name" value={filters.borrowerName} onChange={e => setFilters({...filters, borrowerName: e.target.value})} placeholder="Search by name..." />
-          <Input label="Phone Number" value={filters.phoneNumber} onChange={e => setFilters({...filters, phoneNumber: e.target.value})} placeholder="Search by phone..." />
+          <Input label="Customer ID" value={filters.customerId} onChange={e => setFilters({...filters, customerId: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
+          <Input label="Borrower Name" value={filters.borrowerName} onChange={e => setFilters({...filters, borrowerName: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
+          <Input label="Phone Number" value={filters.phoneNumber} onChange={e => setFilters({...filters, phoneNumber: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
           <Select label="Status" value={filters.status} onChange={e => setFilters({...filters, status: e.target.value})}>
             <option value="">All Statuses</option>
             <option value="Pending">Pending</option>
