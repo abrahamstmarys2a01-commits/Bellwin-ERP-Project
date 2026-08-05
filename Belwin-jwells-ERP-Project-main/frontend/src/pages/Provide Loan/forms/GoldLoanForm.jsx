@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, RefreshCcw } from 'lucide-react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
+import api from '../../../services/api';
 
 const GoldLoanForm = ({ customerData, schemeData }) => {
   const [loanInfo, setLoanInfo] = useState({
@@ -85,12 +85,7 @@ const GoldLoanForm = ({ customerData, schemeData }) => {
       };
 
       // Since we are creating a gold loan from Employee Dashboard, we can hit the /api/loans endpoint
-      // We pass the token if needed, or if protect is removed it will just work
-      const response = await axios.post('http://localhost:5000/api/loans', payload, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-        }
-      });
+      const response = await api.post('/loans', payload);
       
       if (response.status === 201) {
         toast.success("Loan created successfully!");

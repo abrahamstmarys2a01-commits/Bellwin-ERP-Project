@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import api from '../../../../../services/api';
 
 const MicroFinanceManager = ({ showAddForm, setShowAddForm }) => {
   const [schemes, setSchemes] = useState([]);
@@ -17,10 +18,9 @@ const MicroFinanceManager = ({ showAddForm, setShowAddForm }) => {
 
   const fetchSchemes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/schemes?type=Micro Finance');
-      const data = await response.json();
-      if (response.ok) {
-        setSchemes(data);
+      const response = await api.get('/schemes?type=Micro Finance');
+      if (response.status === 200) {
+        setSchemes(response.data);
       }
     } catch (error) {
       console.error('Error fetching schemes:', error);
@@ -40,13 +40,8 @@ const MicroFinanceManager = ({ showAddForm, setShowAddForm }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/schemes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      if (response.ok) {
+      const response = await api.post('/schemes', formData);
+      if (response.status === 201 || response.status === 200) {
         toast.success(`Micro Finance Scheme added successfully!`);
         setFormData({
           schemeName: '', interestRate: '', amountLimit: '',
@@ -56,10 +51,10 @@ const MicroFinanceManager = ({ showAddForm, setShowAddForm }) => {
         setShowAddForm(false);
         fetchSchemes();
       } else {
-        toast.error(data.message || 'Failed to add scheme');
+        toast.error('Failed to add scheme');
       }
     } catch (error) {
-      toast.error('An error occurred');
+      toast.error(error.response?.data?.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -68,8 +63,8 @@ const MicroFinanceManager = ({ showAddForm, setShowAddForm }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this scheme?')) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/schemes/${id}`, { method: 'DELETE' });
-      if (response.ok) {
+      const response = await api.delete(`/schemes/${id}`);
+      if (response.status === 200) {
         toast.success('Scheme deleted');
         fetchSchemes();
       } else {

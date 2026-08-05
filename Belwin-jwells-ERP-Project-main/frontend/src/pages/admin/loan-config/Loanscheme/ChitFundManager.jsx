@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import api from '../../../../../services/api';
 
 const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
   const [schemes, setSchemes] = useState([]);
@@ -18,14 +19,9 @@ const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
 
   const fetchSchemes = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-
-      const response = await fetch('http://localhost:5000/api/chitty-schemes', { headers });
-      const data = await response.json();
-      if (response.ok) {
-        setSchemes(data.data || data); // handle potential { success: true, data: [...] } wrapper
+      const response = await api.get('/chitty-schemes');
+      if (response.status === 200) {
+        setSchemes(response.data.data || response.data); // handle potential wrapper
       }
     } catch (error) {
       console.error('Error fetching chitty schemes:', error);
@@ -45,17 +41,8 @@ const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-
-      const response = await fetch('http://localhost:5000/api/chitty-schemes', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      if (response.ok) {
+      const response = await api.post('/chitty-schemes', formData);
+      if (response.status === 201 || response.status === 200) {
         toast.success(`Chit Fund Scheme added successfully!`);
         setFormData({
           schemeCode: '', schemeName: '', collectionAmount: '', noOfMembers: '',
@@ -64,10 +51,10 @@ const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
         setShowAddForm(false);
         fetchSchemes();
       } else {
-        toast.error(data.message || 'Failed to add scheme');
+        toast.error('Failed to add scheme');
       }
     } catch (error) {
-      toast.error('An error occurred');
+      toast.error(error.response?.data?.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -76,15 +63,8 @@ const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this scheme?')) return;
     try {
-      const token = localStorage.getItem('token');
-      const headers = {};
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-
-      const response = await fetch(`http://localhost:5000/api/chitty-schemes/${id}`, { 
-        method: 'DELETE',
-        headers
-      });
-      if (response.ok) {
+      const response = await api.delete(`/chitty-schemes/${id}`);
+      if (response.status === 200) {
         toast.success('Scheme deleted');
         fetchSchemes();
       } else {

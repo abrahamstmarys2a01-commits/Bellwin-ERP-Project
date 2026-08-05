@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Save, RefreshCcw, XCircle, ChevronDown } from 'lucide-react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import api from '../../services/api';
 import GoldLoanForm from './forms/GoldLoanForm';
 import PersonalLoanForm from './forms/PersonalLoanForm';
 import ChitFundForm from './forms/ChitFundForm';
@@ -23,8 +23,7 @@ const ProvideLoan = () => {
     if (searchQuery.trim() === '') return;
     
     try {
-      // Assuming your backend runs on port 5000 and has this endpoint
-      const response = await axios.get(`http://localhost:5000/api/customers/search?search=${searchQuery}`);
+      const response = await api.get(`/customers/search?search=${searchQuery}`);
       
       if (response.data && response.data.data && response.data.data.length > 0) {
         const customer = response.data.data[0]; // Get the first matching customer
@@ -87,7 +86,7 @@ const ProvideLoan = () => {
     if (schemeSearchQuery.trim() === '') return;
     
     try {
-      const response = await axios.get(`http://localhost:5000/api/schemes?schemeId=${schemeSearchQuery}`);
+      const response = await api.get(`/schemes?schemeId=${schemeSearchQuery}`);
       if (response.data && response.data.length > 0) {
         const scheme = response.data[0];
         setSchemeData({
