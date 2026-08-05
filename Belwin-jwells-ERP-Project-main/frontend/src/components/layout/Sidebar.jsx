@@ -39,7 +39,7 @@ const Sidebar = ({ collapsed, setCollapsed, isMobile, onClose }) => {
   // Filter navigation based on role and permissions
   let NAV = [];
   if (isAdmin) {
-    NAV = ADMIN_NAV;
+    NAV = ADMIN_NAV.filter(item => item.id !== 'loan_schemes_access');
   } else {
     NAV = ADMIN_NAV.map(parent => {
       if (parent.id === 'dashboard') {
