@@ -448,7 +448,7 @@ const CustomerApprovalDrawer = ({
                         }`}
                     >
                         <CheckCircle className="w-4 h-4" />
-                        Approve Customer
+                        Approve Admin
                     </button>
                 </div>
             </div>
