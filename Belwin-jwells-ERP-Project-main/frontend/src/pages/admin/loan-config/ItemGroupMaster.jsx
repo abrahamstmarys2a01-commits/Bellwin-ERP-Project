@@ -51,8 +51,17 @@ const ItemGroupMaster = () => {
 
   const handleOpenAdd = () => {
     setEditingGroup(null);
+    let nextId = 'IG0001';
+    if (groups.length > 0) {
+      const maxNum = Math.max(...groups.map(g => {
+        const match = g.itemCode?.match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+      }));
+      nextId = `IG${String(maxNum + 1).padStart(4, '0')}`;
+    }
+
     setFormData({
-      itemCode: `IG${String(groups.length + 1).padStart(4, '0')}`,
+      itemCode: nextId,
       itemName: '',
       itemType: 'Gold',
       itemGroup: 'Ornament',
@@ -88,7 +97,7 @@ const ItemGroupMaster = () => {
       fetchGroups();
     } catch (err) {
       console.error(err);
-      alert('Failed to save group');
+      toast.error(err.response?.data?.message || 'Failed to save item group');
     } finally {
       setLoading(false);
     }
@@ -103,7 +112,7 @@ const ItemGroupMaster = () => {
       fetchGroups();
     } catch (err) {
       console.error(err);
-      alert('Failed to delete group');
+      toast.error(err.response?.data?.message || 'Failed to delete item group');
     } finally {
       setLoading(false);
     }

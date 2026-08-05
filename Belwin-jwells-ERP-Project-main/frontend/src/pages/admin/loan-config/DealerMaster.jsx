@@ -54,8 +54,17 @@ const DealerMaster = () => {
 
   const handleOpenAdd = () => {
     setEditingDealer(null);
+    let nextId = 'DLR0001';
+    if (dealers.length > 0) {
+      const maxNum = Math.max(...dealers.map(d => {
+        const match = d.dealerCode?.match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+      }));
+      nextId = `DLR${String(maxNum + 1).padStart(4, '0')}`;
+    }
+
     setFormData({
-      dealerCode: `DLR${String(dealers.length + 1).padStart(4, '0')}`,
+      dealerCode: nextId,
       dealerName: '',
       phone: '',
       showroom: '',
@@ -98,7 +107,7 @@ const DealerMaster = () => {
       fetchDealers();
     } catch (err) {
       console.error(err);
-      alert('Failed to save dealer');
+      toast.error(err.response?.data?.message || 'Failed to save dealer');
     } finally {
       setLoading(false);
     }
@@ -113,7 +122,7 @@ const DealerMaster = () => {
       fetchDealers();
     } catch (err) {
       console.error(err);
-      alert('Failed to delete dealer');
+      toast.error(err.response?.data?.message || 'Failed to delete dealer');
     } finally {
       setLoading(false);
     }
