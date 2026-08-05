@@ -207,15 +207,15 @@ const EditLoan = () => {
   const renderLoanForm = () => {
     switch (loanType) {
       case 'gold_loan':
-        return <GoldLoanForm customerData={customerData} schemeData={schemeData} />;
+        return <GoldLoanForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       case 'personal_loan':
-        return <PersonalLoanForm customerData={customerData} schemeData={schemeData} />;
+        return <PersonalLoanForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       case 'chit_fund':
-        return <ChitFundForm customerData={customerData} schemeData={schemeData} />;
+        return <ChitFundForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       case 'micro_finance':
-        return <MicroFinanceForm customerData={customerData} schemeData={schemeData} />;
+        return <MicroFinanceForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       case 'vehicle_loan':
-        return <VehicleLoanForm customerData={customerData} schemeData={schemeData} />;
+        return <VehicleLoanForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       default:
         return null;
     }

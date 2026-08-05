@@ -3,7 +3,7 @@ import { Save, RefreshCcw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 
-const GoldLoanForm = ({ customerData, schemeData }) => {
+const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
   const [loanInfo, setLoanInfo] = useState({
     loanNumber: 'GL-' + Math.floor(100000 + Math.random() * 900000), // Mock Auto Generate
     loanDate: new Date().toISOString().split('T')[0],
@@ -42,6 +42,34 @@ const GoldLoanForm = ({ customerData, schemeData }) => {
       totalGoldValue: parseFloat(totalValue.toFixed(2))
     }));
   }, [goldDetails.grossWeight, goldDetails.stoneWeight, goldDetails.goldRatePerGram]);
+
+  // Populate form if selectedLoan is passed (for Edit Loan)
+  useEffect(() => {
+    if (selectedLoan) {
+      setLoanInfo(prev => ({
+        ...prev,
+        loanNumber: selectedLoan.loanId || prev.loanNumber,
+        loanDate: selectedLoan.loanDate ? new Date(selectedLoan.loanDate).toISOString().split('T')[0] : prev.loanDate,
+        loanOfficer: selectedLoan.employeeName || prev.loanOfficer,
+      }));
+
+      if (selectedLoan.articles && selectedLoan.articles.length > 0) {
+        const art = selectedLoan.articles[0];
+        setGoldDetails(prev => ({
+          ...prev,
+          ornamentType: art.category || 'Ring',
+          ornamentName: art.details || '',
+          numberOfItems: art.qty || 1,
+          grossWeight: art.totWt || '',
+          stoneWeight: art.stoneWt || '',
+          netWeight: art.nettWt || 0,
+          purity: art.purity || '22K',
+          goldRatePerGram: art.gramRate || '',
+          totalGoldValue: art.total || 0
+        }));
+      }
+    }
+  }, [selectedLoan]);
 
   const handleLoanInfoChange = (field, value) => {
     setLoanInfo(prev => ({ ...prev, [field]: value }));
