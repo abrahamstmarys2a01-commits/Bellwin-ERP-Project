@@ -20,11 +20,6 @@ dealerSchema.statics.getNextId = async function () {
   return `DLR${String(counter.seq).padStart(4, '0')}`;
 };
 
-dealerSchema.pre('save', async function (next) {
-  if (this.isNew && !this.dealerCode) {
-    this.dealerCode = await this.constructor.getNextId();
-  }
-  next();
-});
+dealerSchema.pre('save', async function () {});
 
 module.exports = mongoose.model('Dealer', dealerSchema);

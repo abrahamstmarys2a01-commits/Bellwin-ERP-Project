@@ -54,11 +54,6 @@ schemeAllocationSchema.statics.getNextId = async function () {
     return `SA-${String(counter.seq).padStart(4, '0')}`;
 };
 
-schemeAllocationSchema.pre('save', async function (next) {
-    if (this.isNew && !this.allocationNo) {
-        this.allocationNo = await this.constructor.getNextId();
-    }
-    next();
-});
+schemeAllocationSchema.pre('save', async function () {});
 
 module.exports = mongoose.model('SchemeAllocation', schemeAllocationSchema);

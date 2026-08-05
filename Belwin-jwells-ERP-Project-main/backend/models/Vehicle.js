@@ -20,11 +20,6 @@ vehicleSchema.statics.getNextId = async function () {
   return `VEH${String(counter.seq).padStart(4, '0')}`;
 };
 
-vehicleSchema.pre('save', async function (next) {
-  if (this.isNew && !this.vehicleId) {
-    this.vehicleId = await this.constructor.getNextId();
-  }
-  next();
-});
+vehicleSchema.pre('save', async function () {});
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

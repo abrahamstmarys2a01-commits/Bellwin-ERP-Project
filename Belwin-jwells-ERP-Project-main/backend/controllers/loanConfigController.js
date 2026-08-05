@@ -32,6 +32,7 @@ const createCRUD = (Model) => ({
       const savedDoc = await doc.save();
       res.status(201).json({ success: true, data: savedDoc });
     } catch (error) {
+      console.error('[loanConfigController create error]:', error);
       res.status(400).json({ success: false, message: error.message });
     }
   },

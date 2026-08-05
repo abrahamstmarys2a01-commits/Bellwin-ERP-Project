@@ -80,11 +80,6 @@ employeeSchema.statics.getNextId = async function () {
     return `EMP${String(counter.seq).padStart(4, '0')}`;
 };
 
-employeeSchema.pre('save', async function (next) {
-    if (this.isNew && !this.employeeId) {
-        this.employeeId = await this.constructor.getNextId();
-    }
-    next();
-});
+employeeSchema.pre('save', async function () {});
 
 module.exports = mongoose.model('Employee', employeeSchema);
