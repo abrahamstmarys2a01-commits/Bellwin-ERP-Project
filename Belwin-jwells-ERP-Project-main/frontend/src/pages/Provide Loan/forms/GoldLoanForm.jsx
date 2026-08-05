@@ -143,14 +143,7 @@ const GoldLoanForm = ({ customerData, schemeData }) => {
             <label className={lbl}>Loan Officer</label>
             <input type="text" className={inp} value={loanInfo.loanOfficer} onChange={(e) => handleLoanInfoChange('loanOfficer', e.target.value)} placeholder="Officer Name" />
           </div>
-          <div>
-            <label className={lbl}>Status</label>
-            <select className={inp} value={loanInfo.status} onChange={(e) => handleLoanInfoChange('status', e.target.value)}>
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
+
         </div>
       </div>
 
