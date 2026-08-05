@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, Search, Boxes, ArrowLeft } from 'lucide-react';
 import api from '../../../services/api';
+import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
 import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';

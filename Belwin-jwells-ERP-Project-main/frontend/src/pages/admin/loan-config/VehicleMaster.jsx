@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, Search, Car, ArrowLeft } from 'lucide-react';
 import api from '../../../services/api';
+import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
 import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
@@ -108,7 +109,7 @@ const VehicleMaster = () => {
       fetchVehicles();
     } catch (err) {
       console.error(err);
-      alert('Failed to save vehicle');
+      toast.error(err.response?.data?.message || 'Failed to save vehicle');
     } finally {
       setLoading(false);
     }
@@ -123,7 +124,7 @@ const VehicleMaster = () => {
       fetchVehicles();
     } catch (err) {
       console.error(err);
-      alert('Failed to delete vehicle');
+      toast.error(err.response?.data?.message || 'Failed to delete vehicle');
     } finally {
       setLoading(false);
     }
