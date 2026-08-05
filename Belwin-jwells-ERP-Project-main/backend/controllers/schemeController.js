@@ -57,7 +57,7 @@ exports.createScheme = async (req, res, next) => {
         res.status(201).json({ message: "Scheme created successfully", scheme: newScheme });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: error.message || "Error creating scheme" });
+        res.status(500).json({ message: error.message || "Error creating scheme", stack: error.stack });
     }
 };
 
@@ -72,7 +72,7 @@ exports.getSchemes = async (req, res, next) => {
         const schemes = await LoanSchemeConfig.find(query).sort({ createdAt: -1 });
         res.status(200).json(schemes);
     } catch (error) {
-        next(new ApiError(500, "Error fetching schemes"));
+        next(new ApiError(500, "Error fetching schemes: " + error.message));
     }
 };
 

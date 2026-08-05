@@ -25,11 +25,10 @@ loanSchemeConfigSchema.statics.getNextId = async function () {
   return `LS${String(counter.seq).padStart(4, '0')}`;
 };
 
-loanSchemeConfigSchema.pre('save', async function (next) {
+loanSchemeConfigSchema.pre('save', async function () {
   if (this.isNew && !this.schemeId) {
     this.schemeId = await this.constructor.getNextId();
   }
-  next();
 });
 
 module.exports = mongoose.model('LoanSchemeConfig', loanSchemeConfigSchema);

@@ -14,7 +14,7 @@ const {
     promoteEmployee
 } = require('../controllers/employeeController');
 const { protect, admin, authorize } = require('../middleware/authMiddleware');
-const upload = require('../middleware/uploadMiddleware');
+const { memoryUpload } = require('../config/cloudinary');
 
 router.get('/stats', protect, getEmployeeStats);
 router.get('/next-id', protect, getNextEmployeeId);
@@ -24,11 +24,11 @@ router.patch('/:id/promote', protect, authorize('admin', 'hr'), promoteEmployee)
 
 router.route('/')
     .get(protect, getEmployees)
-    .post(protect, authorize('admin', 'hr'), upload.single('document'), createEmployee);
+    .post(protect, authorize('admin', 'hr'), memoryUpload.single('document'), createEmployee);
 
 router.route('/:id')
     .get(protect, getEmployeeById)
-    .put(protect, authorize('admin', 'hr'), upload.single('document'), updateEmployee)
+    .put(protect, authorize('admin', 'hr'), memoryUpload.single('document'), updateEmployee)
     .delete(protect, authorize('admin', 'hr'), deleteEmployee);
 
 module.exports = router;

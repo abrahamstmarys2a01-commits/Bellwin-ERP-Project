@@ -1,6 +1,21 @@
 const ApiError = require('../utils/ApiError');
 const Employee = require('../models/Employee');
 const Counter = require('../models/Counter');
+const { cloudinary } = require('../config/cloudinary');
+const streamifier = require('streamifier');
+
+const uploadFromBuffer = (buffer, folder, public_id) => {
+    return new Promise((resolve, reject) => {
+        const cld_upload_stream = cloudinary.uploader.upload_stream(
+            { folder, public_id },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }
+        );
+        streamifier.createReadStream(buffer).pipe(cld_upload_stream);
+    });
+};
 
 const initializeEmployeeIds = async () => {
     try {
@@ -129,10 +144,20 @@ const createEmployee = async (req, res, next) => {
         );
         const nextId = `BEL-${counter.seq.toString().padStart(4, '0')}`;
 
+        let documentUrl = '';
+        if (req.file) {
+            try {
+                const result = await uploadFromBuffer(req.file.buffer, 'employees');
+                documentUrl = result.secure_url;
+            } catch (err) {
+                return next(new ApiError(500, 'Error uploading file to Cloudinary'));
+            }
+        }
+
         const employee = new Employee({
             ...req.body,
             employeeId: nextId,
-            documentUrl: req.file ? `/uploads/${req.file.filename}` : ''
+            documentUrl
         });
         const createdEmployee = await employee.save();
 
@@ -171,7 +196,12 @@ const updateEmployee = async (req, res, next) => {
         if (employee) {
             Object.assign(employee, req.body);
             if (req.file) {
-                employee.documentUrl = `/uploads/${req.file.filename}`;
+                try {
+                    const result = await uploadFromBuffer(req.file.buffer, 'employees');
+                    employee.documentUrl = result.secure_url;
+                } catch (err) {
+                    return next(new ApiError(500, 'Error uploading file to Cloudinary'));
+                }
             }
             const updatedEmployee = await employee.save();
 
