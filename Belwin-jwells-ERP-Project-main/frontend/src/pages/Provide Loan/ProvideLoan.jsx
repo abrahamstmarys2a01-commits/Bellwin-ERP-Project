@@ -28,6 +28,20 @@ const ProvideLoan = () => {
       if (response.data && response.data.data && response.data.data.length > 0) {
         const customer = response.data.data[0]; // Get the first matching customer
         
+        if (customer.status !== 'Approved' && customer.approvalStatus !== 'Approved') {
+          toast.error("Admin not approved");
+          setCustomerData({
+            name: '',
+            mobile: '',
+            fatherName: '',
+            address: '',
+            customerId: '',
+            status: '',
+            approvalStatus: ''
+          });
+          return;
+        }
+        
         // Construct the full address
         const fullAddress = [
           customer.doorStreet,
