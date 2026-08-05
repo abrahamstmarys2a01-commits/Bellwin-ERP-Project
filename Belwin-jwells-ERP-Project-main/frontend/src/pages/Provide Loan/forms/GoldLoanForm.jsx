@@ -73,7 +73,17 @@ const GoldLoanForm = ({ customerData, schemeData }) => {
         status: loanInfo.status,
         loanAmount: goldDetails.totalGoldValue,
 
-        articles: [goldDetails],
+        articles: [{
+          category: goldDetails.ornamentType,
+          details: goldDetails.ornamentName,
+          qty: goldDetails.numberOfItems,
+          totWt: goldDetails.grossWeight,
+          stoneWt: goldDetails.stoneWeight,
+          nettWt: goldDetails.netWeight,
+          purity: goldDetails.purity,
+          gramRate: goldDetails.goldRatePerGram,
+          total: goldDetails.totalGoldValue
+        }],
         totalWt: goldDetails.grossWeight,
         
         schemeId: schemeData.schemeId,
