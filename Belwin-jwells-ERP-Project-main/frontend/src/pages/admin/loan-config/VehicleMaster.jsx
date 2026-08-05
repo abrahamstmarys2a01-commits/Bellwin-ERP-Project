@@ -54,8 +54,17 @@ const VehicleMaster = () => {
 
   const handleOpenAdd = () => {
     setEditingVehicle(null);
+    let nextId = 'VEH0001';
+    if (vehicles.length > 0) {
+      const maxNum = Math.max(...vehicles.map(v => {
+        const match = v.vehicleId?.match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+      }));
+      nextId = `VEH${String(maxNum + 1).padStart(4, '0')}`;
+    }
+
     setFormData({
-      vehicleId: `VEH${String(vehicles.length + 1).padStart(4, '0')}`,
+      vehicleId: nextId,
       category: 'Two-Wheeler',
       company: '',
       vehicleName: '',
@@ -84,7 +93,9 @@ const VehicleMaster = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!formData.vehicleName || !formData.company) return alert('Name and Company are required');
+    if (!formData.company || !formData.vehicleName || !formData.model || !formData.color) {
+      return toast.error('Company, Vehicle Name, Model, and Color are all required fields!');
+    }
 
     setLoading(true);
     try {
