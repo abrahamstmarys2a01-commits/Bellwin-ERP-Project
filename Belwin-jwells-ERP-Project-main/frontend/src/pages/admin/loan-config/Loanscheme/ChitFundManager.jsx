@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import api from '../../../../../services/api';
+import api from '../../../../services/api';
 
 const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
   const [schemes, setSchemes] = useState([]);
@@ -21,7 +21,7 @@ const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
     try {
       const response = await api.get('/chitty-schemes');
       if (response.status === 200) {
-        setSchemes(response.data.data || response.data); // handle potential wrapper
+        setSchemes(response.data.schemes || response.data.data || response.data); 
       }
     } catch (error) {
       console.error('Error fetching chitty schemes:', error);
