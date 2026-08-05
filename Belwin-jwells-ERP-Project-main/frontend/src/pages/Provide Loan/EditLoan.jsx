@@ -41,7 +41,57 @@ const EditLoan = () => {
     if (searchQuery.trim() === '') return;
     
     try {
-      // 1. Fetch Customer
+      // 1. Try fetching by Loan ID first
+      try {
+        const loanRes = await api.get(`/loans/${searchQuery}`);
+        if (loanRes.data && loanRes.data._id) {
+          const loan = loanRes.data;
+          const customer = loan.customerObjectId || {};
+          
+          const fullAddress = [
+            customer.doorStreet, customer.area, customer.city, 
+            customer.district, customer.state, customer.postalCode
+          ].filter(Boolean).join(', ');
+
+          setCustomerData({
+            name: customer.customerName || loan.name || '',
+            mobile: customer.mobileNumber || loan.mobileNo || '',
+            fatherName: customer.guardianName || loan.fatherHusbandName || '',
+            address: fullAddress || loan.address || '',
+            customerId: customer._id || customer.customerId || loan.customerId || ''
+          });
+
+          toast.success("Loan found!");
+          setHasSearched(true);
+          
+          // Try to fetch all loans for this customer so the dropdown populates
+          const custIdToUse = customer.customerId || customer._id || loan.customerId;
+          if (custIdToUse) {
+            const allLoansRes = await api.get(`/loans/customer/${custIdToUse}`);
+            if (allLoansRes.data && allLoansRes.data.length > 0) {
+              setCustomerLoans(allLoansRes.data);
+            } else {
+              setCustomerLoans([loan]);
+            }
+          } else {
+            setCustomerLoans([loan]);
+          }
+
+          setSelectedLoan(loan);
+          
+          const sName = (loan.schemeName || '').toLowerCase();
+          if (sName.includes('gold')) setLoanType('gold_loan');
+          else if (sName.includes('vehicle')) setLoanType('vehicle_loan');
+          else if (sName.includes('personal')) setLoanType('personal_loan');
+          else if (sName.includes('chit')) setLoanType('chit_fund');
+          else if (sName.includes('micro')) setLoanType('micro_finance');
+          return;
+        }
+      } catch (err) {
+        // Not a loan ID or not found, fallback to customer search
+      }
+
+      // 2. Fetch Customer
       const response = await api.get(`/customers/search?search=${searchQuery}`);
       
       if (response.data && response.data.data && response.data.data.length > 0) {
@@ -63,14 +113,13 @@ const EditLoan = () => {
         toast.success("Customer found! Fetching their loans...");
         setHasSearched(true);
 
-        // 2. Fetch Loans for this customer
+        // 3. Fetch Loans for this customer
         const custIdToUse = customer.customerId || customer._id;
         try {
           const loansRes = await api.get(`/loans/customer/${custIdToUse}`);
           if (loansRes.data && loansRes.data.length > 0) {
             setCustomerLoans(loansRes.data);
             setSelectedLoan(loansRes.data[0]);
-            // Attempt to infer loan type from scheme name or defaults
             const sName = (loansRes.data[0].schemeName || '').toLowerCase();
             if (sName.includes('gold')) setLoanType('gold_loan');
             else if (sName.includes('vehicle')) setLoanType('vehicle_loan');
@@ -88,12 +137,12 @@ const EditLoan = () => {
         }
 
       } else {
-        toast.error("Customer not found.");
+        toast.error("Customer or Loan not found.");
         setHasSearched(false);
       }
     } catch (error) {
-      console.error("Error fetching customer:", error);
-      toast.error("Error fetching customer details.");
+      console.error("Error fetching details:", error);
+      toast.error("Error fetching details.");
     }
   };
 
