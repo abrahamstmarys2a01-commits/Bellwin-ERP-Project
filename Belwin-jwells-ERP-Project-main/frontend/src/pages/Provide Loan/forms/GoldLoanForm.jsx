@@ -51,6 +51,11 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
         loanNumber: selectedLoan.loanId || prev.loanNumber,
         loanDate: selectedLoan.loanDate ? new Date(selectedLoan.loanDate).toISOString().split('T')[0] : prev.loanDate,
         loanOfficer: selectedLoan.employeeName || prev.loanOfficer,
+        branch: selectedLoan.branch || prev.branch,
+        closeDate: selectedLoan.closeDate ? new Date(selectedLoan.closeDate).toISOString().split('T')[0] : prev.closeDate,
+        loanScheme: selectedLoan.schemeName || schemeData?.schemeName || prev.loanScheme,
+        status: selectedLoan.status || prev.status,
+        loanType: selectedLoan.loanType || prev.loanType
       }));
 
       if (selectedLoan.articles && selectedLoan.articles.length > 0) {
@@ -68,8 +73,10 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
           totalGoldValue: art.total || 0
         }));
       }
+    } else if (schemeData) {
+      setLoanInfo(prev => ({ ...prev, loanScheme: schemeData.schemeName || prev.loanScheme }));
     }
-  }, [selectedLoan]);
+  }, [selectedLoan, schemeData]);
 
   const handleLoanInfoChange = (field, value) => {
     setLoanInfo(prev => ({ ...prev, [field]: value }));
@@ -164,22 +171,22 @@ const GoldLoanForm = ({ customerData, schemeData, selectedLoan }) => {
           </div>
           <div>
             <label className={lbl}>Branch</label>
-            <input type="text" className={inp} value={loanInfo.branch} onChange={(e) => handleLoanInfoChange('branch', e.target.value)} placeholder="e.g. Main Branch" />
+            <input type="text" className={inp} value={loanInfo.branch || ''} onChange={(e) => handleLoanInfoChange('branch', e.target.value)} placeholder="e.g. Main Branch" />
           </div>
           <div>
             <label className={lbl}>Loan Scheme</label>
-            <input type="text" className={`${inp} bg-gray-50`} value={schemeData?.schemeName || 'Select scheme above'} readOnly />
+            <input type="text" className={inp} value={loanInfo.loanScheme || ''} onChange={(e) => handleLoanInfoChange('loanScheme', e.target.value)} placeholder="Enter Loan Scheme" />
           </div>
           <div>
             <label className={lbl}>Loan Type</label>
-            <select className={inp} value={loanInfo.loanType} onChange={(e) => handleLoanInfoChange('loanType', e.target.value)}>
+            <select className={inp} value={loanInfo.loanType || 'EMI'} onChange={(e) => handleLoanInfoChange('loanType', e.target.value)}>
               <option value="EMI">EMI</option>
               <option value="Non EMI">Non EMI</option>
             </select>
           </div>
           <div>
             <label className={lbl}>Loan Officer</label>
-            <input type="text" className={inp} value={loanInfo.loanOfficer} onChange={(e) => handleLoanInfoChange('loanOfficer', e.target.value)} placeholder="Officer Name" />
+            <input type="text" className={inp} value={loanInfo.loanOfficer || ''} onChange={(e) => handleLoanInfoChange('loanOfficer', e.target.value)} placeholder="Officer Name" />
           </div>
 
         </div>
