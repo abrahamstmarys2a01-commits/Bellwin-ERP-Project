@@ -13,8 +13,8 @@ const detectSearchType = (query) => {
     if (/^\d{10}$/.test(trimmedQuery)) {
         return { searchType: 'phone', value: trimmedQuery };
     }
-    // Otherwise treat as case-insensitive Loan ID
-    return { searchType: 'loanId', value: trimmedQuery.toUpperCase() };
+    // Otherwise treat as a general text query (Loan ID or Name)
+    return { searchType: 'text', value: trimmedQuery };
 };
 
 /**
@@ -49,10 +49,9 @@ exports.searchLoans = async (searchValue) => {
                 scheme: loan.scheme || null
             }));
         }
-    } else if (searchType === 'loanId') {
-        // Find specific loan by ID
-        const loan = await Loan.findOne({ loanId: value })
-            .lean();
+    } else if (searchType === 'text') {
+        // First try specific loan by ID
+        const loan = await Loan.findOne({ loanId: value.toUpperCase() }).lean();
         
         if (loan) {
             // Find associated customer
@@ -66,6 +65,26 @@ exports.searchLoans = async (searchValue) => {
                 branch: loan.branch || null,
                 scheme: loan.scheme || null
             }];
+        } else {
+            // Try by customer name
+            const customers = await Customer.find({ customerName: { $regex: new RegExp(value, 'i') } }).lean();
+            if (customers.length > 0) {
+                const customerIds = customers.map(c => c.customerId);
+                const customerObjectIds = customers.map(c => c._id);
+                const customerLoans = await Loan.find({ 
+                    $or: [{ customerId: { $in: customerIds } }, { customerObjectId: { $in: customerObjectIds } }] 
+                }).sort({ createdAt: -1 }).lean();
+                
+                loans = customerLoans.map(loan => {
+                    const customer = customers.find(c => c.customerId === loan.customerId || c._id.toString() === loan.customerObjectId?.toString());
+                    return {
+                        loan,
+                        customer: customer || null,
+                        branch: loan.branch || null,
+                        scheme: loan.scheme || null
+                    };
+                });
+            }
         }
     }
 

@@ -68,6 +68,7 @@ import BorrowerBlock from './pages/admin/borrower/BorrowerBlock';
 import CustomerLedger from './pages/admin/borrower/CustomerLedger';
 
 // Accounts Module
+import Denomination from './pages/admin/Denomination';
 import LedgerMaster from './pages/admin/accounts/LedgerMaster';
 import AccountsGroupMaster from './pages/admin/accounts/AccountsGroupMaster';
 import LedgerDetails from './pages/admin/accounts/LedgerDetails';
@@ -94,6 +95,7 @@ import LoanDueReport from './pages/admin/reports/LoanDueReport';
 import LoanOverDueReport from './pages/admin/reports/LoanOverDueReport';
 import LoanOutstandingReport from './pages/admin/reports/LoanOutstandingReport';
 import LoanEmiCollectionReport from './pages/admin/reports/LoanEmiCollectionReport';
+import GoldLoanAuctionReport from './pages/admin/reports/GoldLoanAuctionReport';
 // Employee Pages
 import LoginForm from './components/LoginForm';
 
@@ -111,7 +113,7 @@ function App() {
         {/* Base redirects */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/admin/login" element={<Navigate to="/login" replace />} />
-        
+
         {/* Unified Login (no layout) */}
         <Route path="/login" element={<LoginForm title="Access Your Account" />} />
 
@@ -135,7 +137,7 @@ function App() {
           <Route path="/admin/master/ranking" element={<RankingMaster />} />
           <Route path="/admin/master/code-sequence" element={<CodeSequence />} />
           <Route path="/admin/master/*" element={<ComingSoon />} />
-          
+
           {/* Provide Loan Routes */}
           <Route path="/admin/provide-loan" element={<ProvideLoan />} />
           <Route path="/admin/provide-loan/edit" element={<EditLoan />} />
@@ -145,17 +147,17 @@ function App() {
 
           {/* Borrower Management Routes */}
           <Route path="/admin/borrower/new" element={<NewBorrower />} />
-          
+
           <Route path="/admin/loan-config/calculator" element={<LoanCalculator />} />
           <Route path="/admin/loan-config/scheme" element={<LoanScheme />} />
-          
+
           {/* Standalone Loan Schemes Routes */}
           <Route path="/admin/loan-schemes/chit-fund" element={<LoanSchemeStandalone title="Chit Fund Loan" icon={Landmark} ActiveComponent={ChitFundManager} />} />
           <Route path="/admin/loan-schemes/gold" element={<LoanSchemeStandalone title="Gold Loan" icon={Coins} ActiveComponent={GoldLoanManager} />} />
           <Route path="/admin/loan-schemes/personal" element={<LoanSchemeStandalone title="Personal Loan" icon={Wallet} ActiveComponent={PersonalLoanManager} />} />
           <Route path="/admin/loan-schemes/mfi" element={<LoanSchemeStandalone title="Micro Finance Loan" icon={Briefcase} ActiveComponent={MicroFinanceManager} />} />
           <Route path="/admin/loan-schemes/two-wheeler" element={<LoanSchemeStandalone title="Two Wheeler Loan" icon={Car} ActiveComponent={TwoWheelerLoanManager} />} />
-          
+
           <Route path="/admin/loan-config/vehicle" element={<VehicleMaster />} />
           <Route path="/admin/loan-config/dealer" element={<DealerMaster />} />
           <Route path="/admin/loan-config/item-group" element={<ItemGroupMaster />} />
@@ -171,7 +173,7 @@ function App() {
           <Route path="/admin/borrower/kyc-approval" element={<KYCApproval />} />
           <Route path="/admin/borrower/cibil-check" element={<CIBILCheck />} />
           <Route path="/admin/borrower/synopsis" element={<BorrowerSynopsis />} />
-          
+
           {/* Repledge */}
           <Route path="/admin/repledge/entry" element={<RepledgeEntry />} />
           <Route path="/admin/repledge/bank-master" element={<RepledgeBankMaster />} />
@@ -182,8 +184,9 @@ function App() {
           <Route path="/admin/borrower/block" element={<BorrowerBlock />} />
           <Route path="/admin/borrower/ledger" element={<CustomerLedger />} />
           <Route path="/admin/borrower/customer-approval" element={<AdminCustomerApprovalPending />} />
-          
+
           {/* Accounts Module */}
+          <Route path="/admin/denomination" element={<Denomination />} />
           <Route path="/admin/accounts/ledger-master" element={<LedgerMaster />} />
           <Route path="/admin/accounts/ledger-master/:id" element={<LedgerDetails />} />
           <Route path="/admin/accounts/group-master" element={<AccountsGroupMaster />} />
@@ -198,7 +201,7 @@ function App() {
           <Route path="/admin/accounts/profit-loss" element={<ProfitLoss />} />
           <Route path="/admin/accounts/trial-balance" element={<TrialBalance />} />
           <Route path="/admin/accounts/balance-sheet" element={<BalanceSheet />} />
-          
+
           {/* Reports Module */}
           <Route path="/admin/reports/loan-account-ledger" element={<LoanAccountLedger />} />
           <Route path="/admin/reports/loan-account-ledger-non-emi" element={<LoanAccountLedgerNonEMI />} />
@@ -211,9 +214,10 @@ function App() {
           <Route path="/admin/reports/loan-over-due-report" element={<LoanOverDueReport />} />
           <Route path="/admin/reports/loan-outstanding-report" element={<LoanOutstandingReport />} />
           <Route path="/admin/reports/loan-emi-collection-report" element={<LoanEmiCollectionReport />} />
+          <Route path="/admin/reports/gold-loan-auction" element={<GoldLoanAuctionReport />} />
           <Route path="/admin/approval/pending" element={<AdminCustomerApprovalPending />} />
           <Route path="/admin/repledge/*" element={<ComingSoon />} />
-          
+
           <Route path="/admin/employees/downline" element={<ComingSoon />} />
           <Route path="/admin/employees/block" element={<ComingSoon />} />
           <Route path="/admin/employees/icard" element={<ComingSoon />} />

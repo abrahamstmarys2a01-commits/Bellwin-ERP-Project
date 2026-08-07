@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Save, RefreshCcw, XCircle, ChevronDown } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
@@ -85,6 +85,7 @@ const ProvideLoan = () => {
   };
 
   const [schemeSearchQuery, setSchemeSearchQuery] = useState('');
+  const [schemesList, setSchemesList] = useState([]);
   const [schemeData, setSchemeData] = useState({
     schemeId: '',
     schemeName: '',
@@ -98,48 +99,59 @@ const ProvideLoan = () => {
     penaltyPercent: ''
   });
 
-  const handleSchemeSearch = async () => {
-    if (schemeSearchQuery.trim() === '') return;
-    
-    try {
-      const response = await api.get(`/schemes?schemeId=${schemeSearchQuery}`);
-      if (response.data && response.data.length > 0) {
-        const scheme = response.data[0];
-        setSchemeData({
-          schemeId: scheme.schemeId || '',
-          schemeName: scheme.schemeName || '',
-          interestPercent: scheme.interestRate ? `${scheme.interestRate}%` : '',
-          amountRs: scheme.amountLimit || '',
-          gramRate: scheme.gramRate || '',
-          minimumGram: scheme.minimumGram || '',
-          maturePeriodMonths: scheme.maturePeriodMonths || '',
-          interestRepaymentMonths: scheme.interestRepaymentMonths || '',
-          documentCharges: scheme.documentCharges || '',
-          penaltyPercent: scheme.penalty ? `${scheme.penalty}%` : ''
-        });
-        toast.success("Scheme details fetched!");
-      } else {
-        toast.error("Scheme not found.");
-        setSchemeData({
-          schemeId: '',
-          schemeName: '',
-          interestPercent: '',
-          amountRs: '',
-          gramRate: '',
-          minimumGram: '',
-          maturePeriodMonths: '',
-          interestRepaymentMonths: '',
-          documentCharges: '',
-          penaltyPercent: ''
-        });
+  useEffect(() => {
+    const fetchSchemes = async () => {
+      try {
+        const response = await api.get('/schemes');
+        if (response.data && response.data.length > 0) {
+          setSchemesList(response.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch schemes list", err);
       }
-    } catch (error) {
-      console.error("Error fetching scheme:", error);
-      toast.error("Error fetching scheme details.");
+    };
+    fetchSchemes();
+  }, []);
+
+  const handleSchemeSelect = (e) => {
+    const selectedSchemeId = e.target.value;
+    setSchemeSearchQuery(selectedSchemeId);
+    
+    if (!selectedSchemeId) {
+      setSchemeData({
+        schemeId: '',
+        schemeName: '',
+        interestPercent: '',
+        amountRs: '',
+        gramRate: '',
+        minimumGram: '',
+        maturePeriodMonths: '',
+        interestRepaymentMonths: '',
+        documentCharges: '',
+        penaltyPercent: ''
+      });
+      return;
+    }
+
+    const scheme = schemesList.find(s => s._id === selectedSchemeId || s.schemeId === selectedSchemeId);
+    if (scheme) {
+      setSchemeData({
+        schemeId: scheme.schemeId || '',
+        schemeName: scheme.schemeName || '',
+        interestPercent: scheme.interestRate ? `${scheme.interestRate}%` : '',
+        amountRs: scheme.amountLimit || '',
+        gramRate: scheme.gramRate || '',
+        minimumGram: scheme.minimumGram || '',
+        maturePeriodMonths: scheme.maturePeriodMonths || '',
+        interestRepaymentMonths: scheme.interestRepaymentMonths || '',
+        documentCharges: scheme.documentCharges || '',
+        penaltyPercent: scheme.penalty ? `${scheme.penalty}%` : ''
+      });
+      toast.success("Scheme details loaded!");
     }
   };
 
-  const inp = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-erp-green bg-white";
+  const inp = "w-full px-3 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-erp-green bg-white";
   const lbl = "block text-sm font-medium text-gray-700 mb-1";
 
   // Map to dynamically render the correct form
@@ -175,7 +187,7 @@ const ProvideLoan = () => {
             <select 
               value={loanType}
               onChange={(e) => setLoanType(e.target.value)}
-              className="appearance-none bg-white border-2 border-gray-200 text-gray-800 text-sm font-bold rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-erp-green focus:border-transparent cursor-pointer shadow-sm"
+              className="appearance-none bg-white border-2 border-gray-200 text-gray-800 text-sm font-bold rounded-none px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-erp-green focus:border-transparent cursor-pointer shadow-sm"
             >
               <option value="gold_loan">Gold Loan</option>
               <option value="personal_loan">Personal Loan</option>
@@ -190,7 +202,7 @@ const ProvideLoan = () => {
 
       <div className="flex-1 overflow-y-auto">
         {/* Customer Details Section (Common) */}
-        <div className="bg-white border border-gray-100 rounded-lg shadow-sm flex flex-col mb-8 p-6">
+        <div className="bg-white border border-gray-100 rounded-none shadow-sm flex flex-col mb-8 p-6">
           <div className="flex items-center justify-between mb-4 pb-2 border-b">
             <h3 className="text-lg font-bold text-gray-800">Customer Details</h3>
             
@@ -199,14 +211,14 @@ const ProvideLoan = () => {
               <input 
                 type="text" 
                 placeholder="Search by ID, Name or Phone Number..." 
-                className="search-input w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-erp-green"
+                className="search-input w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-none focus:outline-none focus:border-erp-green focus:ring-1 focus:ring-erp-green"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               />
               <button 
                 onClick={handleSearch}
-                className="px-4 py-1.5 bg-black text-white text-sm font-bold rounded-md hover:bg-gray-800 transition-colors"
+                className="px-4 py-1.5 bg-black text-white text-sm font-bold rounded-none hover:bg-gray-800 transition-colors"
               >
                 Search
               </button>
@@ -234,67 +246,27 @@ const ProvideLoan = () => {
         </div>
 
         {/* Scheme Details Section */}
-        <div className="bg-white border border-gray-100 rounded-lg shadow-sm flex flex-col mb-8 p-6">
+        <div className="bg-white border border-gray-100 rounded-none shadow-sm flex flex-col mb-8 p-6">
           <div className="flex items-center justify-between mb-4 pb-2 border-b">
             <h3 className="text-lg font-bold text-gray-800">Scheme Details</h3>
             
-            {/* Scheme Search Bar */}
+            {/* Scheme Selection Dropdown */}
             <div className="flex items-center gap-2">
-              <input 
-                type="text" 
-                placeholder="Enter Scheme ID..." 
-                className="w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-erp-green"
+              <select 
+                className="w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-erp-green bg-white cursor-pointer"
                 value={schemeSearchQuery}
-                onChange={(e) => setSchemeSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSchemeSearch()}
-              />
-              <button 
-                onClick={handleSchemeSearch}
-                className="px-4 py-1.5 bg-black text-white text-sm font-bold rounded-md hover:bg-gray-800 transition-colors"
+                onChange={handleSchemeSelect}
               >
-                Search Scheme
-              </button>
+                <option value="">Select a Scheme</option>
+                {schemesList.map((scheme, idx) => (
+                  <option key={scheme._id || idx} value={scheme.schemeId || scheme._id}>
+                    {scheme.schemeName ? `${scheme.schemeName} (${scheme.schemeId || scheme._id})` : scheme.schemeId || scheme._id}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div>
-              <label className={lbl}>Scheme Name</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.schemeName} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Interest %</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.interestPercent} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Amount Rs</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.amountRs} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Gram Rate</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.gramRate} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Minimum Gram</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.minimumGram} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Mature Period (Months)</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.maturePeriodMonths} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Interest Repayment (Months)</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.interestRepaymentMonths} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Document Charges</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.documentCharges} readOnly />
-            </div>
-            <div>
-              <label className={lbl}>Penalty %</label>
-              <input type="text" className={`${inp} bg-gray-50`} value={schemeData.penaltyPercent} readOnly />
-            </div>
-          </div>
         </div>
 
         {/* Dynamic Specific Loan Form */}

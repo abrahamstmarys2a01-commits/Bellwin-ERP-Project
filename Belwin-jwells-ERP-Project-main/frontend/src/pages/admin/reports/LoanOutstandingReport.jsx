@@ -144,17 +144,17 @@ const LoanOutstandingReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="p-6 border-l-4 border-l-blue-500 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Total Outstanding Exposure</h3>
-          <p className="text-4xl font-bold text-gray-800 tracking-tight">₹{totalOutstanding.toLocaleString('en-IN')}</p>
+        <Card className="p-6 border-l-4 border-l-blue-500 bg-blue-50 shadow-md">
+          <h3 className="text-sm font-bold text-blue-800 mb-1 drop-shadow-sm">Total Outstanding Exposure</h3>
+          <p className="text-4xl font-extrabold text-blue-900 drop-shadow-md tracking-tight">₹{totalOutstanding.toLocaleString('en-IN')}</p>
         </Card>
-        <Card className="p-6 border-l-4 border-l-indigo-500 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Active Loan Accounts</h3>
-          <p className="text-3xl font-bold text-gray-800">{totalLoansCount}</p>
+        <Card className="p-6 border-l-4 border-l-indigo-500 bg-indigo-50 shadow-md">
+          <h3 className="text-sm font-bold text-indigo-800 mb-1 drop-shadow-sm">Active Loan Accounts</h3>
+          <p className="text-3xl font-extrabold text-indigo-900 drop-shadow-md">{totalLoansCount}</p>
         </Card>
-        <Card className="p-6 border-l-4 border-l-purple-500 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Filter Active</h3>
-          <p className="text-lg font-bold text-gray-800">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
+        <Card className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
+          <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
+          <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
         </Card>
       </div>
 
@@ -168,9 +168,9 @@ const LoanOutstandingReport = () => {
               onChange={e => setFilters({...filters, branch: e.target.value})}
             >
               <option value="">All Branches</option>
-              <option value="Head Office">Head Office</option>
-              <option value="Branch 1">Branch 1</option>
-              <option value="Branch 2">Branch 2</option>
+              <option value="TRICHY">TRICHY</option>
+              <option value="PUDUKKOTTAI">PUDUKKOTTAI</option>
+              <option value="THANJAVUR">THANJAVUR</option>
             </Select>
           </div>
 

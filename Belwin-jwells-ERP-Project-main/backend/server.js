@@ -39,6 +39,7 @@ const chittySchemeRoutes = require('./routes/chittySchemeRoutes');
 const incomeRoutes = require('./routes/incomeRoutes');
 const denominationRoutes = require('./routes/denominationRoutes');
 const followupRoutes = require('./routes/followupRoutes');
+const auctionRoutes = require('./routes/auctionRoutes');
 const remittanceRoutes = require('./routes/remittanceRoutes');
 const goldStockRoutes = require('./routes/goldStockRoutes');
 const goldRequestRoutes = require('./routes/goldRequestRoutes');
@@ -96,6 +97,7 @@ app.use('/api/loan-config', loanConfigRoutes);
 app.use('/api/schemes', require('./routes/schemeRoutes'));
 app.use('/api/scheme-allocation', schemeAllocationRoutes);
 app.use('/api/chitty-group', chittyGroupRoutes);
+app.use('/api/auctions', auctionRoutes);
 
 app.get('/', (req, res) => {
     res.status(200).json({ status: 'ok', message: 'API is running' });

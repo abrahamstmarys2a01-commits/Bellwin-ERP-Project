@@ -18,8 +18,16 @@ const Sidebar = ({ collapsed, setCollapsed, isMobile, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openMenus, setOpenMenus] = useState(() => {
-    const activeParent = ADMIN_NAV.find(item => item.children?.some(c => location.pathname === c.path));
+    const activeParent = ADMIN_NAV.find(item => item.children?.some(c => location.pathname === c.path || c.children?.some(sc => location.pathname === sc.path)));
     return activeParent ? { [activeParent.id]: true } : {};
+  });
+  const [openSubMenus, setOpenSubMenus] = useState(() => {
+    const activeParent = ADMIN_NAV.find(item => item.children?.some(c => c.children?.some(sc => location.pathname === sc.path)));
+    if (activeParent) {
+      const activeChild = activeParent.children.find(c => c.children?.some(sc => location.pathname === sc.path));
+      return activeChild ? { [activeChild.label]: true } : {};
+    }
+    return {};
   });
 
   useEffect(() => {
@@ -68,7 +76,7 @@ const Sidebar = ({ collapsed, setCollapsed, isMobile, onClose }) => {
 
   const isActive = (path) => location.pathname === path;
   const isParentActive = (item) =>
-    item.children?.some((c) => location.pathname === c.path);
+    item.children?.some((c) => location.pathname === c.path || c.children?.some(sc => location.pathname === sc.path));
 
   const isExpanded = !collapsed;
 
@@ -159,6 +167,47 @@ const Sidebar = ({ collapsed, setCollapsed, isMobile, onClose }) => {
                     <div className="pl-4 pr-2 space-y-1">
                       {item.children.map((child) => {
                         const CIcon = child.icon;
+                        if (child.children) {
+                          const isSubOpen = openSubMenus[child.label];
+                          const hasActiveChild = child.children.some(sc => isActive(sc.path));
+                          return (
+                            <div key={child.label} className="mb-1">
+                              <button
+                                onClick={() => setOpenSubMenus(p => ({...p, [child.label]: !p[child.label]}))}
+                                className={`w-full flex justify-between items-center px-3 py-2 rounded-none transition-all duration-150 cursor-pointer text-left ${
+                                  hasActiveChild ? 'text-green-600 font-bold' : 'text-gray-600 hover:bg-gray-100 hover:text-green-600 font-medium'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <CIcon size={16} className={hasActiveChild ? 'text-green-600' : 'text-gray-400'} />
+                                  <span className="text-xs">{child.label}</span>
+                                </div>
+                                <ChevronDown size={14} className={`transition-transform duration-200 ${isSubOpen ? 'rotate-180' : ''}`} />
+                              </button>
+                              <div className={`grid transition-all duration-300 ease-in-out ${isSubOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                                <div className="overflow-hidden">
+                                  <div className="pl-6 pr-2 py-1 space-y-1">
+                                    {child.children.map(subChild => {
+                                      const subActive = isActive(subChild.path);
+                                      return (
+                                        <button
+                                          key={subChild.path}
+                                          onClick={() => navTo(subChild.path)}
+                                          className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-none text-left transition-all ${
+                                            subActive ? 'text-green-600 bg-green-50 font-bold' : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
+                                          }`}
+                                        >
+                                          <span className="text-[11px] truncate">{subChild.label}</span>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }
+                        
                         const childActive = isActive(child.path);
                         return (
                           <button

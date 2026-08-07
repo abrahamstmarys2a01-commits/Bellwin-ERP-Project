@@ -86,9 +86,9 @@ const TopUpLoan = () => {
     }
   };
 
-  const inp  = "w-full px-3 py-1.5 text-sm bg-white border border-gray-300 shadow-sm rounded-md focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors";
+  const inp  = "w-full px-3 py-1.5 text-sm bg-white border border-gray-300 shadow-sm rounded-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors";
   const lbl  = "block text-xs font-semibold text-gray-600 mb-0.5";
-  const card = "bg-white border border-gray-100 rounded-xl shadow-sm p-5";
+  const card = "bg-white border border-gray-100 rounded-none shadow-sm p-5";
   const sec  = "text-sm font-bold text-green-700 border-b border-gray-100 pb-1.5 mb-3 flex items-center gap-2";
 
   return (
@@ -102,7 +102,7 @@ const TopUpLoan = () => {
         <div className="flex gap-2">
           {['form', 'reports'].map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`px-4 py-1.5 text-sm font-semibold rounded-lg transition-all ${activeTab === tab ? 'bg-green-600 text-white shadow' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+              className={`px-4 py-1.5 text-sm font-semibold rounded-none transition-all ${activeTab === tab ? 'bg-green-600 text-white shadow' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
               {tab === 'form' ? 'Top Up Form' : 'Reports'}
             </button>
           ))}
@@ -130,7 +130,7 @@ const TopUpLoan = () => {
                     <td className="p-2 font-medium">{t.topUpId}</td>
                     <td className="p-2 text-right font-bold text-gray-800">₹{(t.topUpAmount||0).toLocaleString('en-IN')}</td>
                     <td className="p-2 text-center">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${t.status==='Approved'?'bg-green-100 text-green-700':t.status==='Rejected'?'bg-red-100 text-red-700':'bg-yellow-100 text-yellow-700'}`}>{t.status}</span>
+                      <span className={`px-2 py-0.5 rounded-none text-[10px] font-bold ${t.status==='Approved'?'bg-green-100 text-green-700':t.status==='Rejected'?'bg-red-100 text-red-700':'bg-yellow-100 text-yellow-700'}`}>{t.status}</span>
                     </td>
                     <td className="p-2">{new Date(t.createdAt).toLocaleDateString()}</td>
                     <td className="p-2">{t.approvedBy||'—'}</td>
@@ -151,16 +151,16 @@ const TopUpLoan = () => {
               <div className="relative flex-1">
                 <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Enter Exact Loan ID (e.g. LN000123)"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-green-500" />
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-none shadow-sm text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
                 <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
               </div>
-              <button type="submit" disabled={loading} className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-700 transition">
+              <button type="submit" disabled={loading} className="bg-gray-800 text-white px-4 py-2 rounded-none text-sm font-semibold hover:bg-gray-700 transition">
                 {loading ? 'Searching...' : 'Search Loan'}
               </button>
             </form>
 
             {!loanDetails ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200 rounded-xl bg-white/50 p-6 min-h-[200px]">
+              <div className="flex-1 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200 rounded-none bg-white/50 p-6 min-h-[200px]">
                 <Search className="w-12 h-12 mb-3 opacity-20" />
                 <p className="text-sm font-medium text-center">Search for an active Loan ID to calculate eligibility.</p>
               </div>
@@ -188,7 +188,7 @@ const TopUpLoan = () => {
                     ))}
                     <div>
                       <label className={lbl}>Loan Status</label>
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${loanDetails.status === 'Active' ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-100 text-gray-700 border-gray-200'}`}>
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-none text-xs font-bold border ${loanDetails.status === 'Active' ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-100 text-gray-700 border-gray-200'}`}>
                         {loanDetails.status}
                       </span>
                     </div>
@@ -247,7 +247,7 @@ const TopUpLoan = () => {
                 </div>
 
                 <div className="flex justify-end pt-2">
-                  <button type="submit" disabled={eligibility.availableTopUp <= 0} className={`px-6 py-2.5 rounded-lg text-sm font-bold shadow-sm transition-all flex items-center gap-2 ${eligibility.availableTopUp > 0 ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}>
+                  <button type="submit" disabled={eligibility.availableTopUp <= 0} className={`px-6 py-2.5 rounded-none text-sm font-bold shadow-sm transition-all flex items-center gap-2 ${eligibility.availableTopUp > 0 ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}>
                     <Save className="w-4 h-4" /> {eligibility.availableTopUp > 0 ? 'Submit Top Up Request' : 'Not Eligible for Top Up'}
                   </button>
                 </div>
@@ -257,7 +257,7 @@ const TopUpLoan = () => {
 
           {/* Right: Info / Summary */}
           <div className="w-[40%] flex flex-col gap-4 overflow-auto pb-4">
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-5 text-white shadow-md border border-gray-700 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-none p-5 text-white shadow-md border border-gray-700 relative overflow-hidden">
               <div className="relative z-10">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">New Loan Estimate</h3>
                 <div className="text-3xl font-black tracking-tight text-white mb-4">
@@ -281,15 +281,15 @@ const TopUpLoan = () => {
                <h3 className={sec}><FileText className="w-4 h-4" /> Top Up Workflow</h3>
                <ul className="text-sm text-gray-600 space-y-3 mt-3 relative">
                  <li className="flex items-start gap-3">
-                   <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0 mt-0.5">1</div>
+                   <div className="w-6 h-6 rounded-none bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0 mt-0.5">1</div>
                    <div><strong className="block text-gray-800">Search & Auto-Calculate</strong>System fetches active loan and calculates exact maximum eligible top-up from backend.</div>
                  </li>
                  <li className="flex items-start gap-3">
-                   <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0 mt-0.5">2</div>
+                   <div className="w-6 h-6 rounded-none bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0 mt-0.5">2</div>
                    <div><strong className="block text-gray-800">Submit Request</strong>Employee requests top-up amount and adds purpose/notes. Status goes to <span className="text-yellow-600 font-semibold">Pending Approval</span>.</div>
                  </li>
                  <li className="flex items-start gap-3">
-                   <div className="w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold shrink-0 mt-0.5">3</div>
+                   <div className="w-6 h-6 rounded-none bg-green-100 text-green-700 flex items-center justify-center font-bold shrink-0 mt-0.5">3</div>
                    <div><strong className="block text-gray-800">Admin Approval</strong>Admin reviews and approves. Loan amount is permanently updated.</div>
                  </li>
                </ul>

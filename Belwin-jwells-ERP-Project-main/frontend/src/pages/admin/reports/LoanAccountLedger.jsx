@@ -3,15 +3,151 @@ import './LoanAccountLedger.css';
 import { 
   Printer, FileText, FileSpreadsheet, RefreshCcw, Search, RotateCcw, 
   IndianRupee, Scale, History, FileCheck, Landmark, CheckCircle, 
-  Eye, Download, BadgeCheck
+  Eye, Download, BadgeCheck, Loader
 } from 'lucide-react';
+import api from '../../../services/api';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
 const LoanAccountLedger = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [loanType, setLoanType] = useState('Gold Loan'); // Switch this to test
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loanData, setLoanData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // MOCK DATA as requested (No Backend)
-  const mockData = {
+  const handleSearch = async () => {
+    if (!searchQuery) return;
+    setLoading(true);
+    setError('');
+    try {
+      const response = await api.get(`/search/loan/${searchQuery}`);
+      if (response.data.success && response.data.results.length > 0) {
+        setLoanData(response.data.results[0]);
+      } else {
+        setLoanData(null);
+        setError('No loan found');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Error searching loan');
+      setLoanData(null);
+    }
+    setLoading(false);
+  };
+
+  const handleReset = () => {
+    setSearchQuery('');
+    setLoanData(null);
+    setError('');
+    setActiveTab('overview');
+  };
+
+  const handleViewDocument = (docName, url) => {
+    if (url) {
+      window.open(url, '_blank');
+    } else {
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(`
+        <div style="font-family: sans-serif; padding: 40px; text-align: center;">
+          <h2>${docName}</h2>
+          <p>No document uploaded yet.</p>
+          <div style="margin-top: 20px; padding: 100px; background: #f3f4f6; border-radius: 8px; border: 2px dashed #cbd5e1;">
+            Document Preview Unavailable
+          </div>
+        </div>
+      `);
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleExportPDF = (action = 'download') => {
+    if (!displayData) return;
+    const doc = new jsPDF();
+    doc.text(`Loan Account Ledger: ${displayData.loanNumber}`, 14, 15);
+    
+    const details = Object.entries(displayData)
+      .filter(([k]) => k !== 'loanType' && k !== 'goldValue')
+      .map(([key, value]) => [key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()), String(value)]);
+      
+    autoTable(doc, {
+      startY: 20,
+      head: [['Field', 'Value']],
+      body: details,
+    });
+    
+    if (action === 'view') {
+      window.open(doc.output('bloburl'), '_blank');
+    } else {
+      doc.save(`Ledger_${displayData.loanNumber}.pdf`);
+    }
+  };
+
+  const handleExportExcel = async () => {
+    if (!displayData) return;
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Ledger');
+    
+    worksheet.columns = [
+      { header: 'Field', key: 'field', width: 30 },
+      { header: 'Value', key: 'value', width: 40 }
+    ];
+    
+    Object.entries(displayData).forEach(([key, value]) => {
+       worksheet.addRow({
+         field: key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()),
+         value: String(value)
+       });
+    });
+    
+    const buffer = await workbook.xlsx.writeBuffer();
+    saveAs(new Blob([buffer]), `Ledger_${displayData.loanNumber}.xlsx`);
+  };
+
+  const loan = loanData?.loan || {};
+  const customer = loanData?.customer || {};
+  const branchName = loanData?.branch?.branchName || 'Main Branch';
+  const schemeName = loanData?.scheme?.schemeName || loan.schemeName || 'Gold Loan';
+  const isGoldLoan = schemeName.toLowerCase().includes('gold');
+
+  const displayData = loanData ? {
+    loanNumber: loan.loanId || '-',
+    loanAccountNo: loan.loanId || '-',
+    borrowerId: customer.customerId || '-',
+    borrowerName: customer.customerName || loan.name || '-',
+    mobileNumber: customer.mobileNumber || loan.mobileNo || '-',
+    branch: branchName,
+    loanScheme: schemeName,
+    loanType: schemeName,
+    loanStatus: loan.status || 'Active',
+    applicationDate: loan.loanDate ? new Date(loan.loanDate).toLocaleDateString() : '-',
+    approvalDate: loan.loanStartDate ? new Date(loan.loanStartDate).toLocaleDateString() : '-',
+    disbursementDate: loan.loanStartDate ? new Date(loan.loanStartDate).toLocaleDateString() : '-',
+    requestedAmount: loan.loanAmount || 0,
+    approvedAmount: loan.loanAmount || 0,
+    disbursedAmount: loan.loanAmount || 0,
+    interestRate: loan.interestPercent || loan.interestRate || 0,
+    loanTenure: loan.maturePeriod || 0,
+    maturityDate: loan.loanEndDate ? new Date(loan.loanEndDate).toLocaleDateString() : '-',
+    
+    // Summary
+    totalCollection: loan.payments?.reduce((acc, p) => acc + (p.amount || 0), 0) || 0,
+    principalPaid: loan.payments?.reduce((acc, p) => acc + (p.principalAmount || 0), 0) || 0,
+    interestPaid: loan.payments?.reduce((acc, p) => acc + (p.interestAmount || 0), 0) || 0,
+    penaltyCollected: loan.payments?.reduce((acc, p) => acc + (p.penalty || 0), 0) || 0,
+    outstandingPrincipal: loan.remainingLoanAmount || loan.loanAmount || 0,
+    outstandingInterest: loan.remainingInterestAmount || 0,
+    outstandingBalance: (loan.remainingLoanAmount || 0) + (loan.remainingInterestAmount || 0),
+    
+    goldValue: loan.articles?.reduce((acc, item) => acc + (item.total || 0), 0) || 0
+  } : null;
+
+  const mockData = displayData || {
     loanNumber: 'LN-GL-2026-08991',
     loanAccountNo: 'ACC-8991-GL',
     borrowerId: 'BOR-0002',
@@ -20,7 +156,7 @@ const LoanAccountLedger = () => {
     mobileNumber: '+91 9876543210',
     branch: 'Main Branch',
     loanScheme: 'Gold Premium Scheme',
-    loanType: loanType,
+    loanType: 'Gold Loan',
     loanStatus: 'Active',
     applicationDate: '01 Aug 2026',
     approvalDate: '02 Aug 2026',
@@ -46,8 +182,8 @@ const LoanAccountLedger = () => {
 
   const tabs = [
     { id: 'overview', label: 'Overview' },
-    ...(loanType === 'Gold Loan' ? [{ id: 'gold_details', label: 'Gold Details' }] : []),
-    ...(loanType !== 'Gold Loan' ? [{ id: 'emi_details', label: 'EMI Details' }] : []),
+    ...(isGoldLoan ? [{ id: 'gold_details', label: 'Gold Details' }] : []),
+    ...(!isGoldLoan ? [{ id: 'emi_details', label: 'EMI Details' }] : []),
     { id: 'transaction_history', label: 'Transaction History' },
     { id: 'collection_summary', label: 'Collection Summary' },
     { id: 'documents', label: 'Documents' },
@@ -62,22 +198,21 @@ const LoanAccountLedger = () => {
       <div className="ledger-header">
         <div className="header-title-section">
           <h1>Loan Account Ledger</h1>
-          <div className="header-subtitle">
-            <span>{mockData.loanNumber}</span>
-            <span>•</span>
-            <span>{mockData.borrowerName}</span>
-            <span>•</span>
-            <span>{mockData.loanType}</span>
-            <span>•</span>
-            <span>{mockData.branch}</span>
-            <span className="status-badge">{mockData.loanStatus}</span>
-          </div>
+          {displayData && (
+            <div className="header-subtitle">
+              <span>{displayData.loanNumber}</span>
+              <span>•</span>
+              <span>{displayData.borrowerName}</span>
+              <span>•</span>
+              <span>{displayData.loanType}</span>
+              <span>•</span>
+              <span>{displayData.branch}</span>
+              <span className="status-badge">{displayData.loanStatus}</span>
+            </div>
+          )}
         </div>
         <div className="header-actions">
-          <button className="btn"><Printer size={16} /> Print</button>
-          <button className="btn"><FileText size={16} /> Export PDF</button>
-          <button className="btn"><FileSpreadsheet size={16} /> Export Excel</button>
-          <button className="btn btn-primary"><RefreshCcw size={16} /> Refresh</button>
+          <button className="btn btn-primary" onClick={handleReset} disabled={loading}><RefreshCcw size={16} className={loading ? 'animate-spin' : ''} /> Refresh</button>
         </div>
       </div>
 
@@ -85,41 +220,27 @@ const LoanAccountLedger = () => {
       <div className="card">
         <div className="filter-grid">
           <div className="filter-group">
-            <label>Loan Number</label>
-            <input type="text" placeholder="Enter Loan No" defaultValue={mockData.loanNumber} />
-          </div>
-          <div className="filter-group">
-            <label>Borrower Name</label>
-            <input type="text" placeholder="Enter Name" />
-          </div>
-          <div className="filter-group">
-            <label>Mobile Number</label>
-            <input type="text" placeholder="Enter Mobile" />
-          </div>
-          <div className="filter-group">
-            <label>Loan Type</label>
-            <select value={loanType} onChange={(e) => setLoanType(e.target.value)}>
-              <option value="Gold Loan">Gold Loan</option>
-              <option value="Personal Loan">Personal Loan</option>
-              <option value="Vehicle Loan">Vehicle Loan</option>
-              <option value="Business Loan">Business Loan</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label>Branch</label>
-            <select><option>Main Branch</option></select>
-          </div>
-          <div className="filter-group">
-            <label>Date Range</label>
-            <input type="date" />
+            <label>Search Loan</label>
+            <input 
+              type="text" 
+              placeholder="Enter Loan No or Name" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+            />
           </div>
         </div>
+        {error && <div style={{ color: 'red', fontSize: '14px', marginTop: '8px' }}>{error}</div>}
         <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-          <button className="btn btn-primary"><Search size={16} /> Search</button>
-          <button className="btn"><RotateCcw size={16} /> Reset</button>
+          <button className="btn btn-primary" onClick={handleSearch} disabled={loading}>
+            {loading ? <Loader size={16} className="animate-spin" /> : <Search size={16} />} Search
+          </button>
+          <button className="btn" onClick={handleReset}><RotateCcw size={16} /> Reset</button>
         </div>
       </div>
 
+      {displayData ? (
+        <>
       {/* SUMMARY CARDS */}
       <div className="summary-grid">
         <div className="card summary-card">
@@ -164,7 +285,7 @@ const LoanAccountLedger = () => {
             <p style={{ fontSize: '18px' }}>{mockData.loanStatus}</p>
           </div>
         </div>
-        {loanType === 'Gold Loan' && (
+        {isGoldLoan && (
           <div className="card summary-card">
             <div className="summary-icon" style={{ backgroundColor: '#fffbeb', color: '#d97706' }}><BadgeCheck size={24} /></div>
             <div className="summary-content">
@@ -194,7 +315,7 @@ const LoanAccountLedger = () => {
         {/* OVERVIEW TAB */}
         {activeTab === 'overview' && (
           <div className="detail-grid">
-            {Object.entries(mockData).filter(([k]) => k !== 'loanType' && k !== 'goldValue').map(([key, value]) => (
+            {Object.entries(displayData).filter(([k]) => k !== 'loanType' && k !== 'goldValue').map(([key, value]) => (
               <div className="detail-item" key={key}>
                 <div className="detail-label">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
                 <div className="detail-value">{value}</div>
@@ -204,7 +325,7 @@ const LoanAccountLedger = () => {
         )}
 
         {/* GOLD DETAILS TAB */}
-        {activeTab === 'gold_details' && loanType === 'Gold Loan' && (
+        {activeTab === 'gold_details' && isGoldLoan && (
           <div className="table-wrapper">
             <table className="erp-table">
               <thead>
@@ -255,7 +376,7 @@ const LoanAccountLedger = () => {
         )}
 
         {/* EMI DETAILS TAB */}
-        {activeTab === 'emi_details' && loanType !== 'Gold Loan' && (
+        {activeTab === 'emi_details' && !isGoldLoan && (
           <div className="table-wrapper">
             <table className="erp-table">
               <thead>
@@ -344,27 +465,31 @@ const LoanAccountLedger = () => {
         {/* COLLECTION SUMMARY TAB */}
         {activeTab === 'collection_summary' && (
            <div className="detail-grid">
-             <div className="detail-item"><div className="detail-label">Total Principal Paid</div><div className="detail-value">₹{mockData.principalPaid}</div></div>
-             <div className="detail-item"><div className="detail-label">Total Interest Paid</div><div className="detail-value">₹{mockData.interestPaid}</div></div>
-             <div className="detail-item"><div className="detail-label">Penalty Collected</div><div className="detail-value">₹{mockData.penaltyCollected}</div></div>
-             <div className="detail-item"><div className="detail-label">Total Collection</div><div className="detail-value">₹{mockData.totalCollection}</div></div>
-             <div className="detail-item"><div className="detail-label">Outstanding Principal</div><div className="detail-value">₹{mockData.outstandingPrincipal}</div></div>
-             <div className="detail-item"><div className="detail-label">Outstanding Interest</div><div className="detail-value">₹{mockData.outstandingInterest}</div></div>
-             <div className="detail-item"><div className="detail-label">Outstanding Balance</div><div className="detail-value">₹{mockData.outstandingBalance}</div></div>
+             <div className="detail-item"><div className="detail-label">Total Principal Paid</div><div className="detail-value">₹{displayData.principalPaid}</div></div>
+             <div className="detail-item"><div className="detail-label">Total Interest Paid</div><div className="detail-value">₹{displayData.interestPaid}</div></div>
+             <div className="detail-item"><div className="detail-label">Penalty Collected</div><div className="detail-value">₹{displayData.penaltyCollected}</div></div>
+             <div className="detail-item"><div className="detail-label">Total Collection</div><div className="detail-value">₹{displayData.totalCollection}</div></div>
+             <div className="detail-item"><div className="detail-label">Outstanding Principal</div><div className="detail-value">₹{displayData.outstandingPrincipal}</div></div>
+             <div className="detail-item"><div className="detail-label">Outstanding Interest</div><div className="detail-value">₹{displayData.outstandingInterest}</div></div>
+             <div className="detail-item"><div className="detail-label">Outstanding Balance</div><div className="detail-value">₹{displayData.outstandingBalance}</div></div>
            </div>
         )}
 
         {/* DOCUMENTS TAB */}
         {activeTab === 'documents' && (
           <div className="document-grid">
-            {['Aadhaar', 'PAN', 'Customer Photo', 'Signature', 'Address Proof'].map(doc => (
-              <div className="doc-card" key={doc}>
+            {[
+              { name: 'Aadhaar', url: customer.aadhaarDocumentUrl },
+              { name: 'PAN', url: customer.panDocumentUrl },
+              { name: 'Customer Photo', url: customer.customerPhotoUrl }
+            ].map(doc => (
+              <div className="doc-card" key={doc.name}>
                 <div className="doc-icon"><FileText size={32} /></div>
-                <div className="doc-title">{doc}</div>
-                <div className="doc-status">Verified</div>
+                <div className="doc-title">{doc.name}</div>
+                <div className="doc-status">{doc.url ? 'Uploaded' : 'Pending'}</div>
                 <div className="doc-actions">
-                  <button className="btn"><Eye size={14} /> View</button>
-                  <button className="btn"><Download size={14} /> DL</button>
+                  <button className="btn" onClick={() => handleViewDocument(doc.name, doc.url)}><Eye size={14} /> View</button>
+                  <button className="btn" onClick={() => handleViewDocument(doc.name, doc.url)}><Download size={14} /> DL</button>
                 </div>
               </div>
             ))}
@@ -454,15 +579,21 @@ const LoanAccountLedger = () => {
         )}
 
       </div>
-
+      
       {/* BOTTOM ACTIONS */}
       <div className="card" style={{ display: 'flex', gap: '16px', justifyContent: 'flex-end', marginBottom: '0' }}>
-        <button className="btn"><Eye size={16} /> View</button>
-        <button className="btn"><Printer size={16} /> Print</button>
-        <button className="btn"><FileText size={16} /> Export PDF</button>
-        <button className="btn"><FileSpreadsheet size={16} /> Export Excel</button>
-        <button className="btn btn-primary"><Download size={16} /> Download Ledger</button>
+        <button className="btn" onClick={() => handleExportPDF('view')}><Eye size={16} /> View</button>
+        <button className="btn" onClick={handlePrint}><Printer size={16} /> Print</button>
+        <button className="btn" onClick={() => handleExportPDF('download')}><FileText size={16} /> Export PDF</button>
+        <button className="btn" onClick={handleExportExcel}><FileSpreadsheet size={16} /> Export Excel</button>
+        <button className="btn btn-primary" onClick={() => handleExportPDF('download')}><Download size={16} /> Download Ledger</button>
       </div>
+      </>
+      ) : (
+        <div className="card" style={{ textAlign: 'center', padding: '40px', color: '#6b7280' }}>
+          Please search for a loan number or borrower name to view ledger details.
+        </div>
+      )}
 
     </div>
   );

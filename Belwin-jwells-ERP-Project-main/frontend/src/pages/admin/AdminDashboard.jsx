@@ -186,7 +186,7 @@ const AdminDashboard = () => {
     { label: 'Active Gold Loans', value: dashboardData?.kpis?.activeGoldLoans?.toLocaleString() || '...', sub: 'Ongoing loans', trend: '+8%', up: true, icon: Handshake, iconBg: 'bg-white/60', sparkColor: 'text-emerald-600', bgGradient: 'bg-gradient-to-br from-emerald-100 to-teal-200', sparkData: [200, 240, 220, 280, 260, 310, 320], path: '/admin/reports/loan-outstanding-report' },
     { label: "Today's Collection", value: dashboardData ? `₹${dashboardData.kpis.todaysCollectionAmount.toLocaleString()}` : '...', sub: 'Cash received today', trend: '+5%', up: true, icon: Wallet, iconBg: 'bg-white/60', sparkColor: 'text-green-600', bgGradient: 'bg-gradient-to-br from-green-100 to-emerald-200', sparkData: [300, 280, 350, 320, 400, 380, 450], path: '/admin/reports/cash-book-statement' },
     { label: 'Total Employees', value: dashboardData?.kpis?.totalEmployees?.toLocaleString() || '...', sub: 'Active staff members', trend: '+2%', up: true, icon: UserCheck, iconBg: 'bg-white/60', sparkColor: 'text-blue-600', bgGradient: 'bg-gradient-to-br from-blue-100 to-sky-200', sparkData: [110, 112, 115, 118, 120, 122, 124], path: '/admin/employees' },
-    { label: 'Inventory Value', value: '1500', sub: 'Current stock value', trend: '-1%', up: false, icon: Package, iconBg: 'bg-white/60', sparkColor: 'text-amber-600', bgGradient: 'bg-gradient-to-br from-amber-100 to-orange-200', sparkData: [85, 88, 84, 82, 86, 80, 82] },
+    { label: 'Total Outstanding', value: dashboardData ? `₹${dashboardData.kpis.totalOutstandingLoan?.toLocaleString('en-IN')}` : '...', sub: 'Overall remaining balance', trend: '+4%', up: true, icon: TrendingUp, iconBg: 'bg-white/60', sparkColor: 'text-amber-600', bgGradient: 'bg-gradient-to-br from-amber-100 to-orange-200', sparkData: [85, 88, 84, 92, 96, 98, 102], path: '/admin/reports/loan-outstanding-report' },
     { label: 'Active Schemes', value: dashboardData?.kpis?.activeSchemes?.toLocaleString() || '...', sub: 'Ongoing scheme members', trend: '+15%', up: true, icon: BookOpen, iconBg: 'bg-white/60', sparkColor: 'text-fuchsia-600', bgGradient: 'bg-gradient-to-br from-fuchsia-100 to-pink-200', sparkData: [900, 950, 980, 1000, 1050, 1100, 1150], path: '/admin/chitty/scheme' },
   ];
 
@@ -201,7 +201,11 @@ const AdminDashboard = () => {
     { label: 'Total Transactions', value: dashboardData?.summary?.totalTransactions?.toString() || '...', color: 'text-green-600' },
   ];
 
-  const loanTable = dashboardData?.recentLoans || [];
+  const loanTable = [...(dashboardData?.recentLoans || [])].sort((a, b) => {
+    const valA = Number(a.amount.replace(/[^0-9.-]+/g, '')) || 0;
+    const valB = Number(b.amount.replace(/[^0-9.-]+/g, '')) || 0;
+    return valB - valA;
+  });
   const activities = dashboardData?.activities || [];
 
   const user = (() => { try { return JSON.parse(localStorage.getItem('user') || '{}'); } catch { return {}; } })();

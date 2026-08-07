@@ -9,6 +9,10 @@ const AppLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const user = (() => { try { return JSON.parse(localStorage.getItem('user') || '{}'); } catch { return {}; } })();
+  const role = user.role || 'employee';
+  const isAdmin = role === 'admin' || role === 'super admin' || role === 'Super Admin';
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -29,22 +33,25 @@ const AppLayout = () => {
       )}
 
       {/* Sidebar - Desktop & Mobile */}
-      <div className={`
-        ${isMobile ? 'fixed inset-y-0 left-0 z-40 transform transition-transform duration-300' : 'relative z-10'}
-        ${isMobile && !mobileOpen ? '-translate-x-full' : 'translate-x-0'}
-      `}>
-        <Sidebar 
-          collapsed={collapsed} 
-          setCollapsed={setCollapsed} 
-          isMobile={isMobile} 
-          onClose={() => setMobileOpen(false)}
-        />
-      </div>
+      {isAdmin && (
+        <div className={`
+          ${isMobile ? 'fixed inset-y-0 left-0 z-40 transform transition-transform duration-300' : 'relative z-10'}
+          ${isMobile && !mobileOpen ? '-translate-x-full' : 'translate-x-0'}
+        `}>
+          <Sidebar 
+            collapsed={collapsed} 
+            setCollapsed={setCollapsed} 
+            isMobile={isMobile} 
+            onClose={() => setMobileOpen(false)}
+          />
+        </div>
+      )}
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header 
           isMobile={isMobile} 
           onToggleMobileMenu={() => setMobileOpen(true)} 
+          isAdmin={isAdmin}
         />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 flex flex-col justify-between">
           {/* Print Only Header */}

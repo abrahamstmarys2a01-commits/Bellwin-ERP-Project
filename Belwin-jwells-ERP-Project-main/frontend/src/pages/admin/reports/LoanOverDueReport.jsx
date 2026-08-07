@@ -156,17 +156,17 @@ const LoanOverDueReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="p-6 border-l-4 border-l-red-500 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Total Overdue Customers</h3>
-          <p className="text-3xl font-bold text-gray-800">{totalOverdueCount}</p>
+        <Card className="p-6 border-l-4 border-l-red-500 bg-red-50 shadow-md">
+          <h3 className="text-sm font-bold text-red-800 mb-1 drop-shadow-sm">Total Overdue Customers</h3>
+          <p className="text-3xl font-extrabold text-red-900 drop-shadow-md">{totalOverdueCount}</p>
         </Card>
-        <Card className="p-6 border-l-4 border-l-orange-500 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Total Outstanding at Risk</h3>
-          <p className="text-3xl font-bold text-gray-800">₹{totalOutstanding.toLocaleString('en-IN')}</p>
+        <Card className="p-6 border-l-4 border-l-orange-500 bg-orange-50 shadow-md">
+          <h3 className="text-sm font-bold text-orange-800 mb-1 drop-shadow-sm">Total Outstanding at Risk</h3>
+          <p className="text-3xl font-extrabold text-orange-900 drop-shadow-md">₹{totalOutstanding.toLocaleString('en-IN')}</p>
         </Card>
-        <Card className="p-6 border-l-4 border-l-purple-500 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Filter Active</h3>
-          <p className="text-lg font-bold text-gray-800">{filters.branch || 'All Branches'} • {filters.overdueRange}</p>
+        <Card className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
+          <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
+          <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.overdueRange}</p>
         </Card>
       </div>
 
@@ -180,9 +180,9 @@ const LoanOverDueReport = () => {
               onChange={e => setFilters({...filters, branch: e.target.value})}
             >
               <option value="">All Branches</option>
-              <option value="Head Office">Head Office</option>
-              <option value="Branch 1">Branch 1</option>
-              <option value="Branch 2">Branch 2</option>
+              <option value="TRICHY">TRICHY</option>
+              <option value="PUDUKKOTTAI">PUDUKKOTTAI</option>
+              <option value="THANJAVUR">THANJAVUR</option>
             </Select>
           </div>
 

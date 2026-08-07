@@ -13,7 +13,6 @@ export const ADMIN_NAV = [
   {
     id: 'master', label: 'Master', icon: Database,
     children: [
-      { label: 'Company Master', icon: Settings, path: '/admin/master/config' },
       { label: 'Branch Master', icon: Building2, path: '/admin/master/branch' },
       // { label: 'Employee Master', icon: Users, path: '/admin/master/employee' },
       { label: 'User Role Master', icon: UserCog, path: '/admin/master/user-role' },
@@ -29,11 +28,7 @@ export const ADMIN_NAV = [
       { label: 'Loan Scheme', icon: FileText, path: '/admin/loan-config/scheme' },
       { label: 'Vehicle Master', icon: Car, path: '/admin/loan-config/vehicle' },
       { label: 'Dealer Master', icon: Store, path: '/admin/loan-config/dealer' },
-      { label: 'Item Group Master', icon: Boxes, path: '/admin/loan-config/item-group' },
-      { label: 'Purity Master', icon: Diamond, path: '/admin/loan-config/purity' },
-      { label: 'Gold Rate Master', icon: TrendingUp, path: '/admin/loan-config/gold-rate' },
       { label: 'Locker Master', icon: Key, path: '/admin/loan-config/locker' },
-      { label: 'Valuer Master', icon: UserCheck, path: '/admin/loan-config/valuer' },
     ]
   },
   {
@@ -73,6 +68,7 @@ export const ADMIN_NAV = [
       { label: 'Balance Sheet', icon: Landmark, path: '/admin/accounts/balance-sheet' },
     ]
   },
+
   {
     id: 'employee', label: 'Employee', icon: Users,
     children: [
@@ -102,16 +98,60 @@ export const ADMIN_NAV = [
   {
     id: 'reports', label: 'Reports', icon: ClipboardList,
     children: [
-      { label: 'Loan Account Ledger', icon: FileText, path: '/admin/reports/loan-account-ledger' },
-      { label: 'Loan Account Ledger Non EMI', icon: FileText, path: '/admin/reports/loan-account-ledger-non-emi' },
-      { label: 'Loan Approve Report', icon: FileText, path: '/admin/reports/loan-approve-report' },
-      { label: 'Loan Disbursement Report', icon: FileText, path: '/admin/reports/loan-disbursement-report' },
-      { label: 'Loan Due Report', icon: FileText, path: '/admin/reports/loan-due-report' },
-      { label: 'Loan Over Due Report', icon: FileText, path: '/admin/reports/loan-over-due-report' },
-      { label: 'Loan Outstanding Report', icon: FileText, path: '/admin/reports/loan-outstanding-report' },
-      { label: 'Loan Emi Collection Report', icon: FileText, path: '/admin/reports/loan-emi-collection-report' },
-      { label: 'Ledger Statement', icon: FileText, path: '/admin/reports/ledger-statement' },
-      { label: 'Cash Book Statement', icon: FileText, path: '/admin/reports/cash-book-statement' },
+      {
+        label: 'Chit Fund', icon: Users,
+        children: [
+          { label: 'Chit Account Ledger', icon: FileText, path: '/admin/reports/chit-account-ledger' },
+          { label: 'Chit Account Ledger Non-Auction', icon: FileText, path: '/admin/reports/chit-account-ledger-non-auction' },
+          { label: 'Chit Requisition Report', icon: FileText, path: '/admin/reports/chit-requisition-report' },
+          { label: 'Chit Approval Report', icon: FileText, path: '/admin/reports/chit-approval-report' },
+          { label: 'Chit Disbursement Report', icon: FileText, path: '/admin/reports/chit-disbursement-report' },
+          { label: 'Chit Due Report', icon: FileText, path: '/admin/reports/chit-due-report' },
+          { label: 'Chit Over Due Report', icon: FileText, path: '/admin/reports/chit-over-due-report' },
+          { label: 'Chit Outstanding Report', icon: FileText, path: '/admin/reports/chit-outstanding-report' },
+          { label: 'Chit Collection Report', icon: FileText, path: '/admin/reports/chit-collection-report' },
+          { label: 'Chit Auction Report', icon: FileText, path: '/admin/reports/chit-auction-report' },
+          { label: 'Chit Winner / Prize Report', icon: FileText, path: '/admin/reports/chit-winner-report' },
+          { label: 'Dividend Report', icon: FileText, path: '/admin/reports/chit-dividend-report' },
+          { label: 'Member Chit Statement', icon: FileText, path: '/admin/reports/member-chit-statement' },
+          { label: 'Chit Group Report', icon: FileText, path: '/admin/reports/chit-group-report' },
+          { label: 'Chit Maturity Report', icon: FileText, path: '/admin/reports/chit-maturity-report' },
+          { label: 'Chit Closure Report', icon: FileText, path: '/admin/reports/chit-closure-report' },
+          { label: 'Chit Penalty Report', icon: FileText, path: '/admin/reports/chit-penalty-report' },
+          { label: 'Chit Receipt / Collection Statement', icon: FileText, path: '/admin/reports/chit-receipt-collection-statement' }
+        ]
+      },
+      {
+        label: 'Micro Finance', icon: Briefcase,
+        children: [
+          { label: 'Micro Finance Account Ledger', icon: FileText, path: '/admin/reports/mfi-account-ledger' },
+          { label: 'Micro Finance Account Ledger Non EMI', icon: FileText, path: '/admin/reports/mfi-account-ledger-non-emi' },
+          { label: 'Micro Finance Approve Report', icon: FileText, path: '/admin/reports/mfi-approve-report' },
+          { label: 'Micro Finance Disbursement Report', icon: FileText, path: '/admin/reports/mfi-disbursement-report' },
+          { label: 'Micro Finance Due Report', icon: FileText, path: '/admin/reports/mfi-due-report' },
+          { label: 'Micro Finance Over Due Report', icon: FileText, path: '/admin/reports/mfi-over-due-report' },
+          { label: 'Micro Finance Outstanding Report', icon: FileText, path: '/admin/reports/mfi-outstanding-report' },
+          { label: 'Micro Finance Emi Collection Report', icon: FileText, path: '/admin/reports/mfi-emi-collection-report' },
+          { label: 'Ledger Statement', icon: FileText, path: '/admin/reports/mfi-ledger-statement' },
+          { label: 'Cash Book Statement', icon: FileText, path: '/admin/reports/mfi-cash-book-statement' },
+        ]
+      },
+      {
+        label: 'Gold Loan', icon: Coins,
+        children: [
+          { label: 'Loan Account Ledger', icon: FileText, path: '/admin/reports/loan-account-ledger' },
+          { label: 'Loan Account Ledger Non EMI', icon: FileText, path: '/admin/reports/loan-account-ledger-non-emi' },
+          { label: 'Loan Approve Report', icon: FileText, path: '/admin/reports/loan-approve-report' },
+          { label: 'Loan Disbursement Report', icon: FileText, path: '/admin/reports/loan-disbursement-report' },
+          { label: 'Loan Due Report', icon: FileText, path: '/admin/reports/loan-due-report' },
+          { label: 'Loan Over Due Report', icon: FileText, path: '/admin/reports/loan-over-due-report' },
+          { label: 'Loan Outstanding Report', icon: FileText, path: '/admin/reports/loan-outstanding-report' },
+          { label: 'Loan Emi Collection Report', icon: FileText, path: '/admin/reports/loan-emi-collection-report' },
+          { label: 'Ledger Statement', icon: FileText, path: '/admin/reports/ledger-statement' },
+          { label: 'Cash Book Statement', icon: FileText, path: '/admin/reports/cash-book-statement' },
+          { label: 'Gold Loan Auction Report', icon: FileText, path: '/admin/reports/gold-loan-auction' },
+        ]
+      }
     ]
   },
   {
@@ -142,5 +182,8 @@ export const ADMIN_NAV = [
     ]
   },
   // { id: 'access_control', label: 'Access and Control', icon: Shield, path: '/admin/roles' },
+  {
+    id: 'denomination', label: 'Denomination', icon: Banknote, path: '/admin/denomination'
+  }
 ];
 

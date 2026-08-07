@@ -11,6 +11,8 @@ const loanSchema = new mongoose.Schema({
   schemeName: { type: String },
   employeeId: { type: String },
   employeeName: { type: String },
+  branch: { type: String },
+  loanType: { type: String },
   interestPercent: { type: Number },
   gramRate: { type: Number },
   minimumGram: { type: Number },

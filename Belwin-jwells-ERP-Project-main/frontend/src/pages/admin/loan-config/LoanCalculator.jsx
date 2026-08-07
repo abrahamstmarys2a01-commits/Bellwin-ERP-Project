@@ -15,18 +15,21 @@ const LoanCalculator = () => {
   const [calculators, setCalculators] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  
+
   // Modal states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCalc, setEditingCalc] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     calculationType: 'Simple',
     loanMode: 'Monthly',
-    loanAmount: 50000,
-    term: 12,
-    roi: 12,
-    calculationEMI: 0
+    loanAmount: 500000,
+    term: 11,
+    roi: 11,
+    interestAmount: 0,
+    totalPayable: 0,
+    installmentAmount: 0,
+    status: 'Active'
   });
 
   // Delete dialog state
@@ -48,29 +51,57 @@ const LoanCalculator = () => {
     fetchCalculators();
   }, []);
 
-  // Recalculate EMI whenever amount, term, or roi changes
+  // Recalculate whenever amount, term, or roi changes
   useEffect(() => {
-    const P = parseFloat(formData.loanAmount) || 0;
-    const R = parseFloat(formData.roi) || 0;
-    const T = parseFloat(formData.term) || 0;
+    let P = parseFloat(formData.loanAmount);
+    let R = parseFloat(formData.roi);
+    let T = parseFloat(formData.term);
+
+    // Validation fallbacks
+    if (isNaN(P) || P < 0) P = 0;
+    if (isNaN(R) || R < 0) R = 0;
+    if (isNaN(T) || T < 0) T = 0;
+
+    let interest = 0;
+    let total = 0;
     let inst = 0;
 
     if (formData.calculationType === 'Simple') {
-      const timeInYears = formData.loanMode === 'Monthly' ? T / 12 : (formData.loanMode === 'Weekly' ? T / 52 : T / 365);
-      const interest = P * (R / 100) * timeInYears;
-      const pay = P + interest;
-      inst = T > 0 ? Math.round(pay / T) : pay;
+      let timeInYears = 0;
+      if (formData.loanMode === 'Monthly') timeInYears = T / 12;
+      else if (formData.loanMode === 'Weekly') timeInYears = T / 52;
+      else if (formData.loanMode === 'Daily') timeInYears = T / 365;
+
+      interest = P * (R / 100) * timeInYears;
+      total = P + interest;
+      inst = T > 0 ? total / T : total;
     } else {
       // Reducing EMI
-      const ratePerPeriod = (formData.loanMode === 'Monthly' ? R / 12 : (formData.loanMode === 'Weekly' ? R / 52 : R / 365)) / 100;
+      let ratePerPeriod = 0;
+      if (formData.loanMode === 'Monthly') ratePerPeriod = R / 12 / 100;
+      else if (formData.loanMode === 'Weekly') ratePerPeriod = R / 52 / 100;
+      else if (formData.loanMode === 'Daily') ratePerPeriod = R / 365 / 100;
+
       if (ratePerPeriod > 0 && T > 0) {
-        inst = Math.round((P * ratePerPeriod * Math.pow(1 + ratePerPeriod, T)) / (Math.pow(1 + ratePerPeriod, T) - 1));
+        inst = (P * ratePerPeriod * Math.pow(1 + ratePerPeriod, T)) / (Math.pow(1 + ratePerPeriod, T) - 1);
       } else {
-        inst = P;
+        inst = T > 0 ? P / T : P;
       }
+      total = inst * T;
+      interest = Math.max(0, total - P);
     }
-    
-    setFormData(prev => ({ ...prev, calculationEMI: inst }));
+
+    // Format to 2 decimal places internally
+    interest = Math.round(interest * 100) / 100 || 0;
+    total = Math.round(total * 100) / 100 || 0;
+    inst = Math.round(inst * 100) / 100 || 0;
+
+    setFormData(prev => ({
+      ...prev,
+      interestAmount: interest,
+      totalPayable: total,
+      installmentAmount: inst
+    }));
   }, [formData.loanAmount, formData.term, formData.roi, formData.calculationType, formData.loanMode]);
 
   const handleOpenAdd = () => {
@@ -78,10 +109,13 @@ const LoanCalculator = () => {
     setFormData({
       calculationType: 'Simple',
       loanMode: 'Monthly',
-      loanAmount: 50000,
-      term: 12,
-      roi: 12,
-      calculationEMI: 0
+      loanAmount: 500000,
+      term: 11,
+      roi: 11,
+      interestAmount: 0,
+      totalPayable: 0,
+      installmentAmount: 0,
+      status: 'Active'
     });
     setIsFormOpen(true);
   };
@@ -94,15 +128,18 @@ const LoanCalculator = () => {
       loanAmount: calc.loanAmount || 0,
       term: calc.term || 0,
       roi: calc.roi || 0,
-      calculationEMI: calc.calculationEMI || 0
+      interestAmount: calc.interestAmount || 0,
+      totalPayable: calc.totalPayable || 0,
+      installmentAmount: calc.installmentAmount || 0,
+      status: calc.status || 'Active'
     });
     setIsFormOpen(true);
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!formData.loanAmount || !formData.term || !formData.roi) {
-      return alert('Amount, Term, and ROI are required');
+    if (formData.loanAmount <= 0 || formData.term <= 0 || formData.roi < 0) {
+      return alert('Please enter valid positive values for Amount, Term, and ROI');
     }
 
     setLoading(true);
@@ -146,7 +183,7 @@ const LoanCalculator = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-6 animate-fade-in">
         <div className="flex items-center gap-4 mb-6">
-          <button 
+          <button
             onClick={() => setIsFormOpen(false)}
             className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-none transition-colors"
           >
@@ -164,7 +201,7 @@ const LoanCalculator = () => {
 
         <Card className="p-8 shadow-lg border border-gray-100">
           <form onSubmit={handleSave} className="space-y-6">
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Select
                 label="Calculation Type"
@@ -175,7 +212,7 @@ const LoanCalculator = () => {
                 <option value="Simple">Simple Interest</option>
                 <option value="EMI">EMI (Reducing Balance)</option>
               </Select>
-              
+
               <Select
                 label="Loan Mode"
                 value={formData.loanMode}
@@ -192,9 +229,10 @@ const LoanCalculator = () => {
               <Input
                 label="Loan Amount (₹)"
                 type="number"
+                step="0.01"
                 required
                 value={formData.loanAmount}
-                onChange={(e) => setFormData({ ...formData, loanAmount: Math.max(0, parseInt(e.target.value) || 0) })}
+                onChange={(e) => setFormData({ ...formData, loanAmount: e.target.value })}
                 className="bg-gray-50 text-lg font-bold"
               />
               <Input
@@ -202,47 +240,71 @@ const LoanCalculator = () => {
                 type="number"
                 required
                 value={formData.term}
-                onChange={(e) => setFormData({ ...formData, term: Math.max(0, parseInt(e.target.value) || 0) })}
+                onChange={(e) => setFormData({ ...formData, term: e.target.value })}
                 className="bg-gray-50"
               />
               <Input
-                label="ROI (% p.a.)"
+                label="ROI"
                 type="number"
                 step="0.01"
                 required
                 value={formData.roi}
-                onChange={(e) => setFormData({ ...formData, roi: Math.max(0, parseFloat(e.target.value) || 0) })}
+                onChange={(e) => setFormData({ ...formData, roi: e.target.value })}
                 className="bg-gray-50"
               />
             </div>
 
-            <div className="mt-8 p-6 bg-green-50 border border-green-200 text-center">
-              <p className="text-xs font-bold text-green-700 uppercase tracking-widest mb-2">Calculated Installment (EMI)</p>
-              <h2 className="text-4xl font-extrabold text-green-900">
-                ₹{formData.calculationEMI.toLocaleString('en-IN')}
-              </h2>
-              <p className="text-sm text-green-600 mt-2 font-medium">Auto-computed and ready to save</p>
+            <div className="mt-8 p-6 bg-green-50 border border-green-200">
+              <div className="mb-4 pb-4 border-b border-green-200 flex justify-between items-end">
+                <div>
+                  <h3 className="text-sm font-bold text-green-800 uppercase tracking-wider">Calculation Summary</h3>
+                  <div className="text-xs text-green-700 mt-1 flex gap-4">
+                    <span>Type: {formData.calculationType}</span>
+                    <span>Mode: {formData.loanMode}</span>
+                    <span>ROI: {formData.roi}% p.a.</span>
+                    <span>Term: {formData.term} {formData.loanMode === 'Monthly' ? 'Months' : formData.loanMode === 'Weekly' ? 'Weeks' : 'Days'}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-xs font-bold text-green-700 uppercase mb-1">Principal Amount</p>
+                  <p className="text-xl font-bold text-green-900">₹{Number(formData.loanAmount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-green-700 uppercase mb-1">Interest Amount</p>
+                  <p className="text-xl font-bold text-green-900">₹{Number(formData.interestAmount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-green-700 uppercase mb-1">Total Payable</p>
+                  <p className="text-xl font-bold text-green-900">₹{Number(formData.totalPayable).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-green-700 uppercase mb-1">{formData.loanMode} Installment</p>
+                  <p className="text-xl font-extrabold text-green-900">₹{Number(formData.installmentAmount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                </div>
+              </div>
             </div>
 
             <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
-              <Button 
-                type="button" 
-                onClick={() => setIsFormOpen(false)} 
+              <Button
+                type="button"
+                onClick={() => setIsFormOpen(false)}
                 variant="secondary"
                 className="px-6 py-2.5"
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                variant="primary" 
+              <Button
+                type="submit"
+                variant="primary"
                 loading={loading}
                 className="px-8 py-2.5 shadow-md hover:shadow-lg transition-all"
               >
                 Save Preset
               </Button>
             </div>
-            
+
           </form>
         </Card>
       </div>
@@ -271,7 +333,7 @@ const LoanCalculator = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by ID, Name or Phone Number..."
+            placeholder="Search by Type or Mode..."
             className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-none text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-gray-50"
           />
         </div>
@@ -284,7 +346,9 @@ const LoanCalculator = () => {
           'Loan Amount',
           'Term',
           'ROI (% p.a.)',
-          'Calculated EMI',
+          'Interest',
+          'Total Payable',
+          'Installment',
           'Actions'
         ]}
         data={filteredCalculators}
@@ -297,10 +361,12 @@ const LoanCalculator = () => {
               </Badge>
             </TD>
             <TD className="font-semibold text-gray-700">{calc.loanMode}</TD>
-            <TD className="font-bold text-gray-900">₹{calc.loanAmount?.toLocaleString('en-IN')}</TD>
+            <TD className="font-bold text-gray-900">₹{Number(calc.loanAmount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TD>
             <TD>{calc.term}</TD>
             <TD>{calc.roi}%</TD>
-            <TD className="font-extrabold text-green-700">₹{calc.calculationEMI?.toLocaleString('en-IN')}</TD>
+            <TD className="text-gray-700">₹{Number(calc.interestAmount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TD>
+            <TD className="font-bold text-gray-900">₹{Number(calc.totalPayable).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TD>
+            <TD className="font-extrabold text-green-700">₹{Number(calc.installmentAmount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TD>
             <TD>
               <div className="flex items-center gap-2">
                 <button

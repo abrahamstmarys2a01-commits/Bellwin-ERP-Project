@@ -40,6 +40,8 @@ const createLoan = async (req, res, next) => {
       schemeName,
       employeeId,
       employeeName,
+      branch,
+      loanType,
       interestPercent,
       gramRate,
       minimumGram,
@@ -111,6 +113,8 @@ const createLoan = async (req, res, next) => {
       schemeName,
       employeeId,
       employeeName,
+      branch,
+      loanType,
       interestPercent,
       gramRate,
       minimumGram,
@@ -280,11 +284,22 @@ const getLoansByStatus = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+// @desc    Get all loans
+// @route   GET /api/loans
+// @access  Public
+const getAllLoans = async (req, res, next) => {
+  try {
+    const loans = await Loan.find().sort({ createdAt: -1 });
+    res.json(loans);
+  } catch (error) { next(error); }
+};
+
 module.exports = {
   createLoan,
   getLoanById,
   getLoansByCustomer,
   updateLoan,
   updateLoanStatus,
-  getLoansByStatus
+  getLoansByStatus,
+  getAllLoans
 };

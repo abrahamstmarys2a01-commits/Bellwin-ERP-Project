@@ -188,9 +188,9 @@ const LoanEmiCollectionReport = () => {
               onChange={e => setFilters({...filters, branch: e.target.value})}
             >
               <option value="">All Branches</option>
-              <option value="Head Office">Head Office</option>
-              <option value="Branch 1">Branch 1</option>
-              <option value="Branch 2">Branch 2</option>
+              <option value="TRICHY">TRICHY</option>
+              <option value="PUDUKKOTTAI">PUDUKKOTTAI</option>
+              <option value="THANJAVUR">THANJAVUR</option>
             </Select>
           </div>
 

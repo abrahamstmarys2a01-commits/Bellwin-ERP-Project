@@ -184,6 +184,13 @@ exports.getAdminDashboardData = async (req, res) => {
     ]);
     const todaysCollectionAmount = todayCollections[0]?.total || 0;
 
+    // Total Outstanding Loan
+    const outstandingAggregate = await Loan.aggregate([
+      { $match: { status: { $in: ['Active', 'Approved', 'Overdue'] } } },
+      { $group: { _id: null, total: { $sum: "$remainingLoanAmount" } } }
+    ]);
+    const totalOutstandingLoan = outstandingAggregate[0]?.total || 0;
+
     // Recent Loan Applications
     const recentLoans = await Loan.find({})
       .sort({ createdAt: -1 })
@@ -268,7 +275,7 @@ exports.getAdminDashboardData = async (req, res) => {
           activeGoldLoans,
           todaysCollectionAmount,
           totalEmployees,
-          inventoryValue: 'Realtime Calc Pending',
+          totalOutstandingLoan,
           activeSchemes: activeSchemes
         },
         recentLoans: formattedRecentLoans,
