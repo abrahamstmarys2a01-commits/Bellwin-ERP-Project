@@ -1,6 +1,5 @@
 import React from 'react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import DataTable from '../../../components/ui/DataTable';
 import { TR, TD } from '../../../components/ui/Table';
 import { Settings } from 'lucide-react';
@@ -47,7 +46,7 @@ const CodeSequence = () => {
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <Card className="shadow-sm border border-gray-100">
+        <div className="shadow-sm border border-gray-100">
           <div className="p-4 border-b border-gray-100 bg-gray-50/50">
             <h3 className="text-lg font-semibold text-gray-800">Master Modules (4 Digits)</h3>
           </div>
@@ -66,9 +65,9 @@ const CodeSequence = () => {
               </TR>
             )}
           />
-        </Card>
+        </div>
 
-        <Card className="shadow-sm border border-gray-100">
+        <div className="shadow-sm border border-gray-100">
           <div className="p-4 border-b border-gray-100 bg-gray-50/50">
             <h3 className="text-lg font-semibold text-gray-800">Operational Modules (6 Digits)</h3>
           </div>
@@ -87,7 +86,7 @@ const CodeSequence = () => {
               </TR>
             )}
           />
-        </Card>
+        </div>
       </div>
     </div>
   );

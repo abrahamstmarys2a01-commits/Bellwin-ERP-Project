@@ -3,7 +3,6 @@ import { Plus, Edit3, Trash2, Search, Users, ArrowLeft } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -127,7 +126,7 @@ const AccountsGroupMaster = () => {
           <div><h1 className="text-2xl font-bold text-gray-900">{editingGroup ? 'Edit Group Master' : 'Add New Group'}</h1></div>
         </div>
 
-        <Card className="p-8 shadow-lg border border-gray-100">
+        <div className="">
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Group Code" required disabled value={formData.groupCode} onChange={(e) => setFormData({ ...formData, groupCode: e.target.value.toUpperCase() })} />
@@ -159,7 +158,7 @@ const AccountsGroupMaster = () => {
               <Button type="submit" variant="primary" loading={loading} className="px-8 py-2.5 shadow-md">Save Group</Button>
             </div>
           </form>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -167,12 +166,12 @@ const AccountsGroupMaster = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 animate-fade-in">
       <PageHeader title="Accounts Group Master" subtitle="Create and manage ledger groups for reporting." icon={Users} actions={<Button onClick={handleOpenAdd} icon={Plus} variant="primary">Add Group</Button>} />
-      <Card className="p-4 mb-6 shadow-sm border border-gray-100">
+      <div className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><Search size={16} /></span>
           <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by ID, Name or Phone Number..." className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none focus:ring-1 focus:ring-green-500" />
         </div>
-      </Card>
+      </div>
       <DataTable
         headers={['Code', 'Name', 'Parent Group', 'Nature', 'Status', 'Actions']}
         data={filtered}

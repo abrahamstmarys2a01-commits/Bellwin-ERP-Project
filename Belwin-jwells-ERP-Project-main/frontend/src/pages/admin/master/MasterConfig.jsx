@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Settings, Save, RefreshCw, Edit, X } from 'lucide-react';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -166,7 +165,7 @@ const MasterConfig = () => {
         icon={Settings} 
       />
 
-      <Card className="p-8 shadow-lg border border-gray-100">
+      <div className="p-8 shadow-lg border border-gray-100">
         {!isEditing ? (
           renderViewMode()
         ) : (
@@ -226,7 +225,7 @@ const MasterConfig = () => {
             </div>
           </form>
         )}
-      </Card>
+      </div>
     </div>
   );
 };

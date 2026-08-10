@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Plus, Search, UserCog, ArrowLeft, Trash2, Edit3 } from 'lucide-react';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -125,7 +124,7 @@ const RoleMaster = () => {
           </div>
         </div>
 
-        <Card className="p-8 shadow-lg border border-gray-100">
+        <div className="">
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input 
@@ -157,7 +156,7 @@ const RoleMaster = () => {
               <Button type="submit" variant="primary" loading={loading} className="px-8 py-2.5 shadow-md">Save Role</Button>
             </div>
           </form>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -171,7 +170,7 @@ const RoleMaster = () => {
         actions={<Button onClick={handleOpenAdd} icon={Plus} variant="primary">Add Role</Button>} 
       />
       
-      <Card className="p-4 mb-6 shadow-sm border border-gray-100">
+      <div className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><Search size={16} /></span>
           <input 
@@ -182,7 +181,7 @@ const RoleMaster = () => {
             className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" 
           />
         </div>
-      </Card>
+      </div>
       
       <DataTable
         headers={['Role Name', 'Description', 'System Role', 'Status', 'Actions']}

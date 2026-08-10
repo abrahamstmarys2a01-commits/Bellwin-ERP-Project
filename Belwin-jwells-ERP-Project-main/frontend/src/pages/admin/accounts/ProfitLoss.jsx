@@ -3,7 +3,6 @@ import { Search, FileText, Download, Printer, RefreshCw, ArrowDownLeft, ArrowUpR
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -112,7 +111,7 @@ const ProfitLoss = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <Select label="Financial Year" value={filters.financialYear} onChange={e => setFilters({...filters, financialYear: e.target.value})}>
             <option value="2023-2024">2023-2024</option>
@@ -131,10 +130,10 @@ const ProfitLoss = () => {
              <Button type="submit" variant="primary" icon={Search}>Search</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card className="p-4 flex items-center border border-green-100 bg-green-50/50">
+        <div className="p-4 flex items-center border border-green-100 bg-green-50/50">
           <div className="p-3 rounded-none bg-green-100 text-green-600 mr-4">
             <TrendingUp size={24} />
           </div>
@@ -142,8 +141,8 @@ const ProfitLoss = () => {
             <p className="text-sm font-medium text-gray-500">Total Income</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.totalIncome}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-red-100 bg-red-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-red-100 bg-red-50/50">
           <div className="p-3 rounded-none bg-red-100 text-red-600 mr-4">
             <TrendingDown size={24} />
           </div>
@@ -151,8 +150,8 @@ const ProfitLoss = () => {
             <p className="text-sm font-medium text-gray-500">Total Expenses</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.totalExpenses}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Activity size={24} />
           </div>
@@ -160,8 +159,8 @@ const ProfitLoss = () => {
             <p className="text-sm font-medium text-gray-500">Gross Profit</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.grossProfit}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-purple-100 bg-purple-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-purple-100 bg-purple-50/50">
           <div className="p-3 rounded-none bg-purple-100 text-purple-600 mr-4">
             <DollarSign size={24} />
           </div>
@@ -169,10 +168,10 @@ const ProfitLoss = () => {
             <p className="text-sm font-medium text-gray-500">Net Profit</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.netProfit}</p>
           </div>
-        </Card>
+        </div>
       </div>
 
-      <Card className="shadow-sm border border-gray-100 overflow-hidden">
+      <div className="shadow-sm border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-500">Loading statement...</div>
         ) : (
@@ -257,7 +256,7 @@ const ProfitLoss = () => {
             
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };

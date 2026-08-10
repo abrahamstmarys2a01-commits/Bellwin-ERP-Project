@@ -95,7 +95,7 @@ const TwoWheelerLoanManager = ({ showAddForm, setShowAddForm }) => {
   return (
     <>
       {showAddForm && (
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-6 animate-fade-in">
+        <div className="mb-6 animate-fade-in">
           <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">New Two Wheeler Scheme</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-5">
             <div className="col-span-1">

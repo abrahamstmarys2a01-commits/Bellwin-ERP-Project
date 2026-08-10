@@ -4,7 +4,6 @@ import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exp
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
@@ -26,15 +25,6 @@ const LoanOverDueReport = () => {
       const res = await api.get('/reports/loan-report');
       let allLoans = res.data || [];
 
-      // DEMO: Inject fake data if no real data is found
-      if (allLoans.length === 0) {
-        const today = new Date();
-        allLoans = [
-          { loanId: 'LN000301', customerName: 'Arun Kumar', loanAmount: 50000, remainingLoanAmount: 45000, status: 'Overdue', loanDate: new Date(new Date().setDate(today.getDate() - 45)), branch: 'Head Office', emiAmount: 5000 },
-          { loanId: 'LN000305', customerName: 'Ramesh', loanAmount: 150000, remainingLoanAmount: 150000, status: 'Overdue', loanDate: new Date(new Date().setDate(today.getDate() - 70)), branch: 'Branch 1', emiAmount: 15000 },
-          { loanId: 'LN000312', customerName: 'Suresh', loanAmount: 35000, remainingLoanAmount: 25000, status: 'Overdue', loanDate: new Date(new Date().setDate(today.getDate() - 110)), branch: 'Branch 2', emiAmount: 3500 },
-        ];
-      }
       
       // Filter Active and Overdue loans
       const activeLoans = allLoans.filter(loan => loan.status === 'Active' || loan.status === 'Overdue');
@@ -156,21 +146,21 @@ const LoanOverDueReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="p-6 border-l-4 border-l-red-500 bg-red-50 shadow-md">
+        <div className="p-6 border-l-4 border-l-red-500 bg-red-50 shadow-md">
           <h3 className="text-sm font-bold text-red-800 mb-1 drop-shadow-sm">Total Overdue Customers</h3>
           <p className="text-3xl font-extrabold text-red-900 drop-shadow-md">{totalOverdueCount}</p>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-orange-500 bg-orange-50 shadow-md">
+        </div>
+        <div className="p-6 border-l-4 border-l-orange-500 bg-orange-50 shadow-md">
           <h3 className="text-sm font-bold text-orange-800 mb-1 drop-shadow-sm">Total Outstanding at Risk</h3>
           <p className="text-3xl font-extrabold text-orange-900 drop-shadow-md">₹{totalOutstanding.toLocaleString('en-IN')}</p>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
+        </div>
+        <div className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
           <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
           <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.overdueRange}</p>
-        </Card>
+        </div>
       </div>
 
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
           
           <div className="w-full md:w-1/3">
@@ -204,9 +194,9 @@ const LoanOverDueReport = () => {
              <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
-      <Card className="shadow-sm border border-gray-100">
+      <div className="shadow-sm border border-gray-100">
         <div className="p-4 border-b border-gray-100 bg-gray-50/50">
           <h3 className="text-lg font-semibold text-gray-800">Recovery Follow-Up List</h3>
         </div>
@@ -239,7 +229,7 @@ const LoanOverDueReport = () => {
             </TR>
           )}
         />
-      </Card>
+      </div>
     </div>
   );
 };

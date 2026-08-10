@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
 const GoldRequest = require('../models/GoldRequest');
 
-router.post('/', protect, async (req, res) => {
+// Create a new gold request
+router.post('/', async (req, res) => {
   try {
-    const request = new GoldRequest(req.body);
-    await request.save();
-    res.status(201).json({ success: true, data: request });
+    const newRequest = new GoldRequest(req.body);
+    await newRequest.save();
+    res.status(201).json({ success: true, data: newRequest });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
-router.get('/', protect, async (req, res) => {
+// Get all gold requests
+router.get('/', async (req, res) => {
   try {
     const requests = await GoldRequest.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: requests });

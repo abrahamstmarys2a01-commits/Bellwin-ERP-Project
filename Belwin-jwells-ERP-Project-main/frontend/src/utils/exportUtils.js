@@ -7,8 +7,7 @@ import logo from '../assets/Logo 1.png';
 export const exportToExcel = async (data, headers, mapper, filename) => {
   if (!data || !data.length) return;
   
-  const headerKeys = headers ? headers.map(h => h.key || h) : Object.keys(data[0]);
-  const headerLabels = headers ? headers.map(h => h.label || h) : headerKeys;
+  const headerLabels = headers.map(h => h.label || h);
   
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Export');
@@ -16,10 +15,10 @@ export const exportToExcel = async (data, headers, mapper, filename) => {
   worksheet.addRow(headerLabels);
 
   data.forEach(row => {
-    const rowData = headerKeys.map(key => {
-      let val = mapper ? mapper(row, key) : row[key];
-      if (val === null || val === undefined) val = '';
-      if (typeof val === 'object') val = JSON.stringify(val);
+    let rowData = mapper ? mapper(row) : headers.map(h => row[h.key || h]);
+    rowData = rowData.map(val => {
+      if (val === null || val === undefined) return '';
+      if (typeof val === 'object' && !(val instanceof Date)) return JSON.stringify(val);
       return val;
     });
     worksheet.addRow(rowData);
@@ -31,17 +30,15 @@ export const exportToExcel = async (data, headers, mapper, filename) => {
 };
 
 export const exportToPDF = (elementId, filename) => {
-  // Simple print fallback
   window.print();
 };
 
-export const exportTableToPDF = async (title, headers, data, filename) => {
+export const exportTableToPDF = async (title, headers, data, mapper, filename) => {
   if (!data || !data.length) return;
   
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   
-  // Setup font for company name to calculate width
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   const companyName = "Belwin Group of Company";
@@ -63,26 +60,20 @@ export const exportTableToPDF = async (title, headers, data, filename) => {
     console.warn('Could not load logo for PDF');
   }
   
-  // Center: Belwin Group of Company
   doc.text(companyName, pageWidth / 2, 15, { align: 'center' });
-  
-  // Center: Report Title
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
   doc.text(title, pageWidth / 2, 22, { align: 'center' });
-
-  // Left: Date
   doc.setFontSize(9);
   doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
 
   const headerLabels = headers.map(h => h.label || h);
-  const headerKeys = headers.map(h => h.key || h);
 
   const tableData = data.map(row => {
-    return headerKeys.map(key => {
-      let val = row[key];
-      if (val === null || val === undefined) val = '';
-      if (typeof val === 'object') val = JSON.stringify(val);
+    let rowData = mapper ? mapper(row) : headers.map(h => row[h.key || h]);
+    return rowData.map(val => {
+      if (val === null || val === undefined) return '';
+      if (typeof val === 'object' && !(val instanceof Date)) return JSON.stringify(val);
       return val;
     });
   });
@@ -93,7 +84,7 @@ export const exportTableToPDF = async (title, headers, data, filename) => {
     startY: 35,
     theme: 'grid',
     styles: { fontSize: 8 },
-    headStyles: { fillColor: [22, 163, 74] } // Green accent matching Belwin UI
+    headStyles: { fillColor: [22, 163, 74] }
   });
 
   doc.save(`${filename || 'Export'}_${new Date().toISOString().split('T')[0]}.pdf`);

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Plus, Search, Download, ArrowLeft, Trash2, Edit3 } from 'lucide-react';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -124,7 +123,7 @@ const ReceiveVoucher = () => {
           <div><h1 className="text-2xl font-bold text-gray-900">{editingVoucher ? 'Edit Receive Voucher' : 'New Receive Voucher'}</h1></div>
         </div>
 
-        <Card className="p-8 shadow-lg border border-gray-100">
+        <div className="">
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Voucher No" required disabled value={formData.voucherNo} onChange={(e) => setFormData({ ...formData, voucherNo: e.target.value })} />
@@ -154,7 +153,7 @@ const ReceiveVoucher = () => {
               <Button type="submit" variant="primary" loading={loading} className="px-8 py-2.5 shadow-md">Save Voucher</Button>
             </div>
           </form>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -162,12 +161,12 @@ const ReceiveVoucher = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 animate-fade-in">
       <PageHeader title="Receive Voucher Entry" subtitle="Record receipts from customers or others." icon={Download} actions={<Button onClick={handleOpenAdd} icon={Plus} variant="primary">Add Receipt</Button>} />
-      <Card className="p-4 mb-6 shadow-sm border border-gray-100">
+      <div className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><Search size={16} /></span>
           <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by ID, Name or Phone Number..." className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" />
         </div>
-      </Card>
+      </div>
       <DataTable
         headers={['Voucher No', 'Date', 'Received From', 'Ledger', 'Mode', 'Amount', 'Actions']}
         data={filtered}

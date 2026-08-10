@@ -3,7 +3,6 @@ import { ShieldCheck, Search, ShieldAlert, Award, Calendar, ChevronRight } from 
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
 import { TD, TR } from '../../../components/ui/Table';

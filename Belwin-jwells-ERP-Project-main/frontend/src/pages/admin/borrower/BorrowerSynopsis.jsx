@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Search, FileSearch, User, CreditCard, DollarSign, Activity, FileText } from 'lucide-react';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
 
@@ -96,7 +95,7 @@ const BorrowerSynopsis = () => {
         
         {/* Borrower search sidebar */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-5">
+          <div className="p-5">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Select Borrower</h4>
             
             <div className="relative">
@@ -148,7 +147,7 @@ const BorrowerSynopsis = () => {
                 Select a borrower to retrieve records.
               </div>
             )}
-          </Card>
+          </div>
         </div>
 
         {/* Synopsis details panel */}
@@ -158,7 +157,7 @@ const BorrowerSynopsis = () => {
               
               {/* Financial KPI stats */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="p-5 flex items-center gap-4 border border-gray-100 shadow-sm">
+                <div className="p-5 flex items-center gap-4 border border-gray-100 shadow-sm">
                   <div className="w-10 h-10 rounded-none bg-blue-50 text-blue-600 flex items-center justify-center">
                     <Activity size={20} />
                   </div>
@@ -166,9 +165,9 @@ const BorrowerSynopsis = () => {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Loans</p>
                     <h3 className="text-xl font-bold text-gray-900">{activeLoans} Accounts</h3>
                   </div>
-                </Card>
+                </div>
 
-                <Card className="p-5 flex items-center gap-4 border border-gray-100 shadow-sm">
+                <div className="p-5 flex items-center gap-4 border border-gray-100 shadow-sm">
                   <div className="w-10 h-10 rounded-none bg-green-50 text-green-600 flex items-center justify-center">
                     <CreditCard size={20} />
                   </div>
@@ -176,9 +175,9 @@ const BorrowerSynopsis = () => {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Borrowed</p>
                     <h3 className="text-xl font-bold text-gray-900">₹{totalLoanAmount.toLocaleString('en-IN')}</h3>
                   </div>
-                </Card>
+                </div>
 
-                <Card className="p-5 flex items-center gap-4 border border-gray-100 shadow-sm">
+                <div className="p-5 flex items-center gap-4 border border-gray-100 shadow-sm">
                   <div className="w-10 h-10 rounded-none bg-red-50 text-red-600 flex items-center justify-center">
                     <DollarSign size={20} />
                   </div>
@@ -186,11 +185,11 @@ const BorrowerSynopsis = () => {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Outstanding Balance</p>
                     <h3 className="text-xl font-bold text-red-600">₹{outstandingBalance.toLocaleString('en-IN')}</h3>
                   </div>
-                </Card>
+                </div>
               </div>
 
               {/* Profile Details Sheet */}
-              <Card className="p-6">
+              <div className="p-6">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-5 pb-2 border-b border-gray-50">Profile Summary</h4>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm font-medium">
@@ -235,17 +234,17 @@ const BorrowerSynopsis = () => {
                     {selectedBorrower.permanentAddress || selectedBorrower.address || 'NO PERMANENT ADDRESS ON RECORD'}
                   </p>
                 </div>
-              </Card>
+              </div>
 
             </div>
           ) : (
-            <Card className="p-12 text-center flex flex-col items-center justify-center gap-3">
+            <div className="p-12 text-center flex flex-col items-center justify-center gap-3">
               <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center text-green-600">
                 <FileSearch size={32} />
               </div>
               <h3 className="font-bold text-gray-900">Borrower Synopsis Overview</h3>
               <p className="text-xs text-gray-500 max-w-sm font-medium">Select a borrower on the left panel to load their credit score, address records, active loans count, and total outstanding balances.</p>
-            </Card>
+            </div>
           )}
         </div>
 

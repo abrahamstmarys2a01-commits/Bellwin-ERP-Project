@@ -3,7 +3,6 @@ import { ShieldAlert, Search, ShieldCheck, UserCheck, Calendar, Lock, Unlock } f
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
@@ -127,7 +126,7 @@ const BorrowerBlock = () => {
         
         {/* Borrower search sidebar */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-5">
+          <div className="p-5">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Find Borrower</h4>
             
             <div className="space-y-3">
@@ -221,12 +220,12 @@ const BorrowerBlock = () => {
                 Select a borrower to adjust block status.
               </div>
             )}
-          </Card>
+          </div>
         </div>
 
         {/* Blocking form */}
         <div className="lg:col-span-2">
-          <Card className="p-6">
+          <div className="p-6">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">Block / Unblock Action Form</h4>
             
             {selectedBorrower ? (
@@ -304,7 +303,7 @@ const BorrowerBlock = () => {
                 No borrower selected. Select a borrower on the left panel to configure block list settings.
               </div>
             )}
-          </Card>
+          </div>
         </div>
 
       </div>

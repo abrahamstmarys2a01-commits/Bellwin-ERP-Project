@@ -3,7 +3,6 @@ import { Search, FileText, Download, Printer, RefreshCw, ArrowDownLeft, ArrowUpR
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -97,7 +96,7 @@ const BankBook = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <Input label="From Date" type="date" value={filters.fromDate} onChange={e => setFilters({...filters, fromDate: e.target.value})} />
           <Input label="To Date" type="date" value={filters.toDate} onChange={e => setFilters({...filters, toDate: e.target.value})} />
@@ -118,10 +117,10 @@ const BankBook = () => {
              <Button type="submit" variant="primary" icon={Search}>Search</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Landmark size={24} />
           </div>
@@ -129,8 +128,8 @@ const BankBook = () => {
             <p className="text-sm font-medium text-gray-500">Opening Balance</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.openingBalance}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-green-100 bg-green-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-green-100 bg-green-50/50">
           <div className="p-3 rounded-none bg-green-100 text-green-600 mr-4">
             <ArrowDownLeft size={24} />
           </div>
@@ -138,8 +137,8 @@ const BankBook = () => {
             <p className="text-sm font-medium text-gray-500">Total Deposit</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.totalDeposit}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-red-100 bg-red-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-red-100 bg-red-50/50">
           <div className="p-3 rounded-none bg-red-100 text-red-600 mr-4">
             <ArrowUpRight size={24} />
           </div>
@@ -147,8 +146,8 @@ const BankBook = () => {
             <p className="text-sm font-medium text-gray-500">Total Withdrawal</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.totalWithdrawal}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-purple-100 bg-purple-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-purple-100 bg-purple-50/50">
           <div className="p-3 rounded-none bg-purple-100 text-purple-600 mr-4">
             <CheckCircle size={24} />
           </div>
@@ -156,7 +155,7 @@ const BankBook = () => {
             <p className="text-sm font-medium text-gray-500">Closing Balance</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.closingBalance}</p>
           </div>
-        </Card>
+        </div>
       </div>
 
       <DataTable

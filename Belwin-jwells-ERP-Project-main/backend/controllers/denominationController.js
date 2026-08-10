@@ -27,7 +27,7 @@ const createDenomination = async (req, res, next) => {
   try {
     const {
       denominationId, entryDate, cashInHandTotal,
-      notes500, notes200, notes100, notes50, notes20, notes10, coinsTotal,
+      notes500, notes200, notes100, notes50, notes20, notes10, notes5, notes2, notes1, coinsTotal,
       enteredBy, verifiedBy, verifiedTime, remarks
     } = req.body;
 
@@ -39,6 +39,9 @@ const createDenomination = async (req, res, next) => {
       (Number(notes50) || 0) * 50 +
       (Number(notes20) || 0) * 20 +
       (Number(notes10) || 0) * 10 +
+      (Number(notes5) || 0) * 5 +
+      (Number(notes2) || 0) * 2 +
+      (Number(notes1) || 0) * 1 +
       (Number(coinsTotal) || 0);
 
     const denomExists = await Denomination.findOne({ denominationId });
@@ -48,7 +51,7 @@ const createDenomination = async (req, res, next) => {
 
     const denomination = await Denomination.create({
       denominationId, entryDate, cashInHandTotal,
-      notes500, notes200, notes100, notes50, notes20, notes10, coinsTotal,
+      notes500, notes200, notes100, notes50, notes20, notes10, notes5, notes2, notes1, coinsTotal,
       grandTotal, enteredBy, verifiedBy, verifiedTime, remarks
     });
 
@@ -100,6 +103,9 @@ const updateDenomination = async (req, res, next) => {
         (Number(updateData.notes50) || 0) * 50 +
         (Number(updateData.notes20) || 0) * 20 +
         (Number(updateData.notes10) || 0) * 10 +
+        (Number(updateData.notes5) || 0) * 5 +
+        (Number(updateData.notes2) || 0) * 2 +
+        (Number(updateData.notes1) || 0) * 1 +
         (Number(updateData.coinsTotal) || 0);
     }
 

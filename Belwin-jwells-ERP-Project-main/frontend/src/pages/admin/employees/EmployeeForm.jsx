@@ -6,7 +6,6 @@ import {
   User, Briefcase, MapPin, Shield, Camera, Info, RefreshCw, CheckCircle2
 } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -308,7 +307,7 @@ const EmployeeForm = () => {
             <div className="lg:col-span-8 space-y-8">
               
               {/* Personal Info */}
-              <Card className="p-8 hover:shadow-md transition-shadow duration-300">
+              <div className="p-8 hover:shadow-md transition-shadow duration-300">
                 <SectionHeader 
                   icon={User} 
                   title="Personal Information" 
@@ -328,10 +327,10 @@ const EmployeeForm = () => {
                   <Input label="Mobile Number" name="mobile" value={formData.mobile} onChange={handleChange} required maxLength={10} />
                   <Input label="Email Address" type="email" name="email" value={formData.email} onChange={handleChange} required />
                 </div>
-              </Card>
+              </div>
 
               {/* Employment Info */}
-              <Card className="p-8 hover:shadow-md transition-shadow duration-300">
+              <div className="p-8 hover:shadow-md transition-shadow duration-300">
                 <SectionHeader 
                   icon={Briefcase} 
                   title="Employment Information" 
@@ -359,10 +358,10 @@ const EmployeeForm = () => {
                     <option value="Terminated">Terminated</option>
                   </Select>
                 </div>
-              </Card>
+              </div>
 
               {/* Address & KYC Info */}
-              <Card className="p-8 hover:shadow-md transition-shadow duration-300">
+              <div className="p-8 hover:shadow-md transition-shadow duration-300">
                 <SectionHeader 
                   icon={MapPin} 
                   title="Address & KYC Information" 
@@ -376,10 +375,10 @@ const EmployeeForm = () => {
                   <Input label="Account No" name="accountNo" value={formData.accountNo} onChange={handleChange} />
                   <Input label="IFSC Code" name="ifscCode" value={formData.ifscCode} onChange={handleChange} />
                 </div>
-              </Card>
+              </div>
 
               {/* Account Info */}
-              <Card className="p-8 hover:shadow-md transition-shadow duration-300">
+              <div className="p-8 hover:shadow-md transition-shadow duration-300">
                 <SectionHeader 
                   icon={Shield} 
                   title="System Login Information" 
@@ -393,7 +392,7 @@ const EmployeeForm = () => {
                     </div>
                   )}
                 </div>
-              </Card>
+              </div>
 
             </div>
 
@@ -402,7 +401,7 @@ const EmployeeForm = () => {
               <div className="sticky top-6 space-y-6">
                 
                 {/* Photo Upload */}
-                <Card className="p-6">
+                <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Camera className="text-gray-400" size={18} />
                     <h3 className="font-bold text-gray-900">Profile Photo</h3>
@@ -456,10 +455,10 @@ const EmployeeForm = () => {
                       Supported formats: PNG, JPG, JPEG.<br/>Maximum size: 2MB.
                     </p>
                   </div>
-                </Card>
+                </div>
 
                 {/* Signature Upload */}
-                <Card className="p-6">
+                <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Upload className="text-gray-400" size={18} />
                     <h3 className="font-bold text-gray-900">Digital Signature</h3>
@@ -504,10 +503,10 @@ const EmployeeForm = () => {
                   </div>
                   
                   <input type="file" ref={signatureInputRef} onChange={handleSignatureChange} className="hidden" accept="image/png, image/jpeg, image/jpg" />
-                </Card>
+                </div>
 
                 {/* Status Summary */}
-                <Card className="p-6">
+                <div className="p-6">
                   <h3 className="font-bold text-gray-900 mb-5">Profile Summary</h3>
                   
                   <div className="space-y-4">
@@ -540,7 +539,7 @@ const EmployeeForm = () => {
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
                 
 
 

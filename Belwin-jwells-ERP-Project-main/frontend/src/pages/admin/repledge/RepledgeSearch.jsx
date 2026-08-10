@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import { Search, Search as SearchIcon, FileText, Download, RefreshCw, Eye, Edit, Printer } from 'lucide-react';
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -118,7 +117,7 @@ const RepledgeSearch = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <Input 
             label="Loan Number" 
@@ -179,9 +178,9 @@ const RepledgeSearch = () => {
              <Button type="submit" variant="primary" icon={Search}>Search</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
-      <Card className="shadow-sm border border-gray-100 overflow-hidden">
+      <div className="shadow-sm border border-gray-100 overflow-hidden">
         <DataTable
           headers={['Repledge ID', 'Loan Number', 'Borrower', 'Date', 'Loan Amt', 'Outstanding', 'Status', 'Actions']}
           data={data}
@@ -219,7 +218,7 @@ const RepledgeSearch = () => {
             </TR>
           )}
         />
-      </Card>
+      </div>
     </div>
   );
 };

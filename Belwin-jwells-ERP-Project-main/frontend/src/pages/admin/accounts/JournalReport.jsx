@@ -3,7 +3,6 @@ import { Search, FileText, Filter, Download, Printer } from 'lucide-react';
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -78,7 +77,7 @@ const JournalReport = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleFilter} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 items-end">
           <Input label="From Date" type="date" value={filters.fromDate} onChange={e => setFilters({...filters, fromDate: e.target.value})} />
           <Input label="To Date" type="date" value={filters.toDate} onChange={e => setFilters({...filters, toDate: e.target.value})} />
@@ -92,7 +91,7 @@ const JournalReport = () => {
              <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
       <DataTable
         headers={['Journal No', 'Date', 'Debit Ledger', 'Credit Ledger', 'Amount', 'Narration']}

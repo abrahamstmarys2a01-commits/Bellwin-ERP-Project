@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Download, Printer, FileText } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
 import { TD, TR } from '../../../components/ui/Table';
@@ -75,7 +74,7 @@ const GoldLoanAuctionReport = () => {
         }
       />
       
-      <Card className="shadow-sm border border-gray-100 rounded-none">
+      <div className="shadow-sm border border-gray-100 rounded-none">
         {/* Toolbar */}
         <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
           <div className="relative w-64">
@@ -136,7 +135,7 @@ const GoldLoanAuctionReport = () => {
             <button className="px-3 py-1 bg-white border border-gray-300 text-xs text-gray-600 hover:bg-gray-50 rounded-none">Next</button>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

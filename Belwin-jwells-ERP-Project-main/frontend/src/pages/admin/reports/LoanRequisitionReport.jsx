@@ -4,7 +4,6 @@ import { FileText, Filter, Download, Eye, X, CheckCircle, Printer } from 'lucide
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -107,7 +106,7 @@ const LoanRequisitionReport = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleFilter} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <Input label="Customer ID" value={filters.customerId} onChange={e => setFilters({...filters, customerId: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
           <Input label="Borrower Name" value={filters.borrowerName} onChange={e => setFilters({...filters, borrowerName: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
@@ -119,7 +118,7 @@ const LoanRequisitionReport = () => {
             <option value="Rejected">Rejected</option>
           </Select>
         </form>
-      </Card>
+      </div>
 
       <DataTable
         headers={['Application No', 'Borrower', 'Phone Number', 'Loan Type', 'Requested Amount', 'Applied Date', 'Status', 'Action']}

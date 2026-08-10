@@ -3,7 +3,6 @@ import { Search, FileText, Filter, Download, Printer } from 'lucide-react';
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -77,7 +76,7 @@ const LedgerReport = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleFilter} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <Input label="Ledger Name" value={filters.ledgerName} onChange={e => setFilters({...filters, ledgerName: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
           <Select label="Branch" value={filters.branch} onChange={e => setFilters({...filters, branch: e.target.value})}>
@@ -91,7 +90,7 @@ const LedgerReport = () => {
              <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
       <DataTable
         headers={['Date', 'Voucher No', 'Particulars', 'Debit (Dr)', 'Credit (Cr)', 'Balance']}

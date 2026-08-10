@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search, Printer, FileText, CheckCircle, AlertCircle } from 'lucide-react';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
-import Card from '../../components/ui/Card';
 import api from '../../services/api';
 import { toast } from 'react-hot-toast';
 import logo from '../../assets/Logo 1.png';
@@ -49,7 +48,7 @@ const LoanClosure = () => {
           <h1 className="text-2xl font-bold text-gray-800">Loan Closure NOC</h1>
         </div>
 
-        <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+        <div className="mb-6">
           <form onSubmit={handleSearch} className="flex gap-4 items-end">
             <div className="flex-1">
               <Input
@@ -64,7 +63,7 @@ const LoanClosure = () => {
               {loading ? 'Searching...' : 'Search Loan'}
             </Button>
           </form>
-        </Card>
+        </div>
       </div>
 
       {loan && (

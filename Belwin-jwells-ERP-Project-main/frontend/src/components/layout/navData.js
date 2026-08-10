@@ -181,7 +181,27 @@ export const ADMIN_NAV = [
       { label: 'Two Wheeler Loan', icon: Car, path: '/admin/loan-schemes/two-wheeler' },
     ]
   },
-  // { id: 'access_control', label: 'Access and Control', icon: Shield, path: '/admin/roles' },
+  {
+    id: 'remittance', label: 'Remittance', icon: ArrowRightLeft,
+    children: [
+      { label: 'Add Remittance', icon: Plus, path: '/admin/remittance/add' },
+      { label: 'Remittance History', icon: History, path: '/admin/remittance/history' },
+    ]
+  },
+  {
+    id: 'customer_call', label: 'Customer Call', icon: PhoneCall,
+    children: [
+      { label: 'Add Followup', icon: PhoneForwarded, path: '/admin/customer-call/add' },
+      { label: 'Call Report', icon: FileText, path: '/admin/customer-call/report' },
+    ]
+  },
+  {
+    id: 'gold_stock', label: 'Gold Stock', icon: Diamond,
+    children: [
+      { label: 'Send Request', icon: Send, path: '/admin/gold-stock/send-request' },
+      { label: 'Gold Stock Report', icon: FileText, path: '/admin/gold-stock/report' },
+    ]
+  },
   {
     id: 'denomination', label: 'Denomination', icon: Banknote, path: '/admin/denomination'
   }

@@ -5,6 +5,7 @@ import api from '../../services/api';
 
 const Denomination = () => {
   const [denominationId, setDenominationId] = useState('');
+  const [actionType, setActionType] = useState('save');
   
   const [formData, setFormData] = useState({
     entryDate: new Date().toISOString().split('T')[0],
@@ -15,6 +16,9 @@ const Denomination = () => {
     count50: '',
     count20: '',
     count10: '',
+    count5: '',
+    count2: '',
+    count1: '',
     coinsTotal: '',
     enteredBy: '',
     verifiedBy: '',
@@ -45,6 +49,9 @@ const Denomination = () => {
       (Number(formData.count50) || 0) * 50 +
       (Number(formData.count20) || 0) * 20 +
       (Number(formData.count10) || 0) * 10 +
+      (Number(formData.count5) || 0) * 5 +
+      (Number(formData.count2) || 0) * 2 +
+      (Number(formData.count1) || 0) * 1 +
       (Number(formData.coinsTotal) || 0);
     
     setGrandTotal(calcTotal);
@@ -56,6 +63,12 @@ const Denomination = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    
+    if (grandTotal <= 0) {
+      toast.error('Please enter at least one denomination amount.');
+      return;
+    }
+
     try {
       const payload = {
         denominationId,
@@ -67,6 +80,9 @@ const Denomination = () => {
         notes50: Number(formData.count50) || 0,
         notes20: Number(formData.count20) || 0,
         notes10: Number(formData.count10) || 0,
+        notes5: Number(formData.count5) || 0,
+        notes2: Number(formData.count2) || 0,
+        notes1: Number(formData.count1) || 0,
         coinsTotal: Number(formData.coinsTotal) || 0,
         enteredBy: formData.enteredBy,
         verifiedBy: formData.verifiedBy,
@@ -77,23 +93,30 @@ const Denomination = () => {
       await api.post('/denominations', payload);
       toast.success('Denomination details saved successfully!');
       
-      // Fetch new ID and reset form
-      fetchNextId();
-      setFormData(prev => ({
-        ...prev,
-        systemCash: 0,
-        count500: '',
-        count200: '',
-        count100: '',
-        count50: '',
-        count20: '',
-        count10: '',
-        coinsTotal: '',
-        enteredBy: '',
-        verifiedBy: '',
-        verifiedTime: '',
-        remarks: ''
-      }));
+      if (actionType === 'saveAndClose') {
+        window.history.back();
+      } else {
+        // Fetch new ID and reset form
+        fetchNextId();
+        setFormData(prev => ({
+          ...prev,
+          systemCash: 0,
+          count500: '',
+          count200: '',
+          count100: '',
+          count50: '',
+          count20: '',
+          count10: '',
+          count5: '',
+          count2: '',
+          count1: '',
+          coinsTotal: '',
+          enteredBy: '',
+          verifiedBy: '',
+          verifiedTime: '',
+          remarks: ''
+        }));
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to save denomination details.');
       console.error(err);
@@ -158,7 +181,10 @@ const Denomination = () => {
               {label: '₹100 x', name: 'count100'}, 
               {label: '₹50 x', name: 'count50'}, 
               {label: '₹20 x', name: 'count20'}, 
-              {label: '₹10 x', name: 'count10'}].map(item => (
+              {label: '₹10 x', name: 'count10'},
+              {label: '₹5 x', name: 'count5'},
+              {label: '₹2 x', name: 'count2'},
+              {label: '₹1 x', name: 'count1'}].map(item => (
               <div key={item.name} className="flex items-center gap-3">
                 <label className="text-sm font-bold text-gray-700 w-16 text-right whitespace-nowrap">{item.label}</label>
                 <input 
@@ -255,10 +281,18 @@ const Denomination = () => {
             Cancel
           </button>
           <button 
+            type="submit"
+            onClick={() => setActionType('save')}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-none shadow-sm transition-colors"
+          >
+            Save
+          </button>
+          <button 
             type="submit" 
+            onClick={() => setActionType('saveAndClose')}
             className="px-6 py-2 bg-erp-green hover:bg-green-700 text-white text-sm font-bold rounded-none shadow-sm transition-colors"
           >
-            Save Denomination
+            Save & Close
           </button>
         </div>
 

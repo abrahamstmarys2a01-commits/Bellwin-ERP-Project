@@ -3,7 +3,6 @@ import { User, Save, RefreshCw, Upload, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -187,7 +186,7 @@ const NewBorrower = () => {
       />
 
       <div className="w-full">
-        <Card className="p-6">
+        
           <form onSubmit={handleSubmit} className="space-y-6">
             
             {/* Form Grid */}
@@ -484,7 +483,7 @@ const NewBorrower = () => {
               </div>
 
             </form>
-          </Card>
+         
       </div>
     </div>
   );

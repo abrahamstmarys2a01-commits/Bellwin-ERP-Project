@@ -61,6 +61,7 @@ const ledgerRoutes = require('./routes/accounts/ledgerRoutes');
 const schemeAllocationRoutes = require('./routes/schemeAllocationRoutes');
 const chittyGroupRoutes = require('./routes/chittyGroupRoutes');
 
+
 app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/customers', customerRoutes);
@@ -78,6 +79,7 @@ app.use('/api/incomes', incomeRoutes);
 app.use('/api/denominations', denominationRoutes);
 app.use('/api/followups', followupRoutes);
 app.use('/api/remittances', remittanceRoutes);
+// trigger nodemon restart
 app.use('/api/gold-stocks', goldStockRoutes);
 app.use('/api/gold-requests', goldRequestRoutes);
 app.use('/api/calls', callLogRoutes);

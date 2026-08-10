@@ -3,7 +3,6 @@ import { Search, FileText, Download, Printer, RefreshCw, Landmark, Activity, Lay
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -124,7 +123,7 @@ const TrialBalance = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100 print:hidden">
+      <div className="mb-6 print:hidden">
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 items-end">
           <Input label="From Date" type="date" value={filters.fromDate} onChange={e => setFilters({...filters, fromDate: e.target.value})} />
           <Input label="To Date" type="date" value={filters.toDate} onChange={e => setFilters({...filters, toDate: e.target.value})} />
@@ -145,10 +144,10 @@ const TrialBalance = () => {
              <Button type="submit" variant="primary">Search</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Activity size={24} />
           </div>
@@ -156,8 +155,8 @@ const TrialBalance = () => {
             <p className="text-sm font-medium text-gray-500">Total Debit</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.totalDebit.toLocaleString()}</p>
           </div>
-        </Card>
-        <Card className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        </div>
+        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Layers size={24} />
           </div>
@@ -165,8 +164,8 @@ const TrialBalance = () => {
             <p className="text-sm font-medium text-gray-500">Total Credit</p>
             <p className="text-xl font-bold text-gray-800">₹{summary.totalCredit.toLocaleString()}</p>
           </div>
-        </Card>
-        <Card className={`p-4 flex items-center border ${isBalanced ? 'border-gray-100 bg-gray-50' : 'border-orange-100 bg-orange-50/50'}`}>
+        </div>
+        <div className={`p-4 flex items-center border ${isBalanced ? 'border-gray-100 bg-gray-50' : 'border-orange-100 bg-orange-50/50'}`}>
           <div className={`p-3 rounded-none mr-4 ${isBalanced ? 'bg-gray-200 text-gray-600' : 'bg-orange-100 text-orange-600'}`}>
             <Landmark size={24} />
           </div>
@@ -174,8 +173,8 @@ const TrialBalance = () => {
             <p className="text-sm font-medium text-gray-500">Difference</p>
             <p className={`text-xl font-bold ${isBalanced ? 'text-gray-800' : 'text-orange-600'}`}>₹{summary.difference.toLocaleString()}</p>
           </div>
-        </Card>
-        <Card className={`p-4 flex items-center border ${isBalanced ? 'border-green-100 bg-green-50/50' : 'border-red-100 bg-red-50/50'}`}>
+        </div>
+        <div className={`p-4 flex items-center border ${isBalanced ? 'border-green-100 bg-green-50/50' : 'border-red-100 bg-red-50/50'}`}>
           <div className={`p-3 rounded-none mr-4 ${isBalanced ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
             {isBalanced ? <CheckCircle size={24} /> : <AlertCircle size={24} />}
           </div>
@@ -183,10 +182,10 @@ const TrialBalance = () => {
             <p className="text-sm font-medium text-gray-500">Status</p>
             <p className={`text-lg font-bold ${isBalanced ? 'text-green-700' : 'text-red-700'}`}>{summary.status}</p>
           </div>
-        </Card>
+        </div>
       </div>
 
-      <Card className="shadow-sm border border-gray-100 overflow-hidden">
+      <div className="shadow-sm border border-gray-100 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-500">Loading trial balance...</div>
         ) : (
@@ -242,7 +241,7 @@ const TrialBalance = () => {
             </table>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };

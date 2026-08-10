@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, Search, Calculator, ArrowLeft } from 'lucide-react';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -199,7 +198,7 @@ const LoanCalculator = () => {
           </div>
         </div>
 
-        <Card className="p-8 shadow-lg border border-gray-100">
+        <div className="">
           <form onSubmit={handleSave} className="space-y-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -306,7 +305,7 @@ const LoanCalculator = () => {
             </div>
 
           </form>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -324,7 +323,7 @@ const LoanCalculator = () => {
         }
       />
 
-      <Card className="p-4 mb-6 shadow-sm border border-gray-100">
+      <div className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
             <Search size={16} />
@@ -337,7 +336,7 @@ const LoanCalculator = () => {
             className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-none text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-gray-50"
           />
         </div>
-      </Card>
+      </div>
 
       <DataTable
         headers={[

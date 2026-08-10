@@ -3,7 +3,6 @@ import { Upload, Search, User, CheckCircle2, FileText, Calendar } from 'lucide-r
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 
@@ -139,7 +138,7 @@ const KYCUpload = () => {
         
         {/* Borrower search and select */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-5">
+          <div className="p-5">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">1. Select Borrower</h4>
             
             {/* Search query */}
@@ -195,12 +194,12 @@ const KYCUpload = () => {
                 No borrower selected yet.
               </div>
             )}
-          </Card>
+          </div>
         </div>
 
         {/* Upload form */}
         <div className="lg:col-span-2">
-          <Card className="p-6">
+          <div className="">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">2. Attach Documents</h4>
             
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -368,7 +367,7 @@ const KYCUpload = () => {
               </div>
 
             </form>
-          </Card>
+          </div>
         </div>
 
       </div>

@@ -25,7 +25,7 @@ export const TR = ({ children, className = '' }) => (
 );
 
 export const TH = ({ children, className = '' }) => (
-  <th className={`px-4 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider ${className}`}>
+  <th className={`px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider ${className}`}>
     {children}
   </th>
 );

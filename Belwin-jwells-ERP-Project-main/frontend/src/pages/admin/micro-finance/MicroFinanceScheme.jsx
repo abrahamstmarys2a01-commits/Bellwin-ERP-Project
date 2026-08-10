@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import { Settings, Percent, Clock, DollarSign } from 'lucide-react';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
@@ -47,7 +46,7 @@ const MicroFinanceScheme = () => {
       </div>
 
       {/* Tab Content */}
-      <Card className="p-6">
+      <div className="p-6">
         {activeTab === 'scheme' && (
           <div className="space-y-6 animate-fade-in">
             <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Scheme Master</h3>
@@ -140,7 +139,7 @@ const MicroFinanceScheme = () => {
             </div>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };

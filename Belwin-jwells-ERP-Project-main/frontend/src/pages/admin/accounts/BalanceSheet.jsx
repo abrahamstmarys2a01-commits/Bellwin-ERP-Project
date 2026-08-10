@@ -3,7 +3,6 @@ import { Search, Landmark, Download, Printer, RefreshCw, Layers, Activity, Alert
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -145,7 +144,7 @@ const BalanceSheet = () => {
         }
       />
       
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100 print:hidden">
+      <div className="mb-6 print:hidden">
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
           <Input label="From Date" type="date" value={filters.fromDate} onChange={e => setFilters({...filters, fromDate: e.target.value})} />
           <Input label="To Date (As Of)" type="date" value={filters.toDate} onChange={e => setFilters({...filters, toDate: e.target.value})} />
@@ -161,14 +160,14 @@ const BalanceSheet = () => {
              <Button type="submit" variant="primary">Generate</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Left Side: ASSETS */}
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-gray-800 uppercase tracking-wide border-b-2 border-green-600 pb-2 inline-block">Assets</h2>
           
-          <Card className="shadow-sm border border-gray-100">
+          <div className="shadow-sm border border-gray-100">
             {/* Current Assets */}
             <div className="p-4 bg-gray-50 border-b border-gray-100">
               <h3 className="text-sm font-bold text-gray-700 uppercase">Current Assets</h3>
@@ -200,14 +199,14 @@ const BalanceSheet = () => {
                 <span className="font-bold text-green-900 text-lg">₹{summary.totalAssets.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
-          </Card>
+          </div>
         </div>
 
         {/* Right Side: LIABILITIES & CAPITAL */}
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-gray-800 uppercase tracking-wide border-b-2 border-blue-600 pb-2 inline-block">Liabilities & Capital</h2>
           
-          <Card className="shadow-sm border border-gray-100">
+          <div className="shadow-sm border border-gray-100">
             {/* Capital & Reserves */}
             <div className="p-4 bg-gray-50 border-b border-gray-100">
               <h3 className="text-sm font-bold text-gray-700 uppercase">Capital Account</h3>
@@ -263,12 +262,12 @@ const BalanceSheet = () => {
                 <span className="font-bold text-blue-900 text-lg">₹{summary.totalLiabilitiesAndCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
 
       {/* Validation Summary Card */}
-      <Card className={`p-6 flex flex-col md:flex-row items-center justify-between border-2 ${isBalanced ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+      <div className={`p-6 flex flex-col md:flex-row items-center justify-between border-2 ${isBalanced ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
         <div className="flex items-center gap-4 mb-4 md:mb-0">
           <div className={`p-4 rounded-full ${isBalanced ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
             {isBalanced ? <CheckCircle size={32} /> : <AlertCircle size={32} />}
@@ -292,7 +291,7 @@ const BalanceSheet = () => {
             <p className="text-xl font-bold text-gray-900">₹{summary.totalLiabilitiesAndCapital.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

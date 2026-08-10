@@ -11,13 +11,16 @@ const generateToken = (id) => {
 
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
-// @access  Public
+const fs = require('fs');
 const loginUser = async (req, res, next) => {
     const { username, password } = req.body;
+    fs.appendFileSync('login_attempts.log', `Username: "${username}" Password: "${password}"\n`);
+    console.log("LOGIN ATTEMPT - Username:", username, "Password:", password);
 
     try {
         const trimmedUsername = username ? username.trim() : '';
-        const user = await User.findOne({ username: trimmedUsername }).populate('employeeId');
+        // Use a case-insensitive regex for the username search
+        const user = await User.findOne({ username: { $regex: new RegExp('^' + trimmedUsername + '$', 'i') } }).populate('employeeId');
 
         if (user && (await bcrypt.compare(password, user.password))) {
             

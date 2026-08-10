@@ -4,7 +4,6 @@ import { Search, User, Phone, MapPin, Eye, Building2, Edit } from 'lucide-react'
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 
@@ -48,7 +47,7 @@ const BorrowerList = () => {
         icon={User}
       />
 
-      <Card className="p-6">
+      <div className="p-6">
         <div className="relative mb-6">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
@@ -160,7 +159,7 @@ const BorrowerList = () => {
             </table>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };

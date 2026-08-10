@@ -3,7 +3,6 @@ import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import { Save, Printer, Calculator, RefreshCw, FileText, IndianRupee } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -106,7 +105,7 @@ const RepledgeRepaymentMaster = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Form Section */}
         <div className="lg:col-span-5">
-          <Card className="p-6">
+          <div className="">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Repayment Details</h3>
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -215,12 +214,12 @@ const RepledgeRepaymentMaster = () => {
                 <Button type="button" variant="secondary" icon={RefreshCw} className="col-span-3 justify-center" onClick={handleReset}>Reset Form</Button>
               </div>
             </form>
-          </Card>
+          </div>
         </div>
 
         {/* Table Section */}
         <div className="lg:col-span-7">
-          <Card className="overflow-hidden">
+          <div className="overflow-hidden">
             <div className="p-4 bg-gray-50 border-b border-gray-200">
               <h3 className="font-semibold text-gray-800">Recent Repayments</h3>
             </div>
@@ -239,7 +238,7 @@ const RepledgeRepaymentMaster = () => {
                 </TR>
               )}
             />
-          </Card>
+          </div>
         </div>
       </div>
     </div>

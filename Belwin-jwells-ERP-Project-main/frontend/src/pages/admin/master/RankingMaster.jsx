@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { Award, Search } from 'lucide-react';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import DataTable from '../../../components/ui/DataTable';
 import { TD, TR } from '../../../components/ui/Table';
 import toast from 'react-hot-toast';
@@ -64,7 +63,7 @@ const RankingMaster = () => {
         icon={Award} 
       />
       
-      <Card className="p-4 mb-6 shadow-sm border border-gray-100">
+      <div className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
             <Search size={16} />
@@ -77,7 +76,7 @@ const RankingMaster = () => {
             className="w-full pl-9 pr-4 py-2 border rounded-none text-sm focus:outline-none" 
           />
         </div>
-      </Card>
+      </div>
       
       <DataTable
         headers={['Rank', 'Branch Code', 'Branch Name', 'City', 'Daily Collection']}

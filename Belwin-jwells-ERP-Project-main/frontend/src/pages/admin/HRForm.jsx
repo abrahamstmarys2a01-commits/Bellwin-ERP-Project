@@ -6,7 +6,6 @@ import {
   User, Briefcase, MapPin, Shield, Camera, CheckCircle2
 } from 'lucide-react';
 import PageHeader from '../../components/ui/PageHeader';
-import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
 import Button from '../../components/ui/Button';
@@ -152,7 +151,7 @@ const HRForm = () => {
           {/* LEFT — Photo + Basic Info */}
           <div className="lg:col-span-1 space-y-6">
             {/* Photo Upload */}
-            <Card>
+            <div>
               <div className="p-6 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
                   <Camera size={16} className="text-green-600" />
@@ -199,10 +198,10 @@ const HRForm = () => {
                   </button>
                 )}
               </div>
-            </Card>
+            </div>
 
             {/* Employee ID + Status */}
-            <Card>
+            <div>
               <div className="p-6 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-2">
                   <Shield size={16} className="text-green-600" />
@@ -226,13 +225,13 @@ const HRForm = () => {
                   ]}
                 />
               </div>
-            </Card>
+            </div>
           </div>
 
           {/* RIGHT — Form Fields */}
           <div className="lg:col-span-2 space-y-6">
             {/* Personal Information */}
-            <Card>
+            <div>
               <div className="p-6 space-y-5">
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-1">
                   <User size={16} className="text-green-600" />
@@ -253,10 +252,10 @@ const HRForm = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Address */}
-            <Card>
+            <div>
               <div className="p-6 space-y-5">
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-1">
                   <MapPin size={16} className="text-green-600" />
@@ -270,10 +269,10 @@ const HRForm = () => {
                   <Input label="State" name="state" value={formData.state} onChange={handleChange} placeholder="State" />
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Work Information */}
-            <Card>
+            <div>
               <div className="p-6 space-y-5">
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-1">
                   <Briefcase size={16} className="text-green-600" />
@@ -317,10 +316,10 @@ const HRForm = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Login Credentials */}
-            <Card>
+            <div>
               <div className="p-6 space-y-5">
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-1">
                   <Shield size={16} className="text-green-600" />
@@ -341,7 +340,7 @@ const HRForm = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Actions */}
             <div className="flex items-center justify-end gap-3 pt-2">

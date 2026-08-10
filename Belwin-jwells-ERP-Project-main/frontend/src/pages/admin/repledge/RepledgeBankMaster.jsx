@@ -3,7 +3,6 @@ import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import { Save, Edit2, Trash2, RefreshCw, Building, Edit } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -124,7 +123,7 @@ const RepledgeBankMaster = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Form Section */}
         <div className="lg:col-span-1">
-          <Card className="p-6">
+          <div className="">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Bank Information</h3>
             <form onSubmit={handleSave} className="space-y-4">
               <Input 
@@ -186,12 +185,12 @@ const RepledgeBankMaster = () => {
                 )}
               </div>
             </form>
-          </Card>
+          </div>
         </div>
 
         {/* Table Section */}
         <div className="lg:col-span-2">
-          <Card className="overflow-hidden">
+          <div className="overflow-hidden">
             <div className="p-4 bg-gray-50 border-b border-gray-200">
               <h3 className="font-semibold text-gray-800">Existing Banks</h3>
             </div>
@@ -220,7 +219,7 @@ const RepledgeBankMaster = () => {
                 </TR>
               )}
             />
-          </Card>
+          </div>
         </div>
       </div>
     </div>

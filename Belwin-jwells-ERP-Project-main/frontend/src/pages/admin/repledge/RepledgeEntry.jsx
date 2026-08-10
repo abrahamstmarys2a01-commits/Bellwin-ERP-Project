@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -121,7 +120,7 @@ export default function RepledgeEntry() {
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Loan Details */}
-        <Card title="Loan Details" icon={FileText} color="text-blue-600">
+        <div title="Loan Details" icon={FileText} color="text-blue-600">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-2">
             <Input label="Repledge ID" name="repledgeId" value={formData.repledgeId} readOnly disabled className="bg-gray-50" />
             
@@ -140,11 +139,11 @@ export default function RepledgeEntry() {
             <Input label="Branch" name="branch" value={formData.branch} onChange={handleChange} />
             <Input type="date" label="Repledge Date" name="repledgeDate" value={formData.repledgeDate} onChange={handleChange} />
           </div>
-        </Card>
+        </div>
 
         {/* Existing Loan Details & Gold Details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card title="Existing Loan Details" color="text-orange-600">
+          <div title="Existing Loan Details" color="text-orange-600">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
               <Input type="number" label="Existing Loan Amount" name="existingLoanAmount" value={formData.existingLoanAmount} onChange={handleChange} />
               <Input type="number" label="Outstanding Amount" name="outstandingAmount" value={formData.outstandingAmount} onChange={handleChange} />
@@ -157,9 +156,9 @@ export default function RepledgeEntry() {
                 { value: 'Overdue', label: 'Overdue' }
               ]} />
             </div>
-          </Card>
+          </div>
 
-          <Card title="Gold Details" color="text-yellow-600">
+          <div title="Gold Details" color="text-yellow-600">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
               <Input label="Item Name" name="itemName" value={formData.itemName} onChange={handleChange} />
               <Input type="number" label="Item Count" name="itemCount" value={formData.itemCount} onChange={handleChange} />
@@ -173,11 +172,11 @@ export default function RepledgeEntry() {
               <Input type="number" label="Current Gold Rate" name="currentGoldRate" value={formData.currentGoldRate} onChange={handleChange} />
               <Input type="number" label="Gold Value" name="goldValue" value={formData.goldValue} onChange={handleChange} className="bg-yellow-50 font-bold text-yellow-900 border-yellow-200" />
             </div>
-          </Card>
+          </div>
         </div>
 
         {/* New Loan Details */}
-        <Card title="New Loan Details" color="text-green-600">
+        <div title="New Loan Details" color="text-green-600">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-2">
             <Select label="New Loan Scheme" name="newLoanScheme" value={formData.newLoanScheme} onChange={handleChange} options={[
               { value: '', label: 'Select Scheme' },
@@ -190,10 +189,10 @@ export default function RepledgeEntry() {
             <Input type="number" label="Loan Period (Months)" name="loanPeriod" value={formData.loanPeriod} onChange={handleChange} />
             <Input type="date" label="Maturity Date" name="maturityDate" value={formData.maturityDate} onChange={handleChange} />
           </div>
-        </Card>
+        </div>
 
         {/* Payment Details */}
-        <Card title="Payment Details" color="text-indigo-600">
+        <div title="Payment Details" color="text-indigo-600">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-2">
             <Input type="number" label="Outstanding Adjusted" name="outstandingAdjusted" value={formData.outstandingAdjusted} onChange={handleChange} />
             <Input type="number" label="Cash Paid to Customer" name="cashPaidToCustomer" value={formData.cashPaidToCustomer} onChange={handleChange} />
@@ -205,11 +204,11 @@ export default function RepledgeEntry() {
             ]} />
             <Input label="Transaction Number" name="transactionNumber" value={formData.transactionNumber} onChange={handleChange} />
           </div>
-        </Card>
+        </div>
 
         {/* Approval & Status Details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card title="Approval Details" color="text-purple-600">
+          <div title="Approval Details" color="text-purple-600">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
               <Input label="Valuer Name" name="valuerName" value={formData.valuerName} onChange={handleChange} />
               <Input label="Verified By" name="verifiedBy" value={formData.verifiedBy} onChange={handleChange} />
@@ -219,10 +218,10 @@ export default function RepledgeEntry() {
                 <Input label="Remarks" name="remarks" value={formData.remarks} onChange={handleChange} />
               </div>
             </div>
-          </Card>
+          </div>
 
           <div className="space-y-6">
-            <Card title="Documents" color="text-gray-700">
+            <div title="Documents" color="text-gray-700">
               <div className="grid grid-cols-2 gap-4 p-2">
                 {[
                   { label: 'Previous Loan Document', key: 'doc1' },
@@ -236,13 +235,13 @@ export default function RepledgeEntry() {
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
 
-            <Card title="Final Status">
+            <div title="Final Status">
               <div className="p-2">
                 <Select label="Status" name="status" value={formData.status} onChange={handleChange} options={statusOptions} className="bg-indigo-50 font-bold border-indigo-200" />
               </div>
-            </Card>
+            </div>
           </div>
         </div>
 

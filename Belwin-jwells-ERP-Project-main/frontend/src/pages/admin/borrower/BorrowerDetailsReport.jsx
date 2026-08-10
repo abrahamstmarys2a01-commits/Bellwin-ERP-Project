@@ -5,7 +5,6 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
@@ -173,7 +172,7 @@ const BorrowerDetailsReport = () => {
       </div>
 
       {/* Filters (hidden on print) */}
-      <Card className="p-4 mb-6 print:hidden">
+      <div className="p-4 mb-6 print:hidden">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
           
           <div className="relative md:col-span-1">
@@ -229,7 +228,7 @@ const BorrowerDetailsReport = () => {
           </Button>
 
         </div>
-      </Card>
+      </div>
 
       {/* Report Data Table */}
       <div className="print:shadow-none print:border-none">

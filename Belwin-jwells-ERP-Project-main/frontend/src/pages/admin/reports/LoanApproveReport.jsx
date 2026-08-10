@@ -4,7 +4,6 @@ import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exp
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
@@ -61,16 +60,6 @@ const LoanApproveReport = () => {
       
       let allLoans = res.data || [];
 
-      // DEMO: Inject fake data if no real data is found
-      if (allLoans.length === 0) {
-        const today = new Date();
-        allLoans = [
-          { loanId: 'LN000601', customerName: 'Arun Kumar', loanAmount: 50000, status: 'Approved', loanDate: today, employeeName: 'Kumar', updatedAt: today },
-          { loanId: 'LN000605', customerName: 'Ramesh', loanAmount: 150000, status: 'Approved', loanDate: today, employeeName: 'Muthu', updatedAt: today },
-          { loanId: 'LN000612', customerName: 'Suresh', loanAmount: 35000, status: 'Active', loanDate: today, employeeName: 'Kumar', updatedAt: today },
-          { loanId: 'LN000620', customerName: 'Priya', loanAmount: 20000, status: 'Approved', loanDate: today, employeeName: 'Admin', updatedAt: today },
-        ];
-      }
       
       // Filter only loans that are Approved or Active (since Active means it was approved and disbursed)
       const approvedLoans = allLoans.filter(loan => 
@@ -149,21 +138,21 @@ const LoanApproveReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="p-6 border-l-4 border-l-green-500 bg-green-50 shadow-md">
+        <div className="p-6 border-l-4 border-l-green-500 bg-green-50 shadow-md">
           <h3 className="text-sm font-bold text-green-800 mb-1 drop-shadow-sm">Total Approved Loans ({filters.dateRange})</h3>
           <p className="text-3xl font-extrabold text-green-900 drop-shadow-md">{totalLoansCount}</p>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-blue-500 bg-blue-50 shadow-md">
+        </div>
+        <div className="p-6 border-l-4 border-l-blue-500 bg-blue-50 shadow-md">
           <h3 className="text-sm font-bold text-blue-800 mb-1 drop-shadow-sm">Total Approved Amount</h3>
           <p className="text-3xl font-extrabold text-blue-900 drop-shadow-md">₹{totalApprovedAmount.toLocaleString('en-IN')}</p>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
+        </div>
+        <div className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
           <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
           <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
-        </Card>
+        </div>
       </div>
 
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
           
           <div className="w-full md:w-1/3">
@@ -197,9 +186,9 @@ const LoanApproveReport = () => {
              <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
-      <Card className="shadow-sm border border-gray-100">
+      <div className="shadow-sm border border-gray-100">
         <div className="p-4 border-b border-gray-100 bg-gray-50/50">
           <h3 className="text-lg font-semibold text-gray-800">Approved Loans List</h3>
         </div>
@@ -233,7 +222,7 @@ const LoanApproveReport = () => {
             </TR>
           )}
         />
-      </Card>
+      </div>
     </div>
   );
 };

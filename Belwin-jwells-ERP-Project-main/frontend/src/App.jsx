@@ -106,6 +106,17 @@ import TopUpLoan from './pages/Provide Loan/TopUpLoan';
 import LoanClosure from './pages/Provide Loan/LoanClosure';
 import TopUpApproval from './pages/admin/TopUpApproval';
 
+// Remittance
+import AddRemittance from './pages/admin/Remmitence/AddRemittance';
+import RemittanceHistory from './pages/admin/Remmitence/RemittanceHistory';
+
+// Customer Call
+import AddFollowup from './pages/admin/Customer call/AddFollowup';
+import CallReport from './pages/admin/Customer call/CallReport';
+
+// Gold Stock
+import SendGoldRequest from './pages/Gold stock/SendGoldRequest';
+import GoldStockReport from './pages/Gold stock/GoldStockReport';
 function App() {
   return (
     <Router>
@@ -240,6 +251,18 @@ function App() {
           {/* Micro Finance Routes */}
           <Route path="/admin/micro-finance/scheme" element={<MicroFinanceScheme />} />
           <Route path="/admin/micro-finance/group-master" element={<MicroFinanceGroupMaster />} />
+          
+          {/* Remittance */}
+          <Route path="/admin/remittance/add" element={<AddRemittance />} />
+          <Route path="/admin/remittance/history" element={<RemittanceHistory />} />
+
+          {/* Customer Call */}
+          <Route path="/admin/customer-call/add" element={<AddFollowup />} />
+          <Route path="/admin/customer-call/report" element={<CallReport />} />
+
+          {/* Gold Stock */}
+          <Route path="/admin/gold-stock/send-request" element={<SendGoldRequest />} />
+          <Route path="/admin/gold-stock/report" element={<GoldStockReport />} />
         </Route>
 
       </Routes>

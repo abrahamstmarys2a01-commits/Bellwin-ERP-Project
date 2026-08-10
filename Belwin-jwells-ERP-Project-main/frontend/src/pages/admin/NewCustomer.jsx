@@ -64,7 +64,7 @@ const NewCustomer = () => {
 
       {/* Form card */}
       <div className="bg-white border border-gray-200 rounded-none shadow-sm flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 flex-1">
+        <div className="flex-1">
           <form id="new-customer-form" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
 
             {/* ── Row 1 ── */}

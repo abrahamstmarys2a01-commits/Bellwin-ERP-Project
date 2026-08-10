@@ -3,7 +3,6 @@ import { CheckCircle, XCircle, Search, FileText } from 'lucide-react';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../components/ui/PageHeader';
-import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 
 const TopUpApproval = () => {
@@ -120,22 +119,22 @@ const TopUpApproval = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-6 mb-6">
-                <Card className="p-4 shadow-sm border-gray-100">
+                <div className="p-4 shadow-sm border-gray-100">
                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Customer Details</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between"><span className="text-gray-500">Name</span><span className="font-semibold">{selectedRequest.customerName}</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">Loan ID</span><span className="font-semibold">{selectedRequest.loanId}</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">Purpose</span><span className="font-semibold">{selectedRequest.purpose}</span></div>
                   </div>
-                </Card>
-                <Card className="p-4 shadow-sm border-gray-100 bg-gray-50/50">
+                </div>
+                <div className="p-4 shadow-sm border-gray-100 bg-gray-50/50">
                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Eligibility Calculation</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between"><span className="text-gray-500">Current Outstanding</span><span className="font-semibold text-orange-600">₹{selectedRequest.oldLoanAmount.toLocaleString('en-IN')}</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">Maximum Eligible Loan</span><span className="font-semibold">₹{selectedRequest.eligibleLoanAmount.toLocaleString('en-IN')}</span></div>
                     <div className="flex justify-between pt-2 border-t border-gray-200 mt-2"><span className="font-bold text-gray-700">New Loan Amount</span><span className="font-bold text-green-700">₹{selectedRequest.newLoanAmount.toLocaleString('en-IN')}</span></div>
                   </div>
-                </Card>
+                </div>
               </div>
 
               <div className="mb-6">

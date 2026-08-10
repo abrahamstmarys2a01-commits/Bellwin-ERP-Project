@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import { Users, Search, PlusCircle, UserPlus, Shield, Activity } from 'lucide-react';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
@@ -44,7 +43,7 @@ const MicroFinanceGroupMaster = () => {
       />
 
       {/* Customer Search Section */}
-      <Card className="p-6 mb-6 mt-6 border border-green-100 shadow-sm bg-green-50/30">
+      <div className="p-6 mb-6 mt-6 border border-green-100 shadow-sm bg-green-50/30">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
           <Search size={20} className="text-green-600" />
           Customer Search
@@ -97,7 +96,7 @@ const MicroFinanceGroupMaster = () => {
             </div>
           </div>
         )}
-      </Card>
+      </div>
 
       {/* Tabs */}
       <div className="flex space-x-1 border-b border-gray-200 mt-6 mb-6 overflow-x-auto">
@@ -123,7 +122,7 @@ const MicroFinanceGroupMaster = () => {
       </div>
 
       {/* Tab Content */}
-      <Card className="p-6">
+      <div className="p-6">
         {activeTab === 'creation' && (
           <div className="space-y-6 animate-fade-in">
             <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Group Creation</h3>
@@ -231,7 +230,7 @@ const MicroFinanceGroupMaster = () => {
             </div>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exp
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
@@ -180,7 +179,7 @@ const LoanAccountLedgerNonEMI = () => {
       
       {view === 'list' && (
         <>
-          <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+          <div className="mb-6">
             <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
               
               <div className="w-full md:w-1/3">
@@ -214,9 +213,9 @@ const LoanAccountLedgerNonEMI = () => {
                  <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
               </div>
             </form>
-          </Card>
+          </div>
 
-          <Card className="shadow-sm border border-gray-100">
+          <div className="shadow-sm border border-gray-100">
             <DataTable
               headers={['Loan No', 'Borrower', 'Loan Amount', 'Outstanding', 'Status', 'Action']}
               data={data}
@@ -240,7 +239,7 @@ const LoanAccountLedgerNonEMI = () => {
                 </TR>
               )}
             />
-          </Card>
+          </div>
         </>
       )}
 
@@ -260,7 +259,7 @@ const LoanAccountLedgerNonEMI = () => {
             </div>
           </div>
 
-          <Card className="p-6 shadow-sm border border-gray-100">
+          <div className="p-6 shadow-sm border border-gray-100">
             <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Loan Summary</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div>
@@ -294,9 +293,9 @@ const LoanAccountLedgerNonEMI = () => {
                 </span>
               </div>
             </div>
-          </Card>
+          </div>
 
-          <Card className="shadow-sm border border-gray-100">
+          <div className="shadow-sm border border-gray-100">
             <div className="p-4 border-b border-gray-100 bg-gray-50/50">
               <h3 className="text-lg font-semibold text-gray-800">Ledger Statement</h3>
             </div>
@@ -321,7 +320,7 @@ const LoanAccountLedgerNonEMI = () => {
                 </TR>
               )}
             />
-          </Card>
+          </div>
         </div>
       )}
     </div>

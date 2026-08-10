@@ -4,7 +4,6 @@ import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exp
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
@@ -55,17 +54,6 @@ const LoanOutstandingReport = () => {
       
       const response = await api.get(`/reports/loan-outstanding${queryStr}`);
       let allLoans = response.data || [];
-
-      // DEMO: Inject fake data if no real data is found
-      if (allLoans.length === 0) {
-        allLoans = [
-          { loanId: 'LN000210', customerName: 'Arun Kumar', loanAmount: 100000, remainingLoanAmount: 40000, status: 'Active', branch: 'Head Office' },
-          { loanId: 'LN000215', customerName: 'Ramesh', loanAmount: 150000, remainingLoanAmount: 75000, status: 'Active', branch: 'Branch 1' },
-          { loanId: 'LN000218', customerName: 'Suresh', loanAmount: 50000, remainingLoanAmount: 15000, status: 'Active', branch: 'Head Office' },
-          { loanId: 'LN000222', customerName: 'Priya', loanAmount: 200000, remainingLoanAmount: 190000, status: 'Active', branch: 'Branch 2' },
-          { loanId: 'LN000225', customerName: 'Karthik', loanAmount: 75000, remainingLoanAmount: 12000, status: 'Active', branch: 'Branch 1' }
-        ];
-      }
 
       // Filter by branch locally if backend doesn't support branch query directly on this endpoint yet
       const filteredLoans = allLoans.filter(loan => {
@@ -144,21 +132,21 @@ const LoanOutstandingReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="p-6 border-l-4 border-l-blue-500 bg-blue-50 shadow-md">
+        <div className="p-6 border-l-4 border-l-blue-500 bg-blue-50 shadow-md">
           <h3 className="text-sm font-bold text-blue-800 mb-1 drop-shadow-sm">Total Outstanding Exposure</h3>
           <p className="text-4xl font-extrabold text-blue-900 drop-shadow-md tracking-tight">₹{totalOutstanding.toLocaleString('en-IN')}</p>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-indigo-500 bg-indigo-50 shadow-md">
+        </div>
+        <div className="p-6 border-l-4 border-l-indigo-500 bg-indigo-50 shadow-md">
           <h3 className="text-sm font-bold text-indigo-800 mb-1 drop-shadow-sm">Active Loan Accounts</h3>
           <p className="text-3xl font-extrabold text-indigo-900 drop-shadow-md">{totalLoansCount}</p>
-        </Card>
-        <Card className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
+        </div>
+        <div className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
           <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
           <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
-        </Card>
+        </div>
       </div>
 
-      <Card className="p-6 mb-6 shadow-sm border border-gray-100">
+      <div className="mb-6">
         <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
           
           <div className="w-full md:w-1/3">
@@ -192,9 +180,9 @@ const LoanOutstandingReport = () => {
              <Button type="submit" variant="primary" icon={Filter}>Apply Filters</Button>
           </div>
         </form>
-      </Card>
+      </div>
 
-      <Card className="shadow-sm border border-gray-100">
+      <div className="shadow-sm border border-gray-100">
         <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
           <h3 className="text-lg font-semibold text-gray-800">Outstanding Balances</h3>
           <span className="text-sm font-bold text-gray-600 bg-white px-3 py-1 rounded-full shadow-sm border">
@@ -220,7 +208,7 @@ const LoanOutstandingReport = () => {
             </TR>
           )}
         />
-      </Card>
+      </div>
     </div>
   );
 };

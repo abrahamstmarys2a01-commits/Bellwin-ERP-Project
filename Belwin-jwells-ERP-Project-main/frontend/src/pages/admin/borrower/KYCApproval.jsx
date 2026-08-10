@@ -3,7 +3,6 @@ import { CheckCircle, Search, Eye, ThumbsUp, ThumbsDown, ShieldCheck, ArrowLeft 
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
@@ -148,7 +147,7 @@ const KYCApproval = () => {
           </div>
         </div>
 
-        <Card className="p-8 shadow-lg border border-gray-100">
+        <div className="p-8 shadow-lg border border-gray-100">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
             {/* Borrower metadata */}
@@ -298,7 +297,7 @@ const KYCApproval = () => {
               Approve KYC
             </Button>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -312,7 +311,7 @@ const KYCApproval = () => {
       />
 
       {/* Search and Filters */}
-      <Card className="p-4 mb-6 shadow-sm border border-gray-100">
+      <div className="p-4 mb-6 shadow-sm border border-gray-100">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
@@ -338,7 +337,7 @@ const KYCApproval = () => {
             <option value="Rejected">Rejected</option>
           </Select>
         </div>
-      </Card>
+      </div>
 
       {/* Grid List Table */}
       <DataTable

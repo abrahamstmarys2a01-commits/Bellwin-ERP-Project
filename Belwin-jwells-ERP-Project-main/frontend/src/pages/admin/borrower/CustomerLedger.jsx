@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search, User, Phone, MapPin, Briefcase, IndianRupee, Calendar } from 'lucide-react';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
-import Card from '../../../components/ui/Card';
 import api from '../../../services/api';
 import { toast } from 'react-hot-toast';
 
@@ -65,7 +64,7 @@ const CustomerLedger = () => {
         <h1 className="text-2xl font-bold text-gray-800">Customer Ledger</h1>
       </div>
 
-      <Card className="p-6 mb-8 shadow-sm border border-gray-100">
+      <div className="mb-8">
         <form onSubmit={handleSearch} className="flex gap-4 items-end">
           <div className="flex-1 max-w-md">
             <Input
@@ -80,14 +79,14 @@ const CustomerLedger = () => {
             {loading ? 'Searching...' : 'Search Ledger'}
           </Button>
         </form>
-      </Card>
+      </div>
 
       {customer && (
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Left Panel: Customer Profile */}
           <div className="w-full lg:w-1/3 sticky top-6">
-            <Card className="overflow-hidden shadow-lg border border-gray-200">
+            <div className="overflow-hidden shadow-lg border border-gray-200">
               <div className="bg-gradient-to-r from-blue-600 to-indigo-700 h-32"></div>
               <div className="px-6 pb-6 relative">
                 <div className="flex justify-center -mt-16 mb-4">
@@ -136,7 +135,7 @@ const CustomerLedger = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
           </div>
 
           {/* Right Panel: Loan History */}

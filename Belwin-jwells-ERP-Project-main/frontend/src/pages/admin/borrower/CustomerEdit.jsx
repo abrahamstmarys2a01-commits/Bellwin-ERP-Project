@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, Save, Trash2, AlertTriangle, User, Upload, RefreshCw, ArrowLeft } from 'lucide-react';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
-import Card from '../../../components/ui/Card';
 import Select from '../../../components/ui/Select';
 import api from '../../../services/api';
 import { toast } from 'react-hot-toast';
@@ -274,7 +273,7 @@ const CustomerEdit = () => {
         <h1 className="text-2xl font-bold text-gray-800">Customer Edit / Delete</h1>
       </div>
 
-      <Card className="p-6 mb-8 shadow-sm border border-gray-100">
+      <div className="mb-8">
         <form onSubmit={handleSearch} className="flex gap-4 items-end">
           <div className="flex-1 max-w-md">
             <Input
@@ -289,7 +288,7 @@ const CustomerEdit = () => {
             {loading ? 'Searching...' : 'Search'}
           </Button>
         </form>
-      </Card>
+      </div>
 
       {customer && (
         <>
@@ -317,7 +316,7 @@ const CustomerEdit = () => {
           
           {/* Left Column: Photo Upload card */}
           <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-6">
-            <Card className="p-6 text-center">
+            <div className="p-6 text-center">
               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Customer Photo</h4>
               <div className="flex flex-col items-center gap-4">
                 <div className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 relative group">
@@ -346,9 +345,9 @@ const CustomerEdit = () => {
                   Change Photo
                 </Button>
               </div>
-            </Card>
+            </div>
 
-            <Card className="p-6 text-center">
+            <div className="p-6 text-center">
                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Danger Zone</h4>
                <Button 
                 type="button" 
@@ -359,12 +358,12 @@ const CustomerEdit = () => {
                 <Trash2 size={20} />
                 Delete Customer
               </Button>
-            </Card>
+            </div>
           </div>
 
           {/* Right Column: Form Inputs */}
           <div className="lg:col-span-3 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto custom-scrollbar lg:pr-3">
-            <Card className="p-6">
+            <div className="p-6">
               <div className="flex justify-between items-center mb-6 border-b pb-4">
                 <h2 className="text-xl font-bold text-gray-800">Edit Customer Details</h2>
                 <div className="flex items-center gap-2">
@@ -661,7 +660,7 @@ const CustomerEdit = () => {
                 </div>
 
               </form>
-            </Card>
+            </div>
           </div>
           </div>
         </>
