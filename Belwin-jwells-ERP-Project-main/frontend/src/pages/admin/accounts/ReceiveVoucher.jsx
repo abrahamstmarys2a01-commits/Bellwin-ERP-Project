@@ -124,7 +124,7 @@ const ReceiveVoucher = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Voucher No" required disabled value={formData.voucherNo} onChange={(e) => setFormData({ ...formData, voucherNo: e.target.value })} />
               <Input label="Receipt Date" type="date" required value={formData.receiptDate} onChange={(e) => setFormData({ ...formData, receiptDate: e.target.value })} />

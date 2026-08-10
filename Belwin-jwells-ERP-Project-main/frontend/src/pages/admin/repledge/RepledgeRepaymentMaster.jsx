@@ -107,7 +107,7 @@ const RepledgeRepaymentMaster = () => {
         <div className="lg:col-span-5">
           <div className="">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Repayment Details</h3>
-            <form onSubmit={handleSave} className="space-y-4">
+            <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
               <div className="grid grid-cols-2 gap-4">
                 <Input 
                   label="Repayment ID" 

@@ -65,7 +65,7 @@ const CustomerLedger = () => {
       </div>
 
       <div className="mb-8">
-        <form onSubmit={handleSearch} className="flex gap-4 items-end">
+        <form onSubmit={handleSearch} className="flex gap-4 items-end form-spiritual-bg">
           <div className="flex-1 max-w-md">
             <Input
               label="Customer ID or Phone Number"

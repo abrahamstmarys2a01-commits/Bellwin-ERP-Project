@@ -158,7 +158,7 @@ const EmployeeMaster = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
             <h3 className="text-lg font-semibold text-green-700 border-b pb-2 mb-4">Personal Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Employee ID" required disabled value={formData.employeeId} onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })} />

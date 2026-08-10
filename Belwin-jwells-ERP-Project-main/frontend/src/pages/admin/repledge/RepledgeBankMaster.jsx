@@ -125,7 +125,7 @@ const RepledgeBankMaster = () => {
         <div className="lg:col-span-1">
           <div className="">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Bank Information</h3>
-            <form onSubmit={handleSave} className="space-y-4">
+            <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
               <Input 
                 label="Bank Name" 
                 name="bankName" 

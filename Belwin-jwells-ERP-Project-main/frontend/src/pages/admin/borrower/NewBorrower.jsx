@@ -187,7 +187,7 @@ const NewBorrower = () => {
 
       <div className="w-full">
         
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 form-spiritual-bg">
             
             {/* Form Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

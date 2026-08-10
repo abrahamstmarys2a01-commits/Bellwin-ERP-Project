@@ -158,15 +158,39 @@ const ProvideLoan = () => {
   const renderLoanForm = () => {
     switch (loanType) {
       case 'gold_loan':
-        return <GoldLoanForm customerData={customerData} schemeData={schemeData} />;
+        return (
+          <GoldLoanForm 
+            customerData={customerData} 
+            schemeData={schemeData} 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+          />
+        );
       case 'personal_loan':
-        return <PersonalLoanForm customerData={customerData} schemeData={schemeData} />;
+        return (
+          <PersonalLoanForm 
+            customerData={customerData} 
+            schemeData={schemeData} 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+          />
+        );
       case 'chit_fund':
         return <ChitFundForm customerData={customerData} schemeData={schemeData} />;
       case 'micro_finance':
         return <MicroFinanceForm customerData={customerData} schemeData={schemeData} />;
       case 'vehicle_loan':
-        return <VehicleLoanForm customerData={customerData} schemeData={schemeData} />;
+        return (
+          <VehicleLoanForm 
+            customerData={customerData} 
+            schemeData={schemeData} 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+          />
+        );
       default:
         return null;
     }
@@ -191,8 +215,6 @@ const ProvideLoan = () => {
             >
               <option value="gold_loan">Gold Loan</option>
               <option value="personal_loan">Personal Loan</option>
-              <option value="chit_fund">Chit Fund</option>
-              <option value="micro_finance">Micro Finance</option>
               <option value="vehicle_loan">Vehicle Loan</option>
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
@@ -201,74 +223,6 @@ const ProvideLoan = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {/* Customer Details Section (Common) */}
-        <div className="bg-white border border-gray-100 rounded-none shadow-sm flex flex-col mb-8 p-6">
-          <div className="flex items-center justify-between mb-4 pb-2 border-b">
-            <h3 className="text-lg font-bold text-gray-800">Customer Details</h3>
-            
-            {/* Search Bar */}
-            <div className="flex items-center gap-2">
-              <input 
-                type="text" 
-                placeholder="Search by ID, Name or Phone Number..." 
-                className="search-input w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-none focus:outline-none focus:border-erp-green focus:ring-1 focus:ring-erp-green"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              />
-              <button 
-                onClick={handleSearch}
-                className="px-4 py-1.5 bg-black text-white text-sm font-bold rounded-none hover:bg-gray-800 transition-colors"
-              >
-                Search
-              </button>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className={lbl}>Name <span className="text-red-500">*</span></label>
-              <input type="text" className={inp} value={customerData.name} onChange={(e) => handleCustomerChange('name', e.target.value)} placeholder="Enter full name" />
-            </div>
-            <div>
-              <label className={lbl}>Mobile No <span className="text-red-500">*</span></label>
-              <input type="tel" className={inp} value={customerData.mobile} onChange={(e) => handleCustomerChange('mobile', e.target.value)} placeholder="Enter mobile number" />
-            </div>
-            <div>
-              <label className={lbl}>Father/Husband Name <span className="text-red-500">*</span></label>
-              <input type="text" className={inp} value={customerData.fatherName} onChange={(e) => handleCustomerChange('fatherName', e.target.value)} placeholder="Enter relative name" />
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <label className={lbl}>Address <span className="text-red-500">*</span></label>
-              <textarea className={`${inp} resize-none`} value={customerData.address} onChange={(e) => handleCustomerChange('address', e.target.value)} rows="2" placeholder="Enter complete address" />
-            </div>
-          </div>
-        </div>
-
-        {/* Scheme Details Section */}
-        <div className="bg-white border border-gray-100 rounded-none shadow-sm flex flex-col mb-8 p-6">
-          <div className="flex items-center justify-between mb-4 pb-2 border-b">
-            <h3 className="text-lg font-bold text-gray-800">Scheme Details</h3>
-            
-            {/* Scheme Selection Dropdown */}
-            <div className="flex items-center gap-2">
-              <select 
-                className="w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-erp-green bg-white cursor-pointer"
-                value={schemeSearchQuery}
-                onChange={handleSchemeSelect}
-              >
-                <option value="">Select a Scheme</option>
-                {schemesList.map((scheme, idx) => (
-                  <option key={scheme._id || idx} value={scheme.schemeId || scheme._id}>
-                    {scheme.schemeName ? `${scheme.schemeName} (${scheme.schemeId || scheme._id})` : scheme.schemeId || scheme._id}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-        </div>
-
         {/* Dynamic Specific Loan Form */}
         {renderLoanForm()}
       </div>

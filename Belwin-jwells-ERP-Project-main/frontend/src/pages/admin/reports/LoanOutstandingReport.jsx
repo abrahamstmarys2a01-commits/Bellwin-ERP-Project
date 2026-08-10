@@ -132,22 +132,22 @@ const LoanOutstandingReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="p-6 border-l-4 border-l-blue-500 bg-blue-50 shadow-md">
-          <h3 className="text-sm font-bold text-blue-800 mb-1 drop-shadow-sm">Total Outstanding Exposure</h3>
-          <p className="text-4xl font-extrabold text-blue-900 drop-shadow-md tracking-tight">₹{totalOutstanding.toLocaleString('en-IN')}</p>
+        <div className="p-6 bg-blue-600 rounded-sm shadow-md">
+          <h3 className="text-sm font-bold text-blue-100 mb-1 drop-shadow-sm">Total Outstanding Exposure</h3>
+          <p className="text-4xl font-extrabold text-white drop-shadow-md tracking-tight">₹{totalOutstanding.toLocaleString('en-IN')}</p>
         </div>
-        <div className="p-6 border-l-4 border-l-indigo-500 bg-indigo-50 shadow-md">
-          <h3 className="text-sm font-bold text-indigo-800 mb-1 drop-shadow-sm">Active Loan Accounts</h3>
-          <p className="text-3xl font-extrabold text-indigo-900 drop-shadow-md">{totalLoansCount}</p>
+        <div className="p-6 bg-indigo-600 rounded-sm shadow-md">
+          <h3 className="text-sm font-bold text-indigo-100 mb-1 drop-shadow-sm">Active Loan Accounts</h3>
+          <p className="text-3xl font-extrabold text-white drop-shadow-md">{totalLoansCount}</p>
         </div>
-        <div className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
-          <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
-          <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
+        <div className="p-6 bg-purple-600 rounded-sm shadow-md">
+          <h3 className="text-sm font-bold text-purple-100 mb-1 drop-shadow-sm">Filter Active</h3>
+          <p className="text-lg font-extrabold text-white drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
         </div>
       </div>
 
       <div className="mb-6">
-        <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
+        <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end form-spiritual-bg">
           
           <div className="w-full md:w-1/3">
             <Select 

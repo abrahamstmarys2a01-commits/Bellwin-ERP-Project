@@ -137,7 +137,7 @@ const BranchMaster = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Branch Code" disabled value={formData.branchCode || 'Auto-generated'} onChange={(e) => setFormData({ ...formData, branchCode: e.target.value })} />
               <Input label="Branch Name" required value={formData.branchName} onChange={(e) => setFormData({ ...formData, branchName: e.target.value })} />

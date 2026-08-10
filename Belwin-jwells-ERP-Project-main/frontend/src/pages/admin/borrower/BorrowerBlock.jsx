@@ -229,7 +229,7 @@ const BorrowerBlock = () => {
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">Block / Unblock Action Form</h4>
             
             {selectedBorrower ? (
-              <form onSubmit={handleToggleBlock} className="space-y-4">
+              <form onSubmit={handleToggleBlock} className="space-y-4 form-spiritual-bg">
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input

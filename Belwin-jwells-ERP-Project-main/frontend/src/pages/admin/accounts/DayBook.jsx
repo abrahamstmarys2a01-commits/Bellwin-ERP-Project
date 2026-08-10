@@ -97,7 +97,7 @@ const DayBook = () => {
       />
       
       <div className="mb-6">
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end form-spiritual-bg">
           <Input label="Date" type="date" value={filters.date} onChange={e => setFilters({...filters, date: e.target.value})} />
           <Select label="Branch" value={filters.branch} onChange={e => setFilters({...filters, branch: e.target.value})}>
             <option value="">All Branches</option>

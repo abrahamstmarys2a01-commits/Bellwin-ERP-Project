@@ -112,7 +112,7 @@ const ChittySchemeForm = () => {
         />
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 form-spiritual-bg">
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1.5">Scheme Code *</label>

@@ -274,7 +274,7 @@ const CustomerEdit = () => {
       </div>
 
       <div className="mb-8">
-        <form onSubmit={handleSearch} className="flex gap-4 items-end">
+        <form onSubmit={handleSearch} className="flex gap-4 items-end form-spiritual-bg">
           <div className="flex-1 max-w-md">
             <Input
               label="Search by Customer ID or Phone"
@@ -379,7 +379,7 @@ const CustomerEdit = () => {
                 </div>
               </div>
 
-              <form onSubmit={handleUpdate} className="space-y-6">
+              <form onSubmit={handleUpdate} className="space-y-6 form-spiritual-bg">
                 
                 {/* Form Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

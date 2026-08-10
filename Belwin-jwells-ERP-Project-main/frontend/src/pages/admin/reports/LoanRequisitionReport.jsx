@@ -107,7 +107,7 @@ const LoanRequisitionReport = () => {
       />
       
       <div className="mb-6">
-        <form onSubmit={handleFilter} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <form onSubmit={handleFilter} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end form-spiritual-bg">
           <Input label="Customer ID" value={filters.customerId} onChange={e => setFilters({...filters, customerId: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
           <Input label="Borrower Name" value={filters.borrowerName} onChange={e => setFilters({...filters, borrowerName: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />
           <Input label="Phone Number" value={filters.phoneNumber} onChange={e => setFilters({...filters, phoneNumber: e.target.value})} placeholder="Search by ID, Name or Phone Number..." />

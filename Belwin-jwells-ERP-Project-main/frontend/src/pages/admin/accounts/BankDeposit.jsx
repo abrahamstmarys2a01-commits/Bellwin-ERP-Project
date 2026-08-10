@@ -120,7 +120,7 @@ const BankDeposit = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Deposit No" required disabled value={formData.depositNo} onChange={(e) => setFormData({ ...formData, depositNo: e.target.value })} />
               <Input label="Deposit Date" type="date" required value={formData.depositDate} onChange={(e) => setFormData({ ...formData, depositDate: e.target.value })} />

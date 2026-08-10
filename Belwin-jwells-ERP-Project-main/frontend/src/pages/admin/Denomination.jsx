@@ -141,7 +141,7 @@ const Denomination = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSave}>
+      <form className="form-spiritual-bg" onSubmit={handleSave}>
         {/* Core Details */}
         <div className={card}>
           <div className={cardHeader}>Core Details</div>

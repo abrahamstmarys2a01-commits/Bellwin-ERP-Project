@@ -202,7 +202,7 @@ const KYCUpload = () => {
           <div className="">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">2. Attach Documents</h4>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 form-spiritual-bg">
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 

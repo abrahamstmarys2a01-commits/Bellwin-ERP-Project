@@ -96,7 +96,7 @@ const LedgerMaster = () => {
             <button onClick={() => setShowCreateForm(false)} className="text-gray-400 hover:text-gray-600">×</button>
           </div>
           
-          <form onSubmit={handleCreateSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <form onSubmit={handleCreateSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 form-spiritual-bg">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Ledger Name *</label>
               <input 

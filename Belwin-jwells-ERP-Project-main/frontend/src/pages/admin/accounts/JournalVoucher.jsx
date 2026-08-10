@@ -121,7 +121,7 @@ const JournalVoucher = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Journal No" required disabled value={formData.journalNo} onChange={(e) => setFormData({ ...formData, journalNo: e.target.value })} />
               <Input label="Date" type="date" required value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />

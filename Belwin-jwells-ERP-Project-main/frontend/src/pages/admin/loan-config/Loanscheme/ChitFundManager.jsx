@@ -104,7 +104,7 @@ const ChitFundManager = ({ showAddForm, setShowAddForm }) => {
       {showAddForm && (
         <div className="mb-6 animate-fade-in">
           <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">New Chit Fund Scheme Configuration</h3>
-          <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-5">
+          <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-5 form-spiritual-bg">
             <div className="col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Scheme Code</label>
               <input readOnly type="text" name="schemeCode" value={formData.schemeCode || nextSchemeId} className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed font-semibold focus:outline-none" />

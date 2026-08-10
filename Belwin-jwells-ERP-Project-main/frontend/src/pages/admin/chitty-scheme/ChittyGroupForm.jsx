@@ -226,7 +226,7 @@ const ChittyGroupForm = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 form-spiritual-bg">
           
           {formData.customerId && (
             <div className="bg-gray-50 border border-gray-200 p-4 rounded mb-6">

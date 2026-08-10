@@ -207,7 +207,7 @@ const GoldStockReport = () => {
             <button onClick={() => setShowAddForm(false)} className="text-gray-400 hover:text-gray-600"><X size={20}/></button>
           </div>
           <div className="">
-            <form id="add-gold-form" onSubmit={handleSubmit} className="space-y-6">
+            <form id="add-gold-form" onSubmit={handleSubmit} className="space-y-6 form-spiritual-bg">
               <div className="grid grid-cols-4 gap-5">
                 <div>
                   <label className={lbl}>Date <span className="text-red-500">*</span></label>

@@ -217,7 +217,7 @@ const PromotionDemotion = () => {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5 form-spiritual-bg">
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">New Role / Designation</label>

@@ -56,7 +56,7 @@ const ResetPassword = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 form-spiritual-bg">
           <div>
             <label className="text-[11px] font-bold text-gray-500 block mb-1.5 uppercase tracking-wider">New Password</label>
             <input

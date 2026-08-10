@@ -74,7 +74,7 @@ const AddRemittance = () => {
       
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
-          <form id="add-remittance-form" onSubmit={handleSubmit} className="space-y-8">
+          <form id="add-remittance-form" onSubmit={handleSubmit} className="space-y-8 form-spiritual-bg">
             <div>
               <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Basic Details</h3>
               <div className="grid grid-cols-3 gap-6">

@@ -300,7 +300,7 @@ const EmployeeForm = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <form onSubmit={handleSubmit}>
+        <form className="form-spiritual-bg" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             {/* Left Column - Main Form (70%) */}

@@ -128,7 +128,7 @@ const PurityMaster = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-4 form-spiritual-bg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Purity Code"

@@ -169,7 +169,7 @@ const MasterConfig = () => {
         {!isEditing ? (
           renderViewMode()
         ) : (
-          <form onSubmit={handleSave} className="space-y-6 animate-fade-in">
+          <form onSubmit={handleSave} className="space-y-6 animate-fade-in form-spiritual-bg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input label="Company Name" required value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} />
               <Input label="Company Code" value={formData.companyCode} onChange={(e) => setFormData({ ...formData, companyCode: e.target.value })} />

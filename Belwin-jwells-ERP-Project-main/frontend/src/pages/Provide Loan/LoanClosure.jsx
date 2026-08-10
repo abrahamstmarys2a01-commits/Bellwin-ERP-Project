@@ -49,7 +49,7 @@ const LoanClosure = () => {
         </div>
 
         <div className="mb-6">
-          <form onSubmit={handleSearch} className="flex gap-4 items-end">
+          <form onSubmit={handleSearch} className="flex gap-4 items-end form-spiritual-bg">
             <div className="flex-1">
               <Input
                 label="Enter Loan ID"

@@ -180,7 +180,7 @@ const LoanAccountLedgerNonEMI = () => {
       {view === 'list' && (
         <>
           <div className="mb-6">
-            <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
+            <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end form-spiritual-bg">
               
               <div className="w-full md:w-1/3">
                 <Select 

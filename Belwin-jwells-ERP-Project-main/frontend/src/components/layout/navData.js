@@ -118,7 +118,9 @@ export const ADMIN_NAV = [
           { label: 'Chit Maturity Report', icon: FileText, path: '/admin/reports/chit-maturity-report' },
           { label: 'Chit Closure Report', icon: FileText, path: '/admin/reports/chit-closure-report' },
           { label: 'Chit Penalty Report', icon: FileText, path: '/admin/reports/chit-penalty-report' },
-          { label: 'Chit Receipt / Collection Statement', icon: FileText, path: '/admin/reports/chit-receipt-collection-statement' }
+          { label: 'Chit Receipt / Collection Statement', icon: FileText, path: '/admin/reports/chit-receipt-collection-statement' },
+          { label: 'Chit Credit Report', icon: FileText, path: '/admin/reports/chit-credit-report' },
+          { label: 'Chit Auditing Report', icon: FileText, path: '/admin/reports/chit-auditing-report' }
         ]
       },
       {
@@ -134,6 +136,7 @@ export const ADMIN_NAV = [
           { label: 'Micro Finance Emi Collection Report', icon: FileText, path: '/admin/reports/mfi-emi-collection-report' },
           { label: 'Ledger Statement', icon: FileText, path: '/admin/reports/mfi-ledger-statement' },
           { label: 'Cash Book Statement', icon: FileText, path: '/admin/reports/mfi-cash-book-statement' },
+          { label: 'Micro Finance Credit Approval Report', icon: FileText, path: '/admin/reports/mfi-credit-approval-report' }
         ]
       },
       {

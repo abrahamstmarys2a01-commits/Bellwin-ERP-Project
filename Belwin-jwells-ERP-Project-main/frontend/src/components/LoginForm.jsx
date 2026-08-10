@@ -54,8 +54,8 @@ const LoginForm = ({ portal, title }) => {
       
       {/* Header/Logo area */}
       <div className="mb-8 flex flex-col items-center">
-        <div className="w-16 h-16 bg-white rounded-none shadow-sm border border-gray-100 flex items-center justify-center mb-4">
-          <Building2 size={32} className="text-green-600" />
+        <div className="w-24 h-24 flex items-center justify-center mb-4 overflow-hidden">
+          <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
         <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight text-center">
           Belwin ERP System

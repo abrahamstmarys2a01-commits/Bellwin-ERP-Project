@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Save, RefreshCcw } from 'lucide-react';
+import { Save, RefreshCcw, Search } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const PersonalLoanForm = ({ customerData, schemeData }) => {
+const PersonalLoanForm = ({ 
+  customerData, 
+  schemeData,
+  searchQuery,
+  setSearchQuery,
+  handleSearch 
+}) => {
   const [formData, setFormData] = useState({
     // Additional Customer Details
     aadhaarNumber: '',
@@ -114,6 +120,50 @@ const PersonalLoanForm = ({ customerData, schemeData }) => {
 
   return (
     <div className="w-full bg-white rounded-lg p-6 space-y-8">
+      {/* Top Search Bar */}
+      <div className="flex items-center gap-2 max-w-md p-3 border border-gray-100 rounded-sm bg-gray-50 shadow-sm mb-6">
+        <label className="text-sm font-bold text-gray-700 whitespace-nowrap">Customer ID Search :</label>
+        <div className="flex flex-1 items-center">
+          <input 
+            type="text" 
+            placeholder="Enter Customer ID" 
+            className="flex-1 px-3 py-1.5 border border-gray-300 text-sm focus:outline-none"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          />
+          <button 
+            onClick={handleSearch}
+            className="bg-black text-white px-3 py-1.5 text-sm flex items-center gap-1"
+          >
+            <Search size={16}/> Search
+          </button>
+        </div>
+      </div>
+
+      {/* Customer Common Data Grid */}
+      <div className="space-y-4 mb-6">
+        <h3 className="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Customer Details</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+          <div className="flex items-center">
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Name :</label>
+            <input type="text" className={inp} value={customerData?.name || ''} readOnly />
+          </div>
+          <div className="flex items-center">
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Mobile No :</label>
+            <input type="text" className={inp} value={customerData?.mobile || ''} readOnly />
+          </div>
+          <div className="flex items-center">
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Father/Husband Name :</label>
+            <input type="text" className={inp} value={customerData?.fatherName || ''} readOnly />
+          </div>
+          <div className="flex items-start">
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Address :</label>
+            <textarea className={`${inp} resize-none`} rows="2" value={customerData?.address || ''} readOnly />
+          </div>
+        </div>
+      </div>
+
       {/* Customer Additional Details */}
       <div>
         <h3 className="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Additional Customer Details</h3>

@@ -147,7 +147,7 @@ const TopUpLoan = () => {
           <div className="flex flex-col gap-4 w-[60%] overflow-auto pb-4">
             
             {/* Search */}
-            <form onSubmit={handleSearch} className="relative flex gap-2">
+            <form onSubmit={handleSearch} className="relative flex gap-2 form-spiritual-bg">
               <div className="relative flex-1">
                 <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Enter Exact Loan ID (e.g. LN000123)"
@@ -165,7 +165,7 @@ const TopUpLoan = () => {
                 <p className="text-sm font-medium text-center">Search for an active Loan ID to calculate eligibility.</p>
               </div>
             ) : (
-              <form onSubmit={handleSave} className="flex flex-col gap-4">
+              <form onSubmit={handleSave} className="flex flex-col gap-4 form-spiritual-bg">
                 
                 {/* Customer Details */}
                 <div className={card}>

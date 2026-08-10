@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, FileText, Download, Printer, Filter, X, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
+import * as XLSX from 'xlsx';
 import api from '../../../services/api';
 
 const CashBookReport = () => {
@@ -61,6 +62,40 @@ const CashBookReport = () => {
     });
   };
   
+  const exportToExcel = () => {
+    if (!reportData) return;
+    
+    const exportData = [];
+    exportData.push(['Cash Book Statement Report']);
+    exportData.push(['Opening Balance:', formatCurrency(reportData.summary.openingBalance)]);
+    exportData.push([]);
+    exportData.push(['Date', 'Voucher No', 'Type', 'Module', 'Ref. ID', 'Description', 'Bal. Before', 'Cash In (Debit)', 'Cash Out (Credit)', 'Bal. After', 'Created By']);
+    
+    reportData.transactions.forEach(tx => {
+      exportData.push([
+        formatDate(tx.transactionDate),
+        tx.voucherNumber,
+        tx.voucherType,
+        tx.referenceModule,
+        tx.referenceId || '',
+        tx.remarks || '',
+        tx.balanceBefore || 0,
+        tx.debit || 0,
+        tx.credit || 0,
+        tx.balanceAfter || 0,
+        tx.createdBy?.name || ''
+      ]);
+    });
+    
+    exportData.push([]);
+    exportData.push(['', '', '', '', '', 'Total', '', reportData.summary.totalDebit, reportData.summary.totalCredit, 'Closing Balance:', reportData.summary.closingBalance]);
+    
+    const ws = XLSX.utils.aoa_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "CashBook");
+    XLSX.writeFile(wb, `CashBook_Statement.xlsx`);
+  };
+
   const formatDateTime = (dateString) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleString('en-IN', {
@@ -85,7 +120,8 @@ const CashBookReport = () => {
           </button>
           <button 
             disabled={!reportData}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+            onClick={exportToExcel}
+            className="flex items-center gap-2 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 disabled:opacity-80 disabled:cursor-not-allowed"
           >
             <Download size={18} /> Export Excel
           </button>

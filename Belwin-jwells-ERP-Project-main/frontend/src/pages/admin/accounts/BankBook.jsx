@@ -97,7 +97,7 @@ const BankBook = () => {
       />
       
       <div className="mb-6">
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end form-spiritual-bg">
           <Input label="From Date" type="date" value={filters.fromDate} onChange={e => setFilters({...filters, fromDate: e.target.value})} />
           <Input label="To Date" type="date" value={filters.toDate} onChange={e => setFilters({...filters, toDate: e.target.value})} />
           <Select label="Bank Account" value={filters.bankAccount} onChange={e => setFilters({...filters, bankAccount: e.target.value})}>

@@ -145,28 +145,28 @@ const LoanEmiCollectionReport = () => {
       
       {/* Top Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="p-6 border-l-4 border-l-green-500 shadow-sm col-span-1 md:col-span-2 flex flex-col justify-center">
-          <h3 className="text-sm font-semibold text-gray-500 mb-1">Total Collection ({filters.dateRange})</h3>
-          <p className="text-4xl font-bold text-green-700 tracking-tight">₹{summary.totalAmount.toLocaleString('en-IN')}</p>
+        <div className="p-6 bg-green-600 rounded-sm shadow-md col-span-1 md:col-span-2 flex flex-col justify-center">
+          <h3 className="text-sm font-bold text-green-100 mb-1 drop-shadow-sm">Total Collection ({filters.dateRange})</h3>
+          <p className="text-4xl font-extrabold text-white drop-shadow-md tracking-tight">₹{summary.totalAmount.toLocaleString('en-IN')}</p>
         </div>
         
-        <div className="p-4 shadow-sm bg-gray-50/50 flex flex-col max-h-32 overflow-y-auto">
-          <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 border-b pb-1">Employee-wise Collection</h3>
+        <div className="p-4 rounded-sm shadow-md bg-blue-600 flex flex-col max-h-32 overflow-y-auto">
+          <h3 className="text-xs font-bold text-blue-100 uppercase tracking-wider mb-2 border-b border-blue-400 pb-1">Employee-wise Collection</h3>
           {Object.entries(summary.employeeStats).length > 0 ? (
             Object.entries(summary.employeeStats).map(([emp, amount]) => (
               <div key={emp} className="flex justify-between items-center py-1">
-                <span className="text-sm font-medium text-gray-700">{emp}</span>
-                <span className="text-sm font-bold text-gray-900">₹{amount.toLocaleString('en-IN')}</span>
+                <span className="text-sm font-medium text-white">{emp}</span>
+                <span className="text-sm font-bold text-white">₹{amount.toLocaleString('en-IN')}</span>
               </div>
             ))
           ) : (
-            <span className="text-sm text-gray-400 italic">No collections found.</span>
+            <span className="text-sm text-blue-200 italic">No collections found.</span>
           )}
         </div>
       </div>
 
       <div className="mb-6">
-        <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
+        <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end form-spiritual-bg">
           
           <div className="w-full md:w-1/4">
             <Select 

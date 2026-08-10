@@ -62,7 +62,7 @@ const SendGoldRequest = () => {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto">
-          <form id="send-gold-form" onSubmit={handleSubmit} className="space-y-8">
+          <form id="send-gold-form" onSubmit={handleSubmit} className="space-y-8 form-spiritual-bg">
             <div>
               <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Request Details</h3>
               <div className="grid grid-cols-3 gap-6">

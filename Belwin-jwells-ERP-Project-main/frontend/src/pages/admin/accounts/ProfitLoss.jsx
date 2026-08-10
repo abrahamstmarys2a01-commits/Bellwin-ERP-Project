@@ -112,7 +112,7 @@ const ProfitLoss = () => {
       />
       
       <div className="mb-6">
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end form-spiritual-bg">
           <Select label="Financial Year" value={filters.financialYear} onChange={e => setFilters({...filters, financialYear: e.target.value})}>
             <option value="2023-2024">2023-2024</option>
             <option value="2022-2023">2022-2023</option>

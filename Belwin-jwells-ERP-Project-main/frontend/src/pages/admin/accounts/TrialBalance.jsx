@@ -124,7 +124,7 @@ const TrialBalance = () => {
       />
       
       <div className="mb-6 print:hidden">
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 items-end">
+        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 items-end form-spiritual-bg">
           <Input label="From Date" type="date" value={filters.fromDate} onChange={e => setFilters({...filters, fromDate: e.target.value})} />
           <Input label="To Date" type="date" value={filters.toDate} onChange={e => setFilters({...filters, toDate: e.target.value})} />
           <Select label="Branch" value={filters.branch} onChange={e => setFilters({...filters, branch: e.target.value})}>

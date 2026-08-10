@@ -71,7 +71,7 @@ const AddFollowup = () => {
       
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
-          <form id="add-followup-form" onSubmit={handleSubmit} className="space-y-8">
+          <form id="add-followup-form" onSubmit={handleSubmit} className="space-y-8 form-spiritual-bg">
             <div>
               <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Call Details</h3>
               <div className="grid grid-cols-3 gap-6">

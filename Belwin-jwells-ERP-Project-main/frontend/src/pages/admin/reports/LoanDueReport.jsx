@@ -146,22 +146,22 @@ const LoanDueReport = () => {
       
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="p-6 border-l-4 border-l-orange-500 bg-orange-50 shadow-md">
-          <h3 className="text-sm font-bold text-orange-800 mb-1 drop-shadow-sm">Upcoming Dues Count ({filters.dateRange})</h3>
-          <p className="text-3xl font-extrabold text-orange-900 drop-shadow-md">{data.length}</p>
+        <div className="p-6 bg-orange-600 rounded-sm shadow-md">
+          <h3 className="text-sm font-bold text-orange-100 mb-1 drop-shadow-sm">Upcoming Dues Count ({filters.dateRange})</h3>
+          <p className="text-3xl font-extrabold text-white drop-shadow-md">{data.length}</p>
         </div>
-        <div className="p-6 border-l-4 border-l-red-500 bg-red-50 shadow-md">
-          <h3 className="text-sm font-bold text-red-800 mb-1 drop-shadow-sm">Total Expected Amount</h3>
-          <p className="text-3xl font-extrabold text-red-900 drop-shadow-md">₹{totalDueAmount.toLocaleString('en-IN')}</p>
+        <div className="p-6 bg-red-600 rounded-sm shadow-md">
+          <h3 className="text-sm font-bold text-red-100 mb-1 drop-shadow-sm">Total Expected Amount</h3>
+          <p className="text-3xl font-extrabold text-white drop-shadow-md">₹{totalDueAmount.toLocaleString('en-IN')}</p>
         </div>
-        <div className="p-6 border-l-4 border-l-purple-500 bg-purple-50 shadow-md">
-          <h3 className="text-sm font-bold text-purple-800 mb-1 drop-shadow-sm">Filter Active</h3>
-          <p className="text-lg font-extrabold text-purple-900 drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
+        <div className="p-6 bg-purple-600 rounded-sm shadow-md">
+          <h3 className="text-sm font-bold text-purple-100 mb-1 drop-shadow-sm">Filter Active</h3>
+          <p className="text-lg font-extrabold text-white drop-shadow-md">{filters.branch || 'All Branches'} • {filters.dateRange}</p>
         </div>
       </div>
 
       <div className="mb-6">
-        <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end">
+        <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-4 items-end form-spiritual-bg">
           
           <div className="w-full md:w-1/3">
             <Select 
