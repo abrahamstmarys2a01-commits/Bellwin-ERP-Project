@@ -174,7 +174,7 @@ const Denomination = () => {
         {/* Denomination Counts */}
         <div className={card}>
           <div className={cardHeader}>Denomination Counts</div>
-          <div className="p-5 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="p-5 flex flex-col gap-4 max-w-xs mx-auto md:mx-0">
             
             {[{label: '₹500 x', name: 'count500'}, 
               {label: '₹200 x', name: 'count200'}, 
@@ -186,7 +186,7 @@ const Denomination = () => {
               {label: '₹2 x', name: 'count2'},
               {label: '₹1 x', name: 'count1'}].map(item => (
               <div key={item.name} className="flex items-center gap-3">
-                <label className="text-sm font-bold text-gray-700 w-16 text-right whitespace-nowrap">{item.label}</label>
+                <label className="text-sm font-bold text-gray-700 w-24 text-right whitespace-nowrap">{item.label}</label>
                 <input 
                   type="number" 
                   name={item.name}
@@ -199,7 +199,7 @@ const Denomination = () => {
               </div>
             ))}
 
-            <div className="flex items-center gap-3 md:col-span-2">
+            <div className="flex items-center gap-3 mt-2">
               <label className="text-sm font-bold text-gray-700 w-24 text-right whitespace-nowrap">Coins Total ₹</label>
               <input 
                 type="number" 

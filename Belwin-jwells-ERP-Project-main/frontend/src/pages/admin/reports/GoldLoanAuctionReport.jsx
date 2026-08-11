@@ -4,6 +4,7 @@ import PageHeader from '../../../components/ui/PageHeader';
 import Button from '../../../components/ui/Button';
 import DataTable from '../../../components/ui/DataTable';
 import { TD, TR } from '../../../components/ui/Table';
+import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 
@@ -68,8 +69,22 @@ const GoldLoanAuctionReport = () => {
         icon={FileText} 
         actions={
           <div className="flex gap-2">
-            <Button variant="secondary" icon={Printer}>Print</Button>
-            <Button variant="secondary" icon={Download}>Export Excel</Button>
+            <Button variant="secondary" icon={Printer} onClick={() => window.print()}>Print</Button>
+            <Button variant="secondary" icon={Download} onClick={() => {
+              const mapper = (item) => {
+                const closeDate = item.closeDate ? new Date(item.closeDate) : (() => { const d = new Date(item.loanStartDate); d.setFullYear(d.getFullYear() + 1); return d; })();
+                return [
+                  item.loanId,
+                  item.name,
+                  closeDate.toLocaleDateString(),
+                  `₹${item.remainingLoanAmount || 0}`,
+                  `${item.totalWt || 0} g`,
+                  'Auction Ready'
+                ];
+              };
+              exportToExcel(data, headers, mapper, 'Gold_Loan_Auction_Report');
+            }}>Export Excel</Button>
+            <Button variant="primary" icon={Download} onClick={() => window.print()}>Export PDF</Button>
           </div>
         }
       />

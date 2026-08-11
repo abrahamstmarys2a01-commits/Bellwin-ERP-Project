@@ -93,7 +93,7 @@ const Header = ({ isMobile, onToggleMobileMenu, isAdmin: isAdminProp }) => {
                 </div>
                 <div className="flex flex-col leading-tight overflow-hidden">
                   <span className="text-lg font-bold text-[#14532d] truncate">Belwin Jewels</span>
-                  <span className="text-base font-semibold tracking-wide text-green-600 uppercase truncate">Enterprise ERP</span>
+                  <span className="text-base font-semibold tracking-wide text-green-600 uppercase truncate">Enterprise</span>
                 </div>
               </div>
             )}

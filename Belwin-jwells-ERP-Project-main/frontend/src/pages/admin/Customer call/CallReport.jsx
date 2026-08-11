@@ -68,10 +68,10 @@ const CallReport = () => {
       <div className="flex flex-row justify-between items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold text-black">Call Report</h2>
         <div className="flex gap-3">
-          <button onClick={handleExportExcel} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-slate-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors text-sm">
+          <button onClick={handleExportExcel} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-slate-700 font-semibold rounded-none hover:bg-gray-50 transition-colors text-sm">
             <FileDown size={16} /> Export Excel
           </button>
-          <button onClick={handleExportPDF} className="flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-200 text-red-600 font-semibold rounded-lg hover:bg-red-100 transition-colors text-sm">
+          <button onClick={handleExportPDF} className="flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-200 text-red-600 font-semibold rounded-none hover:bg-red-100 transition-colors text-sm">
             <FileDown size={16} /> Export PDF
           </button>
         </div>

@@ -145,15 +145,15 @@ const GoldStockReport = () => {
           <Package className="w-6 h-6" /> Gold Stock Ledger
         </h2>
         <div className="flex gap-3">
-          <button onClick={handleExportPDF} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 shadow-sm transition-colors text-sm">
+          <button onClick={handleExportPDF} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-none hover:bg-gray-50 shadow-sm transition-colors text-sm">
             <FileText size={16} /> Export PDF
           </button>
-          <button onClick={handleExportExcel} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 shadow-sm transition-colors text-sm">
+          <button onClick={handleExportExcel} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-none hover:bg-gray-50 shadow-sm transition-colors text-sm">
             <FileDown size={16} /> Export Excel
           </button>
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="flex items-center gap-2 px-4 py-2 bg-erp-green text-white font-bold rounded-lg hover:bg-green-700 shadow-sm transition-colors text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-erp-green text-white font-bold rounded-none hover:bg-green-700 shadow-sm transition-colors text-sm"
           >
             <Plus className="w-4 h-4" /> {showAddForm ? 'Cancel Entry' : 'Add Stock Entry'}
           </button>
