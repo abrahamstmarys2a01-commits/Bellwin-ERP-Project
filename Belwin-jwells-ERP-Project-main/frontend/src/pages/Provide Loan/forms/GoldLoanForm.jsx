@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Save, XCircle, RotateCcw } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -9,9 +9,11 @@ const GoldLoanForm = ({
   schemeData, 
   searchQuery, 
   setSearchQuery, 
-  handleSearch 
+  handleSearch,
+  selectedLoan
 }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // --- Form State ---
   const [loanDetails, setLoanDetails] = useState({
@@ -51,6 +53,49 @@ const GoldLoanForm = ({
   
   // Payments state
   const [payments, setPayments] = useState([]);
+
+  // --- Hydrate State on Edit ---
+  useEffect(() => {
+    if (selectedLoan) {
+      setLoanDetails({
+        loanStartDate: selectedLoan.loanStartDate ? new Date(selectedLoan.loanStartDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        loanEndDate: selectedLoan.loanEndDate ? new Date(selectedLoan.loanEndDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        eligibleLoanAmount: selectedLoan.eligibleLoanAmount || 0,
+        loanAmount: selectedLoan.loanAmount || '',
+        remainingLoanAmount: selectedLoan.remainingLoanAmount || '',
+        status: selectedLoan.status || 'Pending'
+      });
+      setCalculations({
+        totalNoOfDays: selectedLoan.totalNoOfDays || 0,
+        interestRate: selectedLoan.interestRate || '',
+        additionalInterestRate: selectedLoan.additionalInterestRate || '',
+        totalPaidInterestAmount: selectedLoan.totalPaidInterestAmount || '',
+        totalInterestPaidDays: selectedLoan.totalInterestPaidDays || '',
+        remainingDays: selectedLoan.remainingDays || 0,
+        remainingInterestAmount: selectedLoan.remainingInterestAmount || 0,
+        documentCharge: selectedLoan.documentCharge || '',
+        fullSettlementAmount: selectedLoan.fullSettlementAmount || 0
+      });
+      
+      if (selectedLoan.articles && selectedLoan.articles.length > 0) {
+        setArticles(selectedLoan.articles.map(a => ({
+          category: a.category || '',
+          jewelDetails: a.details || '',
+          quantity: a.qty || '',
+          totWeight: a.totWt || '',
+          stoneWt: a.stoneWt || '',
+          nettWt: a.nettWt || '',
+          purity: a.purity || '',
+          gramRate: a.gramRate || '',
+          total: a.total || ''
+        })));
+      }
+      
+      if (selectedLoan.payments) {
+        setPayments(selectedLoan.payments);
+      }
+    }
+  }, [selectedLoan]);
 
   // Input Class Names
   const inp = "w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-erp-green bg-white text-sm";
@@ -97,7 +142,7 @@ const GoldLoanForm = ({
       amount: receiptEntry.receiptAmount,
       interestAmount: 0, // Placeholder
       principalAmount: receiptEntry.receiptAmount,
-      penalty: receiptEntry.penalty ? 'Yes' : 'No',
+      penalty: receiptEntry.penalty ? 1 : 0,
       penaltyPending: 0
     };
     
@@ -161,11 +206,17 @@ const GoldLoanForm = ({
         })),
         payments,
         loanType: 'Gold Loan',
-        loanDate: new Date()
+        loanDate: selectedLoan ? selectedLoan.loanDate : new Date()
       };
 
-      const res = await api.post('/loans', payload);
-      toast.success("Gold Loan details saved successfully!");
+      setLoading(true);
+      if (selectedLoan) {
+        await api.put(`/loans/${selectedLoan._id}`, payload);
+        toast.success("Gold Loan details updated successfully!");
+      } else {
+        await api.post('/loans', payload);
+        toast.success("Gold Loan details saved successfully!");
+      }
       
       if (close) {
          // Reset or redirect
@@ -178,44 +229,13 @@ const GoldLoanForm = ({
     } catch (err) {
       console.error(err);
       toast.error(err?.response?.data?.message || "Failed to save loan.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col bg-gray-50/30 p-2 space-y-6 max-w-7xl mx-auto w-full pb-20">
-      {/* Header Area */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-black mb-1">Provide Loan</h1>
-          <p className="text-gray-500 text-sm">Manage Receipts and Repledging.</p>
-        </div>
-        <div className="flex gap-2">
-          <button className="bg-black text-white px-4 py-1.5 text-sm font-semibold rounded-sm">New Receipt</button>
-          <button onClick={() => navigate('/admin/repledge/entry')} className="bg-white border border-gray-300 text-black px-4 py-1.5 text-sm font-semibold rounded-sm hover:bg-gray-50">Repledge</button>
-        </div>
-      </div>
-
-      {/* Top Search Bar */}
-      <div className="flex items-center gap-2 max-w-md p-3 border border-gray-100 rounded-sm bg-gray-50 shadow-sm">
-        <label className="text-sm font-bold text-gray-700 whitespace-nowrap">Customer ID Search :</label>
-        <div className="flex flex-1 items-center">
-          <input 
-            type="text" 
-            placeholder="Enter Customer ID (e.g. CUST000001)" 
-            className="flex-1 px-3 py-1.5 border border-gray-300 text-sm focus:outline-none"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          />
-          <button 
-            onClick={handleSearch}
-            className="bg-black text-white px-3 py-1.5 text-sm flex items-center gap-1"
-          >
-            <Search size={16}/> Search
-          </button>
-        </div>
-      </div>
-
       {/* Info & Loan Block */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
         {/* Left Column - Customer Details */}
@@ -343,10 +363,10 @@ const GoldLoanForm = ({
           </div>
 
           <div className="flex justify-end gap-2 mt-8">
-            <button onClick={() => handleSave(false, false)} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm">Save</button>
-            <button className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm">Cancel</button>
-            <button onClick={() => handleSave(true, false)} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm">Save & Close</button>
-            <button onClick={() => handleSave(true, true)} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm">Close & Repledge</button>
+            <button disabled={loading} onClick={() => handleSave(false, false)} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm disabled:opacity-50">Save</button>
+            <button disabled={loading} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm disabled:opacity-50">Cancel</button>
+            <button disabled={loading} onClick={() => handleSave(true, false)} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm disabled:opacity-50">Save & Close</button>
+            <button disabled={loading} onClick={() => handleSave(true, true)} className="bg-[#8b0000] text-white px-6 py-2 text-sm font-bold rounded-sm disabled:opacity-50">Close & Repledge</button>
           </div>
         </div>
       </div>
@@ -436,7 +456,7 @@ const GoldLoanForm = ({
                       <td className="p-2 border-r border-gray-200 text-center">{p.amount}</td>
                       <td className="p-2 border-r border-gray-200 text-center">{p.interestAmount}</td>
                       <td className="p-2 border-r border-gray-200 text-center">{p.principalAmount}</td>
-                      <td className="p-2 border-r border-gray-200 text-center">{p.penalty}</td>
+                      <td className="p-2 border-r border-gray-200 text-center">{p.penalty ? 'Yes' : 'No'}</td>
                       <td className="p-2 text-center">{p.penaltyPending}</td>
                     </tr>
                   ))

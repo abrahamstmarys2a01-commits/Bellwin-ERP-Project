@@ -265,67 +265,7 @@ const EditLoan = () => {
           </div>
         ) : (
           <>
-            {/* Common Read-Only Details */}
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col mb-6 p-6 mt-2">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b">Customer Details</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={customerData.name} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mobile No</label>
-                  <input type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={customerData.mobile} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Father/Husband Name</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={customerData.fatherName} readOnly />
-                </div>
-                <div className="col-span-1 md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                  <textarea className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed resize-none" value={customerData.address} rows="2" readOnly />
-                </div>
-              </div>
-            </div>
-
-            {/* Scheme Details */}
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col mb-6 p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b">Scheme Details</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Scheme Name</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.schemeName || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Interest %</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.interestPercent || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Gram Rate</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.gramRate || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Gram</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.minimumGram || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mature Period (Months)</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.maturePeriod || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Interest Repayment (Months)</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.interestRepaymentMonths || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Document Charges</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.documentCharge || selectedLoan?.documentCharges || 'N/A'} readOnly />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Penalty %</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none cursor-not-allowed" value={selectedLoan?.penaltyPercent || 'N/A'} readOnly />
-                </div>
-              </div>
-            </div>
+            {/* Customer Details and Scheme Details removed as per request */}
 
             {/* Dynamic Specific Loan Form */}
             {renderLoanForm()}

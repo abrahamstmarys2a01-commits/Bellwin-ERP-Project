@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Save, RefreshCcw, Search } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -8,7 +8,8 @@ const VehicleLoanForm = ({
   schemeData,
   searchQuery,
   setSearchQuery,
-  handleSearch 
+  handleSearch,
+  selectedLoan
 }) => {
   const [formData, setFormData] = useState({
     vehicleType: 'Bike',
@@ -35,32 +36,22 @@ const VehicleLoanForm = ({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Hydrate State on Edit
+  useEffect(() => {
+    if (selectedLoan) {
+      setFormData(prev => ({
+        ...prev,
+        ...selectedLoan
+      }));
+    }
+  }, [selectedLoan]);
+
   const inp = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-erp-green bg-white";
   const lbl = "block text-sm font-medium text-gray-700 mb-1";
   const sectionTitle = "text-lg font-bold text-gray-800 mb-4 pb-2 border-b";
 
   return (
     <div className="w-full bg-white rounded-lg p-6 space-y-8">
-      {/* Top Search Bar */}
-      <div className="flex items-center gap-2 max-w-md p-3 border border-gray-100 rounded-sm bg-gray-50 shadow-sm mb-6">
-        <label className="text-sm font-bold text-gray-700 whitespace-nowrap">Customer ID Search :</label>
-        <div className="flex flex-1 items-center">
-          <input 
-            type="text" 
-            placeholder="Enter Customer ID" 
-            className="flex-1 px-3 py-1.5 border border-gray-300 text-sm focus:outline-none"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          />
-          <button 
-            onClick={handleSearch}
-            className="bg-black text-white px-3 py-1.5 text-sm flex items-center gap-1"
-          >
-            <Search size={16}/> Search
-          </button>
-        </div>
-      </div>
 
       {/* Customer Common Data Grid */}
       <div className="space-y-4 mb-6">
