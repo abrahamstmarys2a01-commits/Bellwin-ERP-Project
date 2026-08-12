@@ -64,6 +64,7 @@ const loanSchema = new mongoose.Schema({
     total: { type: Number }
   }],
   totalWt: { type: Number },
+  jewelImage: { type: String }, // Stored as base64 string
 
   // Payments
   payments: [{
@@ -104,6 +105,12 @@ loanSchema.statics.getNextId = async function () {
       { returnDocument: 'after', upsert: true }
   );
   return `LN${String(counter.seq).padStart(6, '0')}`;
+};
+
+loanSchema.statics.getNextIdPreview = async function () {
+  const counter = await Counter.findById('loanId');
+  const nextSeq = counter ? counter.seq + 1 : 1;
+  return `LN${String(nextSeq).padStart(6, '0')}`;
 };
 
 // ── Pre-save: ensure loanId exists ───────────────────────────────────────

@@ -1,13 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
-const { createLoan, getLoanById, getLoansByCustomer, updateLoan, updateLoanStatus, getLoansByStatus, getAllLoans } = require('../controllers/loanController');
+const { createLoan, getLoanById, getLoansByCustomer, updateLoan, updateLoanStatus, getLoansByStatus, getAllLoans, getNextLoanIdPreview } = require('../controllers/loanController');
 
 // POST /api/loans - Create a new loan
 router.post('/', createLoan);
 
 // GET /api/loans - Get all loans
 router.get('/', protect, getAllLoans);
+
+// GET /api/loans/next-id - Get next loan ID preview
+router.get('/next-id', protect, getNextLoanIdPreview);
 
 // GET /api/loans/customer/:customerId - Get all loans for a customer
 router.get('/customer/:customerId', protect, getLoansByCustomer);

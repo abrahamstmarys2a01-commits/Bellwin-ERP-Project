@@ -9,7 +9,10 @@ const PersonalLoanForm = ({
   searchQuery,
   setSearchQuery,
   handleSearch,
-  selectedLoan
+  selectedLoan,
+  schemesList = [],
+  schemeSearchQuery,
+  handleSchemeSelect
 }) => {
   const [formData, setFormData] = useState({
     // Additional Customer Details
@@ -130,30 +133,144 @@ const PersonalLoanForm = ({
   };
 
   return (
-    <div className="w-full bg-white rounded-lg p-6 space-y-8">
+    <div className="flex flex-col bg-gray-50/30 p-2 space-y-6 max-w-7xl mx-auto w-full pb-20">
+      
+      {/* Info & Loan Block */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+        {/* Left Column - Customer Details & Scheme Selector */}
+        <div className="space-y-1 relative">
+          {/* Customer Photo */}
+          {customerData.photoUrl && (
+            <div className="absolute right-0 top-0 w-24 h-24 border border-gray-300 rounded shadow-sm overflow-hidden">
+              <img src={customerData.photoUrl} alt="Customer" className="w-full h-full object-cover" />
+            </div>
+          )}
 
-      {/* Customer Common Data Grid */}
-      <div className="space-y-4 mb-6">
-        <h3 className="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Customer Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-          <div className="flex items-center">
-            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Name :</label>
-            <input type="text" className={inp} value={customerData?.name || ''} readOnly />
+          <div className="grid grid-cols-[160px_10px_1fr] items-start mb-1 pr-28">
+            <span className="text-sm text-black">Customer ID</span>
+            <span className="text-sm text-black">:</span>
+            <span className="text-sm text-black font-semibold">{customerData.customerId || ''}</span>
           </div>
-          <div className="flex items-center">
-            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Mobile No :</label>
-            <input type="text" className={inp} value={customerData?.mobile || ''} readOnly />
+          <div className="grid grid-cols-[160px_10px_1fr] items-start mb-1 pr-28">
+            <span className="text-sm text-black">Name</span>
+            <span className="text-sm text-black">:</span>
+            <span className="text-sm text-black flex items-center gap-2">
+              {customerData.name || ''}
+              {customerData.name && (
+                <span className="bg-[#5c2a3d] text-white text-[10px] px-2 py-0.5 rounded shadow-sm cursor-pointer hover:bg-[#4a1f2f]">History</span>
+              )}
+            </span>
           </div>
-          <div className="flex items-center">
-            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Father/Husband Name :</label>
-            <input type="text" className={inp} value={customerData?.fatherName || ''} readOnly />
+          <div className="grid grid-cols-[160px_10px_1fr] items-start mb-1 pr-28">
+            <span className="text-sm text-black">Mobile No</span>
+            <span className="text-sm text-black">:</span>
+            <span className="text-sm text-black">{customerData.mobile || ''}</span>
           </div>
-          <div className="flex items-start">
-            <label className="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[160px]">Address :</label>
-            <textarea className={`${inp} resize-none`} rows="2" value={customerData?.address || ''} readOnly />
+          <div className="grid grid-cols-[160px_10px_1fr] items-start mb-1 pr-28">
+            <span className="text-sm text-black flex flex-wrap leading-tight">Father/Husband Name</span>
+            <span className="text-sm text-black">:</span>
+            <span className="text-sm text-black">{customerData.fatherName || ''}</span>
+          </div>
+          <div className="grid grid-cols-[160px_10px_1fr] items-start mb-6 pr-28">
+            <span className="text-sm text-black mt-1">Address</span>
+            <span className="text-sm text-black mt-1">:</span>
+            <span className="text-sm text-black mt-1 uppercase leading-tight pr-4">{customerData.address || ''}</span>
+          </div>
+
+          <div className="grid grid-cols-[160px_10px_1fr] items-center mb-2 pt-4">
+            <span className="text-sm text-black font-semibold">Select Scheme</span>
+            <span className="text-sm text-black font-semibold">:</span>
+            <div className="flex items-center gap-2">
+              <select
+                value={schemeSearchQuery || ''}
+                onChange={handleSchemeSelect}
+                disabled={!!selectedLoan}
+                className="w-48 px-2 py-1 text-sm border border-gray-400 bg-white focus:outline-none"
+              >
+                <option value="">-- Select --</option>
+                {schemesList.map(scheme => (
+                  <option key={scheme._id} value={scheme._id}>
+                    {scheme.schemeName}
+                  </option>
+                ))}
+              </select>
+              <a href="#" className="text-blue-600 text-xs font-bold underline">Scheme List</a>
+            </div>
+          </div>
+
+          {/* Scheme Detail Display Block */}
+          {schemeData && schemeData.schemeId && (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 pl-4">
+              <div className="grid grid-cols-[120px_10px_1fr] items-center">
+                <span className="text-sm font-bold text-black">Interest %</span>
+                <span className="text-sm font-bold text-black">:</span>
+                <span className="text-sm font-bold text-black">{schemeData.interestPercent || 0}</span>
+              </div>
+              <div className="grid grid-cols-[120px_10px_1fr] items-center">
+                <span className="text-sm font-bold text-black text-red-600">Doc Charges</span>
+                <span className="text-sm font-bold text-black text-red-600">:</span>
+                <span className="text-sm font-bold text-black text-red-600">₹{schemeData.documentCharges || 0}</span>
+              </div>
+              <div className="grid grid-cols-[120px_10px_1fr] items-center">
+                <span className="text-sm font-bold text-black">Mature Months</span>
+                <span className="text-sm font-bold text-black">:</span>
+                <span className="text-sm font-bold text-black">{schemeData.maturePeriodMonths || 0}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column - Loan Meta & App Data */}
+        <div className="space-y-2">
+          <div className="flex justify-end mb-4">
+            <div className="flex items-center border border-gray-400">
+              <div className="px-3 py-1 border-r border-gray-400 bg-gray-100 flex items-center justify-center">
+                <Search className="w-4 h-4 text-gray-500" />
+              </div>
+              <input 
+                type="text" 
+                placeholder="Search Application..." 
+                className="px-2 py-1 text-sm outline-none w-48"
+                value={searchQuery || ''}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end space-y-2">
+            <div className="flex items-center justify-end w-full max-w-sm">
+              <span className="text-sm text-black font-semibold w-24">Employee</span>
+              <span className="text-sm text-black mx-2">:</span>
+              <select className="w-48 px-2 py-1 text-sm border border-gray-400 bg-[#e8e4f5] font-semibold focus:outline-none">
+                <option>Admin</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-end w-full max-w-sm">
+              <span className="text-sm text-black font-semibold w-24">App No.</span>
+              <span className="text-sm text-black mx-2">:</span>
+              <input 
+                type="text" 
+                className="w-48 px-2 py-1 text-sm border border-gray-400 bg-[#e8e4f5] font-semibold focus:outline-none text-red-600" 
+                value={selectedLoan ? (selectedLoan.loanId || selectedLoan.loanNo) : formData.applicationNo} 
+                readOnly 
+              />
+            </div>
+            <div className="flex items-center justify-end w-full max-w-sm">
+              <span className="text-sm text-black font-semibold w-24">Date</span>
+              <span className="text-sm text-black mx-2">:</span>
+              <input 
+                type="date" 
+                className="w-48 px-2 py-1 text-sm border border-gray-400 focus:outline-none" 
+                value={selectedLoan ? new Date(selectedLoan.loanDate).toISOString().split('T')[0] : formData.applicationDate} 
+                onChange={(e) => handleChange('applicationDate', e.target.value)}
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      <hr className="border-t border-gray-300 my-4" />
 
       {/* Customer Additional Details */}
       <div>

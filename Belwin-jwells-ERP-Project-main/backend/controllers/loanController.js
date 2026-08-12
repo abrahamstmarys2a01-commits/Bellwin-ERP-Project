@@ -34,6 +34,7 @@ const createLoan = async (req, res, next) => {
       receiptEntry,
       articles,
       totalWt,
+      jewelImage,
       payments,
       repledgeDetails,
       schemeId,
@@ -107,6 +108,7 @@ const createLoan = async (req, res, next) => {
       receiptEntry,
       articles,
       totalWt,
+      jewelImage,
       payments,
       repledgeDetails,
       schemeId,
@@ -147,6 +149,16 @@ const createLoan = async (req, res, next) => {
     // --------------------------------------------
 
     res.status(201).json(newLoan);
+  } catch (error) { next(error); }
+};
+
+// @desc    Get next loan ID preview
+// @route   GET /api/loans/next-id
+// @access  Public
+const getNextLoanIdPreview = async (req, res, next) => {
+  try {
+    const nextId = await Loan.getNextIdPreview();
+    res.status(200).json({ nextId });
   } catch (error) { next(error); }
 };
 
@@ -301,5 +313,6 @@ module.exports = {
   updateLoan,
   updateLoanStatus,
   getLoansByStatus,
-  getAllLoans
+  getAllLoans,
+  getNextLoanIdPreview
 };

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FileText, Filter, Download, Eye, X, CheckCircle, Printer } from 'lucide-react';
 import { exportTableToPDF, exportToExcel, handlePrint } from '../../../utils/exportUtils';
+import { toast } from 'react-hot-toast';
 import api from '../../../services/api';
 import PageHeader from '../../../components/ui/PageHeader';
 import Input from '../../../components/ui/Input';
@@ -12,6 +13,7 @@ import { TD, TR } from '../../../components/ui/Table';
 
 const LoanRequisitionReport = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   
@@ -60,9 +62,21 @@ const LoanRequisitionReport = () => {
       await api.put(`/loans/status/${selectedLoan._id}`, { status: 'Approved' });
       setIsSidePanelOpen(false);
       fetchData();
+      toast.success("Loan approved successfully!");
     } catch (error) {
       console.error("Error approving loan:", error);
-      alert("Failed to approve loan.");
+      toast.error("Failed to approve loan.");
+    }
+  };
+
+  const handleQuickApprove = async (loanId) => {
+    try {
+      await api.put(`/loans/status/${loanId}`, { status: 'Approved' });
+      fetchData();
+      toast.success("Loan approved successfully!");
+    } catch (error) {
+      console.error("Error approving loan:", error);
+      toast.error("Failed to approve loan.");
     }
   };
 
@@ -134,13 +148,31 @@ const LoanRequisitionReport = () => {
             <TD>{item.loanDate ? new Date(item.loanDate).toLocaleDateString() : 'N/A'}</TD>
             <TD><span className={`px-2 py-1 rounded-none text-xs font-medium ${item.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}>{item.status}</span></TD>
             <TD>
-              <button 
-                onClick={() => { setSelectedLoan(item); setIsSidePanelOpen(true); }}
-                className="p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
-                title="View Details"
-              >
-                <Eye className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => { setSelectedLoan(item); setIsSidePanelOpen(true); }}
+                  className="p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+                  title="View Details"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={() => navigate('/admin/provide-loan/edit', { state: { loanId: item.loanId || item._id } })}
+                  className="p-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors"
+                  title="Edit Loan"
+                >
+                  <FileText className="w-4 h-4" />
+                </button>
+                {item.status === 'Pending' && (
+                  <button 
+                    onClick={() => handleQuickApprove(item._id)}
+                    className="p-1.5 bg-green-100 hover:bg-green-200 text-green-700 rounded-md transition-colors"
+                    title="Approve Loan"
+                  >
+                    <CheckCircle className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </TD>
           </TR>
         )}

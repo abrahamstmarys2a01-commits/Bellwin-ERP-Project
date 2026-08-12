@@ -22,20 +22,76 @@ const EditLoan = () => {
     mobile: '',
     fatherName: '',
     address: '',
-    customerId: ''
+    customerId: '',
+    photoUrl: ''
   });
 
-  const [schemeData] = useState({
-    schemeName: 'Gold Scheme A',
-    interestPercent: '1.5%',
-    amountRs: '100000',
-    gramRate: '4500',
-    minimumGram: '2',
-    maturePeriodMonths: '12',
-    interestRepaymentMonths: '1',
-    documentCharges: '500',
-    penaltyPercent: '2%'
+  const [schemeSearchQuery, setSchemeSearchQuery] = useState('');
+  const [schemesList, setSchemesList] = useState([]);
+  const [schemeData, setSchemeData] = useState({
+    schemeId: '',
+    schemeName: '',
+    interestPercent: '',
+    amountRs: '',
+    gramRate: '',
+    minimumGram: '',
+    maturePeriodMonths: '',
+    interestRepaymentMonths: '',
+    documentCharges: '',
+    penaltyPercent: ''
   });
+
+  useEffect(() => {
+    const fetchSchemes = async () => {
+      try {
+        const response = await api.get('/schemes');
+        if (response.data && response.data.length > 0) {
+          setSchemesList(response.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch schemes list", err);
+      }
+    };
+    fetchSchemes();
+  }, []);
+
+  const handleSchemeSelect = (e) => {
+    const selectedSchemeId = e.target.value;
+    setSchemeSearchQuery(selectedSchemeId);
+    
+    if (!selectedSchemeId) {
+      setSchemeData({
+        schemeId: '',
+        schemeName: '',
+        interestPercent: '',
+        amountRs: '',
+        gramRate: '',
+        minimumGram: '',
+        maturePeriodMonths: '',
+        interestRepaymentMonths: '',
+        documentCharges: '',
+        penaltyPercent: ''
+      });
+      return;
+    }
+
+    const scheme = schemesList.find(s => s._id === selectedSchemeId || s.schemeId === selectedSchemeId);
+    if (scheme) {
+      setSchemeData({
+        schemeId: scheme.schemeId || '',
+        schemeName: scheme.schemeName || '',
+        interestPercent: scheme.interestRate ? `${scheme.interestRate}%` : '',
+        amountRs: scheme.amountLimit || '',
+        gramRate: scheme.gramRate || '',
+        minimumGram: scheme.minimumGram || '',
+        maturePeriodMonths: scheme.maturePeriodMonths || '',
+        interestRepaymentMonths: scheme.interestRepaymentMonths || '',
+        documentCharges: scheme.documentCharges || '',
+        penaltyPercent: scheme.penalty ? `${scheme.penalty}%` : ''
+      });
+      toast.success("Scheme details loaded!");
+    }
+  };
 
   const handleSearch = async () => {
     if (searchQuery.trim() === '') return;
@@ -58,7 +114,8 @@ const EditLoan = () => {
             mobile: customer.mobileNumber || loan.mobileNo || '',
             fatherName: customer.guardianName || loan.fatherHusbandName || '',
             address: fullAddress || loan.address || '',
-            customerId: customer._id || customer.customerId || loan.customerId || ''
+            customerId: customer.customerId || customer._id || loan.customerId || '',
+            photoUrl: customer.customerPhotoUrl || ''
           });
 
           toast.success("Loan found!");
@@ -85,6 +142,25 @@ const EditLoan = () => {
           else if (sName.includes('personal')) setLoanType('personal_loan');
           else if (sName.includes('chit')) setLoanType('chit_fund');
           else if (sName.includes('micro')) setLoanType('micro_finance');
+
+          // Populate scheme data from the loan
+          const matchedScheme = schemesList.find(s => s.schemeId === loan.schemeId || s._id === loan.schemeId || s.schemeName === loan.schemeName);
+          const finalSchemeId = matchedScheme ? matchedScheme._id : (loan.schemeId || '');
+          setSchemeSearchQuery(finalSchemeId);
+          
+          setSchemeData({
+            schemeId: finalSchemeId,
+            schemeName: loan.schemeName || matchedScheme?.schemeName || '',
+            interestPercent: loan.interestPercent ? `${loan.interestPercent}%` : (matchedScheme?.interestRate ? `${matchedScheme.interestRate}%` : ''),
+            amountRs: loan.loanAmount || matchedScheme?.amountLimit || '',
+            gramRate: loan.gramRate || matchedScheme?.gramRate || '',
+            minimumGram: loan.minimumGram || matchedScheme?.minimumGram || '',
+            maturePeriodMonths: loan.maturePeriod || matchedScheme?.maturePeriodMonths || '',
+            interestRepaymentMonths: loan.interestRepaymentMonths || matchedScheme?.interestRepaymentMonths || '',
+            documentCharges: loan.documentCharges || matchedScheme?.documentCharges || '',
+            penaltyPercent: loan.penaltyPercent ? `${loan.penaltyPercent}%` : (matchedScheme?.penalty ? `${matchedScheme.penalty}%` : '')
+          });
+
           return;
         }
       } catch (err) {
@@ -107,7 +183,8 @@ const EditLoan = () => {
           mobile: customer.mobileNumber || '',
           fatherName: customer.guardianName || '',
           address: fullAddress || '',
-          customerId: customer._id || customer.customerId || ''
+          customerId: customer.customerId || customer._id || '',
+          photoUrl: customer.customerPhotoUrl || ''
         });
 
         toast.success("Customer found! Fetching their loans...");
@@ -119,13 +196,33 @@ const EditLoan = () => {
           const loansRes = await api.get(`/loans/customer/${custIdToUse}`);
           if (loansRes.data && loansRes.data.length > 0) {
             setCustomerLoans(loansRes.data);
-            setSelectedLoan(loansRes.data[0]);
-            const sName = (loansRes.data[0].schemeName || '').toLowerCase();
+            setSelectedLoan(loansRes.data[0]); // Auto-select the first loan
+            // We can optionally set the loanType based on the first loan, or let the user choose
+            const firstLoan = loansRes.data[0];
+            const sName = (firstLoan.schemeName || '').toLowerCase();
             if (sName.includes('gold')) setLoanType('gold_loan');
             else if (sName.includes('vehicle')) setLoanType('vehicle_loan');
             else if (sName.includes('personal')) setLoanType('personal_loan');
             else if (sName.includes('chit')) setLoanType('chit_fund');
             else if (sName.includes('micro')) setLoanType('micro_finance');
+
+            // Populate scheme data from the first loan
+            const matchedScheme = schemesList.find(s => s.schemeId === firstLoan.schemeId || s._id === firstLoan.schemeId || s.schemeName === firstLoan.schemeName);
+            const finalSchemeId = matchedScheme ? matchedScheme._id : (firstLoan.schemeId || '');
+            setSchemeSearchQuery(finalSchemeId);
+            
+            setSchemeData({
+              schemeId: finalSchemeId,
+              schemeName: firstLoan.schemeName || matchedScheme?.schemeName || '',
+              interestPercent: firstLoan.interestPercent ? `${firstLoan.interestPercent}%` : (matchedScheme?.interestRate ? `${matchedScheme.interestRate}%` : ''),
+              amountRs: firstLoan.loanAmount || matchedScheme?.amountLimit || '',
+              gramRate: firstLoan.gramRate || matchedScheme?.gramRate || '',
+              minimumGram: firstLoan.minimumGram || matchedScheme?.minimumGram || '',
+              maturePeriodMonths: firstLoan.maturePeriod || matchedScheme?.maturePeriodMonths || '',
+              interestRepaymentMonths: firstLoan.interestRepaymentMonths || matchedScheme?.interestRepaymentMonths || '',
+              documentCharges: firstLoan.documentCharges || matchedScheme?.documentCharges || '',
+              penaltyPercent: firstLoan.penaltyPercent ? `${firstLoan.penaltyPercent}%` : (matchedScheme?.penalty ? `${matchedScheme.penalty}%` : '')
+            });
           } else {
             setCustomerLoans([]);
             setSelectedLoan(null);
@@ -152,6 +249,37 @@ const EditLoan = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state?.loanId]);
+
+  // Ensure scheme data is synced when schemesList finishes loading
+  useEffect(() => {
+    if (selectedLoan && schemesList.length > 0) {
+      const matchedScheme = schemesList.find(s => 
+        s.schemeId === selectedLoan.schemeId || 
+        s._id === selectedLoan.schemeId || 
+        s.schemeName === selectedLoan.schemeName
+      );
+      
+      const finalSchemeId = matchedScheme ? matchedScheme._id : (selectedLoan.schemeId || '');
+      
+      // Only update if it's different to prevent infinite loops
+      if (schemeSearchQuery !== finalSchemeId) {
+        setSchemeSearchQuery(finalSchemeId);
+        setSchemeData(prev => ({
+          ...prev,
+          schemeId: finalSchemeId,
+          schemeName: selectedLoan.schemeName || matchedScheme?.schemeName || '',
+          interestPercent: selectedLoan.interestPercent ? `${selectedLoan.interestPercent}%` : (matchedScheme?.interestRate ? `${matchedScheme.interestRate}%` : ''),
+          amountRs: selectedLoan.loanAmount || matchedScheme?.amountLimit || '',
+          gramRate: selectedLoan.gramRate || matchedScheme?.gramRate || '',
+          minimumGram: selectedLoan.minimumGram || matchedScheme?.minimumGram || '',
+          maturePeriodMonths: selectedLoan.maturePeriod || matchedScheme?.maturePeriodMonths || '',
+          interestRepaymentMonths: selectedLoan.interestRepaymentMonths || matchedScheme?.interestRepaymentMonths || '',
+          documentCharges: selectedLoan.documentCharges || matchedScheme?.documentCharges || '',
+          penaltyPercent: selectedLoan.penaltyPercent ? `${selectedLoan.penaltyPercent}%` : (matchedScheme?.penalty ? `${matchedScheme.penalty}%` : '')
+        }));
+      }
+    }
+  }, [selectedLoan, schemesList]);
 
   const [articles, setArticles] = useState([
     { category: '', details: '', qty: '', totWt: '', stoneWt: '', nettWt: '', purity: '', gramRate: '', total: '' },
@@ -207,15 +335,42 @@ const EditLoan = () => {
   const renderLoanForm = () => {
     switch (loanType) {
       case 'gold_loan':
-        return <GoldLoanForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
+        return (
+          <GoldLoanForm 
+            customerData={customerData} 
+            schemeData={schemeData} 
+            selectedLoan={selectedLoan}
+            schemesList={schemesList}
+            schemeSearchQuery={schemeSearchQuery}
+            handleSchemeSelect={handleSchemeSelect}
+          />
+        );
       case 'personal_loan':
-        return <PersonalLoanForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
+        return (
+          <PersonalLoanForm 
+            customerData={customerData} 
+            schemeData={schemeData} 
+            selectedLoan={selectedLoan}
+            schemesList={schemesList}
+            schemeSearchQuery={schemeSearchQuery}
+            handleSchemeSelect={handleSchemeSelect}
+          />
+        );
       case 'chit_fund':
         return <ChitFundForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       case 'micro_finance':
         return <MicroFinanceForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
       case 'vehicle_loan':
-        return <VehicleLoanForm customerData={customerData} schemeData={schemeData} selectedLoan={selectedLoan} />;
+        return (
+          <VehicleLoanForm 
+            customerData={customerData} 
+            schemeData={schemeData} 
+            selectedLoan={selectedLoan}
+            schemesList={schemesList}
+            schemeSearchQuery={schemeSearchQuery}
+            handleSchemeSelect={handleSchemeSelect}
+          />
+        );
       default:
         return null;
     }
@@ -251,6 +406,10 @@ const EditLoan = () => {
             </button>
           </div>
         </div>
+
+        {/* Scheme Selection was moved into the individual loan forms */}
+
+        {/* Select Loan Dropdown removed as per user request */}
         
       </div>
 
