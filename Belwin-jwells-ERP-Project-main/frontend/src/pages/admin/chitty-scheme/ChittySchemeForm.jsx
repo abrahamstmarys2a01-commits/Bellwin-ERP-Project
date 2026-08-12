@@ -12,8 +12,10 @@ const ChittySchemeForm = () => {
   const navigate = useNavigate();
   const isEdit = Boolean(id);
 
+  const generateSchemeCode = () => `CF-${Math.floor(100000 + Math.random() * 900000)}`;
+
   const [formData, setFormData] = useState({
-    schemeCode: '',
+    schemeCode: isEdit ? '' : generateSchemeCode(),
     schemeName: '',
     collectionAmount: '',
     noOfMembers: '',
@@ -122,7 +124,8 @@ const ChittySchemeForm = () => {
               value={formData.schemeCode} 
               onChange={handleChange} 
               required
-              className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-none text-sm focus:bg-white focus:ring-2 focus:ring-green-500 outline-none transition-all"
+              readOnly
+              className="w-full p-2.5 bg-gray-200 border border-gray-200 rounded-none text-sm outline-none cursor-not-allowed font-bold"
             />
           </div>
           <div>

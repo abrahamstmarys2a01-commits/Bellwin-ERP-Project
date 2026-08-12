@@ -6,6 +6,7 @@ import Button from '../../../components/ui/Button';
 
 const MicroFinanceScheme = () => {
   const [activeTab, setActiveTab] = useState('scheme');
+  const [schemeCode, setSchemeCode] = useState(`MFI-${Math.floor(100000 + Math.random() * 900000)}`);
 
   const tabs = [
     { id: 'scheme', label: 'Scheme Master', icon: Settings },
@@ -51,7 +52,12 @@ const MicroFinanceScheme = () => {
           <div className="space-y-6 animate-fade-in">
             <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Scheme Master</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input label="Scheme Code" placeholder="Enter Scheme Code" required />
+              <Input 
+                label="Scheme Code" 
+                value={schemeCode} 
+                readOnly 
+                className="bg-gray-200 cursor-not-allowed font-bold" 
+              />
               <Input label="Scheme Name" placeholder="Enter Scheme Name" required />
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-gray-700">Scheme Type</label>
