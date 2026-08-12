@@ -44,6 +44,7 @@ import ChittyGroupForm from './pages/admin/chitty-scheme/ChittyGroupForm';
 // Micro Finance
 import MicroFinanceScheme from './pages/admin/micro-finance/MicroFinanceScheme';
 import MicroFinanceGroupMaster from './pages/admin/micro-finance/MicroFinanceGroupMaster';
+import MfiLoanApply from './pages/admin/micro-finance/MfiLoanApply';
 // Master Module
 import MasterConfig from './pages/admin/master/MasterConfig';
 import BranchMaster from './pages/admin/master/BranchMaster';
@@ -96,6 +97,13 @@ import LoanOverDueReport from './pages/admin/reports/LoanOverDueReport';
 import LoanOutstandingReport from './pages/admin/reports/LoanOutstandingReport';
 import LoanEmiCollectionReport from './pages/admin/reports/LoanEmiCollectionReport';
 import GoldLoanAuctionReport from './pages/admin/reports/GoldLoanAuctionReport';
+import MfiApproveReport from './pages/admin/reports/MfiApproveReport';
+import MfiDueReport from './pages/admin/reports/MfiDueReport';
+import MfiOverDueReport from './pages/admin/reports/MfiOverDueReport';
+import MfiOutstandingReport from './pages/admin/reports/MfiOutstandingReport';
+import MfiEmiCollectionReport from './pages/admin/reports/MfiEmiCollectionReport';
+import MfiLedgerStatement from './pages/admin/reports/MfiLedgerStatement';
+import MfiAccountLedger from './pages/admin/reports/MfiAccountLedger';
 // Employee Pages
 import LoginForm from './components/LoginForm';
 
@@ -226,6 +234,13 @@ function App() {
           <Route path="/admin/reports/loan-outstanding-report" element={<LoanOutstandingReport />} />
           <Route path="/admin/reports/loan-emi-collection-report" element={<LoanEmiCollectionReport />} />
           <Route path="/admin/reports/gold-loan-auction" element={<GoldLoanAuctionReport />} />
+          <Route path="/admin/reports/mfi-approve-report" element={<MfiApproveReport />} />
+          <Route path="/admin/reports/mfi-due-report" element={<MfiDueReport />} />
+          <Route path="/admin/reports/mfi-over-due-report" element={<MfiOverDueReport />} />
+          <Route path="/admin/reports/mfi-outstanding-report" element={<MfiOutstandingReport />} />
+          <Route path="/admin/reports/mfi-emi-collection-report" element={<MfiEmiCollectionReport />} />
+          <Route path="/admin/reports/mfi-ledger-statement" element={<MfiLedgerStatement />} />
+          <Route path="/admin/reports/mfi-account-ledger" element={<MfiAccountLedger />} />
           <Route path="/admin/approval/pending" element={<AdminCustomerApprovalPending />} />
           <Route path="/admin/repledge/*" element={<ComingSoon />} />
 
@@ -251,6 +266,7 @@ function App() {
           {/* Micro Finance Routes */}
           <Route path="/admin/micro-finance/scheme" element={<MicroFinanceScheme />} />
           <Route path="/admin/micro-finance/group-master" element={<MicroFinanceGroupMaster />} />
+          <Route path="/admin/micro-finance/apply" element={<MfiLoanApply />} />
           
           {/* Remittance */}
           <Route path="/admin/remittance/add" element={<AddRemittance />} />

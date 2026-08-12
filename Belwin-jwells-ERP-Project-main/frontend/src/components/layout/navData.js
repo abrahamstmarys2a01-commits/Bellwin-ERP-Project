@@ -86,20 +86,8 @@ export const ADMIN_NAV = [
       { label: 'Chit Fund Scheme', icon: Users, path: '/admin/chitty/scheme' },
       { label: 'Scheme Allocation', icon: UserPlus, path: '/admin/chitty/scheme-allocation' },
       { label: 'Chit Fund Group Master', icon: TrendingUp, path: '/admin/chitty/group-master' },
-    ]
-  },
-  {
-    id: 'micro_finance', label: 'Micro Finance', icon: Users,
-    children: [
-      { label: 'Micro Finance Scheme', icon: Users, path: '/admin/micro-finance/scheme' },
-      { label: 'Micro Finance Group Master', icon: TrendingUp, path: '/admin/micro-finance/group-master' },
-    ]
-  },
-  {
-    id: 'reports', label: 'Reports', icon: ClipboardList,
-    children: [
       {
-        label: 'Chit Fund', icon: Users,
+        label: 'Chit Fund Reports', icon: FileText,
         children: [
           { label: 'Chit Account Ledger', icon: FileText, path: '/admin/reports/chit-account-ledger' },
           { label: 'Chit Account Ledger Non-Auction', icon: FileText, path: '/admin/reports/chit-account-ledger-non-auction' },
@@ -122,23 +110,37 @@ export const ADMIN_NAV = [
           { label: 'Chit Credit Report', icon: FileText, path: '/admin/reports/chit-credit-report' },
           { label: 'Chit Auditing Report', icon: FileText, path: '/admin/reports/chit-auditing-report' }
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: 'micro_finance', label: 'Micro Finance', icon: Users,
+    children: [
+      { label: 'Micro Finance Scheme', icon: Users, path: '/admin/micro-finance/scheme' },
+      { label: 'Micro Finance Group Master', icon: TrendingUp, path: '/admin/micro-finance/group-master' },
+      { label: 'MFI Loan Apply', icon: Plus, path: '/admin/micro-finance/apply' },
       {
-        label: 'Micro Finance', icon: Briefcase,
+        label: 'MFI Loan Reports', icon: FileText,
         children: [
-          { label: 'Micro Finance Account Ledger', icon: FileText, path: '/admin/reports/mfi-account-ledger' },
-          { label: 'Micro Finance Account Ledger Non EMI', icon: FileText, path: '/admin/reports/mfi-account-ledger-non-emi' },
-          { label: 'Micro Finance Approve Report', icon: FileText, path: '/admin/reports/mfi-approve-report' },
-          { label: 'Micro Finance Disbursement Report', icon: FileText, path: '/admin/reports/mfi-disbursement-report' },
-          { label: 'Micro Finance Due Report', icon: FileText, path: '/admin/reports/mfi-due-report' },
-          { label: 'Micro Finance Over Due Report', icon: FileText, path: '/admin/reports/mfi-over-due-report' },
-          { label: 'Micro Finance Outstanding Report', icon: FileText, path: '/admin/reports/mfi-outstanding-report' },
-          { label: 'Micro Finance Emi Collection Report', icon: FileText, path: '/admin/reports/mfi-emi-collection-report' },
-          { label: 'Ledger Statement', icon: FileText, path: '/admin/reports/mfi-ledger-statement' },
-          { label: 'Cash Book Statement', icon: FileText, path: '/admin/reports/mfi-cash-book-statement' },
-          { label: 'Micro Finance Credit Approval Report', icon: FileText, path: '/admin/reports/mfi-credit-approval-report' }
+          { label: 'MFI Approved Report', icon: FileText, path: '/admin/reports/mfi-approve-report' },
+          { label: 'MFI Due', icon: FileText, path: '/admin/reports/mfi-due-report' },
+          { label: 'MFI Overdue', icon: FileText, path: '/admin/reports/mfi-over-due-report' },
+          { label: 'MFI Outstanding', icon: FileText, path: '/admin/reports/mfi-outstanding-report' },
+          { label: 'MFI EMI Collection', icon: FileText, path: '/admin/reports/mfi-emi-collection-report' },
+          { label: 'MFI Loan Statement', icon: FileText, path: '/admin/reports/mfi-ledger-statement' }
         ]
       },
+      {
+        label: 'MFI Account Ledger', icon: BookOpen,
+        children: [
+          { label: 'Financial Debit/Credit transactions', icon: FileText, path: '/admin/reports/mfi-account-ledger' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'reports', label: 'Reports', icon: ClipboardList,
+    children: [
       {
         label: 'Gold Loan', icon: Coins,
         children: [
