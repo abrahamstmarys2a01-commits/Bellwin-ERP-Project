@@ -296,10 +296,8 @@ const EmployeeList = () => {
               <option value="">All Branches</option>
               <option value="HEADOFFICE">Head Office</option>
               <option value="TRICHY">Trichy</option>
-              <option value="DINDIGUL">Dindigul</option>
-              <option value="KARUR">Karur</option>
               <option value="PUDUKKOTTAI">Pudukkottai</option>
-              <option value="NAMAKKAL">Namakkal</option>
+              <option value="THANJAVUR">Thanjavur</option>
             </Select>
 
             <button

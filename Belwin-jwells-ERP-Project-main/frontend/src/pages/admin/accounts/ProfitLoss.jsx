@@ -133,7 +133,7 @@ const ProfitLoss = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="p-4 flex items-center border border-green-100 bg-green-50/50">
+        <div className="p-4 flex items-center border border-green-100 bg-[#f0fdf4]">
           <div className="p-3 rounded-none bg-green-100 text-green-600 mr-4">
             <TrendingUp size={24} />
           </div>
@@ -142,7 +142,7 @@ const ProfitLoss = () => {
             <p className="text-xl font-bold text-gray-800">₹{summary.totalIncome}</p>
           </div>
         </div>
-        <div className="p-4 flex items-center border border-red-100 bg-red-50/50">
+        <div className="p-4 flex items-center border border-red-100 bg-[#fef2f2]">
           <div className="p-3 rounded-none bg-red-100 text-red-600 mr-4">
             <TrendingDown size={24} />
           </div>
@@ -151,7 +151,7 @@ const ProfitLoss = () => {
             <p className="text-xl font-bold text-gray-800">₹{summary.totalExpenses}</p>
           </div>
         </div>
-        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        <div className="p-4 flex items-center border border-blue-100 bg-[#eff6ff]">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Activity size={24} />
           </div>
@@ -160,7 +160,7 @@ const ProfitLoss = () => {
             <p className="text-xl font-bold text-gray-800">₹{summary.grossProfit}</p>
           </div>
         </div>
-        <div className="p-4 flex items-center border border-purple-100 bg-purple-50/50">
+        <div className="p-4 flex items-center border border-purple-100 bg-[#faf5ff]">
           <div className="p-3 rounded-none bg-purple-100 text-purple-600 mr-4">
             <DollarSign size={24} />
           </div>

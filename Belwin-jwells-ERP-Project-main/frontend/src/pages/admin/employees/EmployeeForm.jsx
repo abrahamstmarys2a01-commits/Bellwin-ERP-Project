@@ -340,10 +340,8 @@ const EmployeeForm = () => {
                   <Select label="Branch Name" name="branch" value={formData.branch} onChange={handleChange}>
                     <option value="HEADOFFICE">Head Office</option>
                     <option value="TRICHY">Trichy</option>
-                    <option value="DINDIGUL">Dindigul</option>
-                    <option value="KARUR">Karur</option>
                     <option value="PUDUKKOTTAI">Pudukkottai</option>
-                    <option value="NAMAKKAL">Namakkal</option>
+                    <option value="THANJAVUR">Thanjavur</option>
                   </Select>
                   <Input label="Joining Date" type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} />
                   <Select label="Role" name="role" value={formData.role} onChange={handleChange} required>

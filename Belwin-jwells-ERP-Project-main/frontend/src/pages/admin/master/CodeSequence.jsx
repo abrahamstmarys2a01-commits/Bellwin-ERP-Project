@@ -1,41 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageHeader from '../../../components/ui/PageHeader';
 import DataTable from '../../../components/ui/DataTable';
 import { TR, TD } from '../../../components/ui/Table';
-import { Settings } from 'lucide-react';
+import { Settings, Edit2 } from 'lucide-react';
+import Modal from '../../../components/ui/Modal';
+import Input from '../../../components/ui/Input';
+import Button from '../../../components/ui/Button';
 
 const CodeSequence = () => {
-  const masterModules = [
-    { module: 'Branch Master', format: 'BR + 4 digits', example: 'BR0001' },
-    { module: 'Employee Master', format: 'EMP + 4 digits', example: 'EMP0001' },
-    { module: 'Member Master', format: 'MEM + 4 digits', example: 'MEM0001' },
-    { module: 'Borrower/Customer', format: 'BOR + 4 digits', example: 'BOR0001' },
-    { module: 'Loan Scheme', format: 'LS + 4 digits', example: 'LS0001' },
-    { module: 'Dealer Master', format: 'DLR + 4 digits', example: 'DLR0001' },
-    { module: 'Vehicle Master', format: 'VEH + 4 digits', example: 'VEH0001' },
-    { module: 'Item Group', format: 'IG + 4 digits', example: 'IG0001' },
-    { module: 'Purity Master', format: 'PUR + 4 digits', example: 'PUR0001' },
-    { module: 'Gold Rate', format: 'GR + 4 digits', example: 'GR0001' },
-    { module: 'Locker Master', format: 'LKR + 4 digits', example: 'LKR0001' },
-    { module: 'Valuer Master', format: 'VAL + 4 digits', example: 'VAL0001' },
-    { module: 'Ledger Master', format: 'LED + 4 digits', example: 'LED0001' },
-    { module: 'Accounts Group', format: 'AG + 4 digits', example: 'AG0001' },
-    { module: 'Bank Master', format: 'BNK + 4 digits', example: 'BNK0001' },
-    { module: 'Repledge Scheme', format: 'RPS + 4 digits', example: 'RPS0001' },
-    { module: 'Repledge Bank', format: 'RPB + 4 digits', example: 'RPB0001' },
-    { module: 'Repledge Entry', format: 'RPE + 4 digits', example: 'RPE0001' },
-  ];
+  const [masterModules, setMasterModules] = useState([
+    { id: 'm1', module: 'Branch Master', prefix: 'BR', digits: 4 },
+    { id: 'm2', module: 'Employee Master', prefix: 'EMP', digits: 4 },
+    { id: 'm3', module: 'Member Master', prefix: 'MEM', digits: 4 },
+    { id: 'm4', module: 'Borrower/Customer', prefix: 'BOR', digits: 4 },
+    { id: 'm5', module: 'Loan Scheme', prefix: 'LS', digits: 4 },
+    { id: 'm6', module: 'Dealer Master', prefix: 'DLR', digits: 4 },
+    { id: 'm7', module: 'Vehicle Master', prefix: 'VEH', digits: 4 },
+    { id: 'm8', module: 'Item Group', prefix: 'IG', digits: 4 },
+    { id: 'm9', module: 'Purity Master', prefix: 'PUR', digits: 4 },
+    { id: 'm10', module: 'Gold Rate', prefix: 'GR', digits: 4 },
+    { id: 'm11', module: 'Locker Master', prefix: 'LKR', digits: 4 },
+    { id: 'm12', module: 'Valuer Master', prefix: 'VAL', digits: 4 },
+    { id: 'm13', module: 'Ledger Master', prefix: 'LED', digits: 4 },
+    { id: 'm14', module: 'Accounts Group', prefix: 'AG', digits: 4 },
+    { id: 'm15', module: 'Bank Master', prefix: 'BNK', digits: 4 },
+    { id: 'm16', module: 'Repledge Scheme', prefix: 'RPS', digits: 4 },
+    { id: 'm17', module: 'Repledge Bank', prefix: 'RPB', digits: 4 },
+    { id: 'm18', module: 'Repledge Entry', prefix: 'RPE', digits: 4 },
+  ]);
 
-  const operationalModules = [
-    { module: 'Loan Application', format: 'APP + 6 digits', example: 'APP000001' },
-    { module: 'Loan Account', format: 'LN + 6 digits', example: 'LN000001' },
-    { module: 'Loan Disbursement', format: 'DIS + 6 digits', example: 'DIS000001' },
-    { module: 'EMI Receipt', format: 'EMI + 6 digits', example: 'EMI000001' },
-    { module: 'Payment Voucher', format: 'PV + 6 digits', example: 'PV000001' },
-    { module: 'Receive Voucher', format: 'RV + 6 digits', example: 'RV000001' },
-    { module: 'Journal Voucher', format: 'JV + 6 digits', example: 'JV000001' },
-    { module: 'Contra Voucher', format: 'CV + 6 digits', example: 'CV000001' },
-  ];
+  const [operationalModules, setOperationalModules] = useState([
+    { id: 'o1', module: 'Loan Application', prefix: 'APP', digits: 6 },
+    { id: 'o2', module: 'Loan Account', prefix: 'LN', digits: 6 },
+    { id: 'o3', module: 'Loan Disbursement', prefix: 'DIS', digits: 6 },
+    { id: 'o4', module: 'EMI Receipt', prefix: 'EMI', digits: 6 },
+    { id: 'o5', module: 'Payment Voucher', prefix: 'PV', digits: 6 },
+    { id: 'o6', module: 'Receive Voucher', prefix: 'RV', digits: 6 },
+    { id: 'o7', module: 'Journal Voucher', prefix: 'JV', digits: 6 },
+    { id: 'o8', module: 'Contra Voucher', prefix: 'CV', digits: 6 },
+  ]);
+
+  const [editModalState, setEditModalState] = useState({
+    isOpen: false,
+    item: null,
+    type: null, // 'master' or 'operational'
+    prefix: '',
+    digits: 4
+  });
+
+  const handleEditClick = (item, type) => {
+    setEditModalState({
+      isOpen: true,
+      item,
+      type,
+      prefix: item.prefix,
+      digits: item.digits
+    });
+  };
+
+  const handleCloseModal = () => {
+    setEditModalState({ ...editModalState, isOpen: false });
+  };
+
+  const handleSave = () => {
+    const { item, type, prefix, digits } = editModalState;
+    
+    if (type === 'master') {
+      setMasterModules(masterModules.map(m => 
+        m.id === item.id ? { ...m, prefix: prefix.toUpperCase(), digits: parseInt(digits) } : m
+      ));
+    } else {
+      setOperationalModules(operationalModules.map(m => 
+        m.id === item.id ? { ...m, prefix: prefix.toUpperCase(), digits: parseInt(digits) } : m
+      ));
+    }
+    handleCloseModal();
+  };
+
+  const renderRow = (item, type) => {
+    const format = `${item.prefix} + ${item.digits} digits`;
+    const example = `${item.prefix}${'0'.repeat(item.digits - 1)}1`;
+    return (
+      <TR key={item.id}>
+        <TD className="font-semibold text-gray-700">{item.module}</TD>
+        <TD>
+          <span className={`px-2 py-1 ${type === 'master' ? 'bg-primary/10 text-primary' : 'bg-blue-50 text-blue-600'} font-medium text-xs rounded-md`}>
+            {format}
+          </span>
+        </TD>
+        <TD className="font-mono text-sm text-gray-600">{example}</TD>
+        <TD>
+          <button 
+            onClick={() => handleEditClick(item, type)}
+            className="p-1 text-gray-400 hover:text-primary transition-colors"
+            title="Edit Sequence"
+          >
+            <Edit2 size={16} />
+          </button>
+        </TD>
+      </TR>
+    );
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 animate-fade-in">
@@ -48,46 +113,71 @@ const CodeSequence = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <div className="shadow-sm border border-gray-100">
           <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-            <h3 className="text-lg font-semibold text-gray-800">Master Modules (4 Digits)</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Master Modules</h3>
           </div>
           <DataTable
-            headers={['Module', 'Format', 'Example']}
+            headers={['Module', 'Format', 'Example', 'Action']}
             data={masterModules}
-            renderRow={(item, idx) => (
-              <TR key={idx}>
-                <TD className="font-semibold text-gray-700">{item.module}</TD>
-                <TD>
-                  <span className="px-2 py-1 bg-primary/10 text-primary font-medium text-xs rounded-md">
-                    {item.format}
-                  </span>
-                </TD>
-                <TD className="font-mono text-sm text-gray-600">{item.example}</TD>
-              </TR>
-            )}
+            renderRow={(item) => renderRow(item, 'master')}
           />
         </div>
 
         <div className="shadow-sm border border-gray-100">
           <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-            <h3 className="text-lg font-semibold text-gray-800">Operational Modules (6 Digits)</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Operational Modules</h3>
           </div>
           <DataTable
-            headers={['Module', 'Format', 'Example']}
+            headers={['Module', 'Format', 'Example', 'Action']}
             data={operationalModules}
-            renderRow={(item, idx) => (
-              <TR key={idx}>
-                <TD className="font-semibold text-gray-700">{item.module}</TD>
-                <TD>
-                  <span className="px-2 py-1 bg-blue-50 text-blue-600 font-medium text-xs rounded-md">
-                    {item.format}
-                  </span>
-                </TD>
-                <TD className="font-mono text-sm text-gray-600">{item.example}</TD>
-              </TR>
-            )}
+            renderRow={(item) => renderRow(item, 'operational')}
           />
         </div>
       </div>
+
+      <Modal 
+        isOpen={editModalState.isOpen} 
+        onClose={handleCloseModal}
+        title="Edit Code Sequence"
+      >
+        {editModalState.item && (
+          <div className="p-6 space-y-4">
+            <div>
+              <p className="text-sm font-medium text-gray-500 mb-1">Module</p>
+              <p className="font-semibold text-gray-800">{editModalState.item.module}</p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <Input 
+                label="Prefix" 
+                value={editModalState.prefix} 
+                onChange={(e) => setEditModalState({...editModalState, prefix: e.target.value})}
+                maxLength={5}
+                placeholder="e.g. BR"
+              />
+              <Input 
+                label="Number of Digits" 
+                type="number" 
+                min={3} 
+                max={10}
+                value={editModalState.digits} 
+                onChange={(e) => setEditModalState({...editModalState, digits: e.target.value})}
+              />
+            </div>
+            
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-500 mb-2">Preview Example:</p>
+              <p className="font-mono text-lg font-semibold text-primary">
+                {editModalState.prefix.toUpperCase()}{'0'.repeat(Math.max(0, editModalState.digits - 1))}1
+              </p>
+            </div>
+            
+            <div className="flex justify-end gap-3 mt-6">
+              <Button variant="secondary" onClick={handleCloseModal}>Cancel</Button>
+              <Button variant="primary" onClick={handleSave}>Save Changes</Button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

@@ -287,10 +287,8 @@ const HRForm = () => {
                     options={[
                       { label: 'Head Office', value: 'HEADOFFICE' },
                       { label: 'Trichy', value: 'TRICHY' },
-                      { label: 'Dindigul', value: 'DINDIGUL' },
-                      { label: 'Karur', value: 'KARUR' },
                       { label: 'Pudukkottai', value: 'PUDUKKOTTAI' },
-                      { label: 'Namakkal', value: 'NAMAKKAL' }
+                      { label: 'Thanjavur', value: 'THANJAVUR' }
                     ]}
                   />
                   <Select

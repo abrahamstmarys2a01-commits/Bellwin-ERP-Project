@@ -147,7 +147,7 @@ const TrialBalance = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        <div className="p-4 flex items-center border border-blue-100 bg-[#eff6ff]">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Activity size={24} />
           </div>
@@ -156,7 +156,7 @@ const TrialBalance = () => {
             <p className="text-xl font-bold text-gray-800">₹{summary.totalDebit.toLocaleString()}</p>
           </div>
         </div>
-        <div className="p-4 flex items-center border border-blue-100 bg-blue-50/50">
+        <div className="p-4 flex items-center border border-blue-100 bg-[#eff6ff]">
           <div className="p-3 rounded-none bg-blue-100 text-blue-600 mr-4">
             <Layers size={24} />
           </div>
@@ -165,7 +165,7 @@ const TrialBalance = () => {
             <p className="text-xl font-bold text-gray-800">₹{summary.totalCredit.toLocaleString()}</p>
           </div>
         </div>
-        <div className={`p-4 flex items-center border ${isBalanced ? 'border-gray-100 bg-gray-50' : 'border-orange-100 bg-orange-50/50'}`}>
+        <div className={`p-4 flex items-center border ${isBalanced ? 'border-gray-100 bg-[#f9fafb]' : 'border-orange-100 bg-[#fff7ed]'}`}>
           <div className={`p-3 rounded-none mr-4 ${isBalanced ? 'bg-gray-200 text-gray-600' : 'bg-orange-100 text-orange-600'}`}>
             <Landmark size={24} />
           </div>
@@ -174,7 +174,7 @@ const TrialBalance = () => {
             <p className={`text-xl font-bold ${isBalanced ? 'text-gray-800' : 'text-orange-600'}`}>₹{summary.difference.toLocaleString()}</p>
           </div>
         </div>
-        <div className={`p-4 flex items-center border ${isBalanced ? 'border-green-100 bg-green-50/50' : 'border-red-100 bg-red-50/50'}`}>
+        <div className={`p-4 flex items-center border ${isBalanced ? 'border-green-100 bg-[#f0fdf4]' : 'border-red-100 bg-[#fef2f2]'}`}>
           <div className={`p-3 rounded-none mr-4 ${isBalanced ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
             {isBalanced ? <CheckCircle size={24} /> : <AlertCircle size={24} />}
           </div>

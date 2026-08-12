@@ -5,7 +5,7 @@ import { ADMIN_NAV } from './navData';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/Logo 1.png';
 
-const BRANCHES = ['Head Office', 'Trichy', 'Dindigul', 'Karur', 'Pudukkottai', 'Namakkal'];
+const BRANCHES = ['Head Office', 'Trichy', 'Pudukkottai', 'Thanjavur'];
 
 const Header = ({ isMobile, onToggleMobileMenu, isAdmin: isAdminProp }) => {
   const [branch, setBranch] = useState('Head Office');
