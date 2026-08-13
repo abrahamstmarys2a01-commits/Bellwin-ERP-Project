@@ -1,6 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const GoldRequest = require('../models/GoldRequest');
+const Counter = require('../models/Counter');
+
+// Get next ID preview
+router.get('/next-id', async (req, res) => {
+  try {
+    const counter = await Counter.findById('goldRequestId');
+    const nextSeq = (counter?.seq || 0) + 1;
+    res.status(200).json({ success: true, nextId: `REQ${String(nextSeq).padStart(6, '0')}` });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 // Create a new gold request
 router.post('/', async (req, res) => {

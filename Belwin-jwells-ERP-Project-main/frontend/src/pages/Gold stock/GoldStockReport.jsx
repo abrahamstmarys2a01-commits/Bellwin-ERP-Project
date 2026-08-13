@@ -14,8 +14,7 @@ const GoldStockReport = () => {
     loanId: '',
     customerId: '',
     status: 'All Statuses',
-    fromDate: '',
-    toDate: ''
+    branch: 'All Branches'
   });
 
   const [formData, setFormData] = useState({
@@ -81,8 +80,7 @@ const GoldStockReport = () => {
     if (filters.loanId && !(s.loanId || '').toLowerCase().includes(filters.loanId.toLowerCase())) match = false;
     if (filters.customerId && !(s.customerId || '').toLowerCase().includes(filters.customerId.toLowerCase())) match = false;
     if (filters.status !== 'All Statuses' && s.status !== filters.status) match = false;
-    if (filters.fromDate && new Date(s.date) < new Date(filters.fromDate)) match = false;
-    if (filters.toDate && new Date(s.date) > new Date(filters.toDate)) match = false;
+    if (filters.branch !== 'All Branches' && s.branch !== filters.branch) match = false;
     return match;
   });
 
@@ -310,12 +308,13 @@ const GoldStockReport = () => {
             </select>
           </div>
           <div>
-            <label className={lbl}>From Date</label>
-            <input type="date" name="fromDate" value={filters.fromDate} onChange={handleFilterChange} className={inp} />
-          </div>
-          <div>
-            <label className={lbl}>To Date</label>
-            <input type="date" name="toDate" value={filters.toDate} onChange={handleFilterChange} className={inp} />
+            <label className={lbl}>Branch</label>
+            <select name="branch" value={filters.branch} onChange={handleFilterChange} className={inp}>
+              <option value="All Branches">All Branches</option>
+              <option value="TRICHY">TRICHY</option>
+              <option value="PUDUKKOTTAI">PUDUKKOTTAI</option>
+              <option value="THANJAVUR">THANJAVUR</option>
+            </select>
           </div>
         </div>
       </div>

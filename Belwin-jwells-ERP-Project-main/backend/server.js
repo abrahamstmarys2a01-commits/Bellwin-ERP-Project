@@ -35,7 +35,6 @@ const repledgeRoutes = require('./routes/repledgeRoutes');
 const topupRoutes = require('./routes/topupRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
-const chittySchemeRoutes = require('./routes/chittySchemeRoutes');
 const incomeRoutes = require('./routes/incomeRoutes');
 const denominationRoutes = require('./routes/denominationRoutes');
 const followupRoutes = require('./routes/followupRoutes');
@@ -58,9 +57,8 @@ const masterRoutes = require('./routes/masterRoutes');
 const accountsRoutes = require('./routes/accountsRoutes');
 const loanConfigRoutes = require('./routes/loanConfigRoutes');
 const ledgerRoutes = require('./routes/accounts/ledgerRoutes');
-const schemeAllocationRoutes = require('./routes/schemeAllocationRoutes');
-const chittyGroupRoutes = require('./routes/chittyGroupRoutes');
 const mfiLoanRoutes = require('./routes/mfiLoanRoutes');
+const chitFundRoutes = require('./routes/chitFundRoutes');
 
 
 app.use('/api/auth', authRoutes);
@@ -75,7 +73,6 @@ app.use('/api/repledges', repledgeRoutes);
 app.use('/api/topups', topupRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/expenses', expenseRoutes);
-app.use('/api/chitty-schemes', chittySchemeRoutes);
 app.use('/api/incomes', incomeRoutes);
 app.use('/api/denominations', denominationRoutes);
 app.use('/api/followups', followupRoutes);
@@ -98,10 +95,9 @@ app.use('/api/master', masterRoutes);
 app.use('/api/accounts', accountsRoutes);
 app.use('/api/loan-config', loanConfigRoutes);
 app.use('/api/schemes', require('./routes/schemeRoutes'));
-app.use('/api/scheme-allocation', schemeAllocationRoutes);
-app.use('/api/chitty-group', chittyGroupRoutes);
 app.use('/api/mfi-loans', mfiLoanRoutes);
 app.use('/api/auctions', auctionRoutes);
+app.use('/api/chit-fund', chitFundRoutes);
 
 app.get('/', (req, res) => {
     res.status(200).json({ status: 'ok', message: 'API is running' });

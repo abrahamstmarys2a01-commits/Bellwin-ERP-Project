@@ -175,7 +175,7 @@ const ChittyGroupForm = () => {
         </button>
         <PageHeader 
           title={isEdit ? 'Update Chit Fund Group Master' : 'Chit Fund Group Master Form'} 
-          subtitle="Create or edit a Chit Fund Group"
+          subtitle=""
         />
       </div>
 

@@ -14,6 +14,10 @@ const NewBorrower = () => {
   const [borrowerId, setBorrowerId] = useState('');
   const fileInputRef = useRef(null);
 
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : {};
+  const userBranch = user.branch || user.employee?.branch || 'Head Office';
+
   const initialForm = {
     customerName: '',
     guardian: '', // guardianName / Father name
@@ -32,7 +36,7 @@ const NewBorrower = () => {
     temporaryAddress: '',
     occupation: '',
     monthlyIncome: '',
-    branch: 'Head Office',
+    branch: userBranch,
     memberId: '',
     status: 'Active',
     photo: '',
@@ -298,14 +302,13 @@ const NewBorrower = () => {
                   placeholder="e.g. 25000"
                 />
 
-                <Select
+                <Input
                   label="Branch"
                   name="branch"
                   value={formData.branch}
-                  onChange={handleInputChange}
-                >
-                  {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
-                </Select>
+                  disabled
+                  className="bg-gray-50 text-gray-500 font-semibold"
+                />
 
                 <Input
                   label="Member ID (Optional)"

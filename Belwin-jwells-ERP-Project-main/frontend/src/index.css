@@ -12,6 +12,14 @@
   --color-erp-gold-dark: #b45309;
   --color-text-primary: #111827;
   --color-text-secondary: #6b7280;
+  
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
 }
 
 @layer base {
@@ -21,6 +29,11 @@
     font-family: 'Jost', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Enforce sharp corners on all form elements globally */
+  input, select, textarea, button {
+    border-radius: 0px !important;
   }
 }
 

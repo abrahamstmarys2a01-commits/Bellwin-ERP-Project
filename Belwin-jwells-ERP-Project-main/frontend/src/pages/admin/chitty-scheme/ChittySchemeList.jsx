@@ -62,7 +62,7 @@ const ChittySchemeList = () => {
     <div className="p-6 max-w-7xl mx-auto flex flex-col gap-5">
       <PageHeader 
         title="Chit Fund Schemes" 
-        subtitle="Manage all your chit fund schemes and configurations"
+        subtitle=""
         actions={headerActions}
       />
 

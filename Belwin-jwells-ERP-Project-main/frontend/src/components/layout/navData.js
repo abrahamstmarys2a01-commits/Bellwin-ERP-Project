@@ -32,6 +32,17 @@ export const ADMIN_NAV = [
     ]
   },
   {
+    id: 'employee', label: 'Employee', icon: Users,
+    children: [
+      { label: 'Employees List', icon: Users, path: '/admin/employees' },
+      { label: 'New Employee', icon: UserPlus, path: '/admin/employees/create' },
+      { label: 'Promotion / Demotion', icon: TrendingUp, path: '/admin/employees/promotion' },
+      { label: 'Attendance Management', icon: UserCheck, path: '/admin/attendance' },
+      { label: 'Salary Management', icon: Calculator, path: '/admin/salary' },
+      { label: 'Live Tracking', icon: MapPin, path: '/admin/employees/live-tracking' },
+    ]
+  },
+  {
     id: 'borrower', label: 'Customer', icon: User,
     children: [
       { label: 'New Customer', icon: UserPlus, path: '/admin/borrower/new' },
@@ -51,64 +62,24 @@ export const ADMIN_NAV = [
     ]
   },
   {
-    id: 'accounts', label: 'Accounts', icon: Briefcase,
-    children: [
-      { label: 'Ledger Master', icon: BookOpen, path: '/admin/accounts/ledger-master' },
-      { label: 'Accounts Group Master', icon: Users, path: '/admin/accounts/group-master' },
-      { label: 'Payment Voucher Entry', icon: CreditCard, path: '/admin/accounts/payment-voucher' },
-      { label: 'Receive Voucher Entry', icon: Download, path: '/admin/accounts/receive-voucher' },
-      { label: 'Journal Voucher Entry', icon: FileEdit, path: '/admin/accounts/journal-voucher' },
-      { label: 'Contra Voucher Entry', icon: ArrowRightLeft, path: '/admin/accounts/contra-voucher' },
-      { label: 'Bank Deposit Entry', icon: Landmark, path: '/admin/accounts/bank-deposit' },
-      { label: 'Bank Withdrawl Entry', icon: Banknote, path: '/admin/accounts/bank-withdrawl' },
-      { label: 'Journal Report', icon: FileText, path: '/admin/accounts/journal-report' },
-      { label: 'Ledger Report', icon: FileText, path: '/admin/accounts/ledger-report' },
-      { label: 'Profit & Loss', icon: TrendingUp, path: '/admin/accounts/profit-loss' },
-      { label: 'Trial Balance', icon: FileText, path: '/admin/accounts/trial-balance' },
-      { label: 'Balance Sheet', icon: Landmark, path: '/admin/accounts/balance-sheet' },
-    ]
-  },
-
-  {
-    id: 'employee', label: 'Employee', icon: Users,
-    children: [
-      { label: 'Employees List', icon: Users, path: '/admin/employees' },
-      { label: 'New Employee', icon: UserPlus, path: '/admin/employees/create' },
-      { label: 'Promotion / Demotion', icon: TrendingUp, path: '/admin/employees/promotion' },
-      { label: 'Attendance Management', icon: UserCheck, path: '/admin/attendance' },
-      { label: 'Salary Management', icon: Calculator, path: '/admin/salary' },
-      { label: 'Live Tracking', icon: MapPin, path: '/admin/employees/live-tracking' },
-    ]
-  },
-  {
     id: 'chitty', label: 'Chit Fund', icon: Users,
     children: [
-      { label: 'Chit Fund Scheme', icon: Users, path: '/admin/chitty/scheme' },
-      { label: 'Scheme Allocation', icon: UserPlus, path: '/admin/chitty/scheme-allocation' },
-      { label: 'Chit Fund Group Master', icon: TrendingUp, path: '/admin/chitty/group-master' },
-      {
-        label: 'Chit Fund Reports', icon: FileText,
+      { label: 'Group Master', icon: Building2, path: '/admin/chit-fund/group' },
+      { label: 'Member Manager', icon: UserPlus, path: '/admin/chit-fund/members' },
+      { label: 'Contributions', icon: Coins, path: '/admin/chit-fund/contributions' },
+      { label: 'Chit Event (Draw/Auction)', icon: Award, path: '/admin/chit-fund/event' },
+      { label: 'Prize Disbursement', icon: Banknote, path: '/admin/chit-fund/disbursement' },
+      { 
+        label: 'Reports', icon: FileText,
         children: [
-          { label: 'Chit Account Ledger', icon: FileText, path: '/admin/reports/chit-account-ledger' },
-          { label: 'Chit Account Ledger Non-Auction', icon: FileText, path: '/admin/reports/chit-account-ledger-non-auction' },
-          { label: 'Chit Requisition Report', icon: FileText, path: '/admin/reports/chit-requisition-report' },
-          { label: 'Chit Approval Report', icon: FileText, path: '/admin/reports/chit-approval-report' },
-          { label: 'Chit Disbursement Report', icon: FileText, path: '/admin/reports/chit-disbursement-report' },
-          { label: 'Chit Due Report', icon: FileText, path: '/admin/reports/chit-due-report' },
-          { label: 'Chit Over Due Report', icon: FileText, path: '/admin/reports/chit-over-due-report' },
-          { label: 'Chit Outstanding Report', icon: FileText, path: '/admin/reports/chit-outstanding-report' },
-          { label: 'Chit Collection Report', icon: FileText, path: '/admin/reports/chit-collection-report' },
-          { label: 'Chit Auction Report', icon: FileText, path: '/admin/reports/chit-auction-report' },
-          { label: 'Chit Winner / Prize Report', icon: FileText, path: '/admin/reports/chit-winner-report' },
-          { label: 'Dividend Report', icon: FileText, path: '/admin/reports/chit-dividend-report' },
-          { label: 'Member Chit Statement', icon: FileText, path: '/admin/reports/member-chit-statement' },
-          { label: 'Chit Group Report', icon: FileText, path: '/admin/reports/chit-group-report' },
-          { label: 'Chit Maturity Report', icon: FileText, path: '/admin/reports/chit-maturity-report' },
-          { label: 'Chit Closure Report', icon: FileText, path: '/admin/reports/chit-closure-report' },
-          { label: 'Chit Penalty Report', icon: FileText, path: '/admin/reports/chit-penalty-report' },
-          { label: 'Chit Receipt / Collection Statement', icon: FileText, path: '/admin/reports/chit-receipt-collection-statement' },
-          { label: 'Chit Credit Report', icon: FileText, path: '/admin/reports/chit-credit-report' },
-          { label: 'Chit Auditing Report', icon: FileText, path: '/admin/reports/chit-auditing-report' }
+          { label: 'Group Report', icon: FileText, path: '/admin/reports/chit-group' },
+          { label: 'Contribution Report', icon: FileText, path: '/admin/reports/chit-contribution' },
+          { label: 'Collection Report', icon: FileText, path: '/admin/reports/chit-collection' },
+          { label: 'Due Report', icon: FileText, path: '/admin/reports/chit-due' },
+          { label: 'Auction/Draw Report', icon: FileText, path: '/admin/reports/chit-auction' },
+          { label: 'Prize Disbursement', icon: FileText, path: '/admin/reports/chit-disbursement' },
+          { label: 'Discount/Dividend', icon: FileText, path: '/admin/reports/chit-discount' },
+          { label: 'Member Statement', icon: FileText, path: '/admin/reports/chit-member' }
         ]
       }
     ]
@@ -160,10 +131,21 @@ export const ADMIN_NAV = [
     ]
   },
   {
-    id: 'approval', label: 'Approval', icon: Wallet,
+    id: 'accounts', label: 'Accounts', icon: Briefcase,
     children: [
-      { label: 'Pending Approvals', icon: FileText, path: '/admin/approval/pending' },
-      { label: 'Loan Requisition Report', icon: FileText, path: '/admin/reports/loan-requisition-report' },
+      { label: 'Ledger Master', icon: BookOpen, path: '/admin/accounts/ledger-master' },
+      { label: 'Accounts Group Master', icon: Users, path: '/admin/accounts/group-master' },
+      { label: 'Payment Voucher Entry', icon: CreditCard, path: '/admin/accounts/payment-voucher' },
+      { label: 'Receive Voucher Entry', icon: Download, path: '/admin/accounts/receive-voucher' },
+      { label: 'Journal Voucher Entry', icon: FileEdit, path: '/admin/accounts/journal-voucher' },
+      { label: 'Contra Voucher Entry', icon: ArrowRightLeft, path: '/admin/accounts/contra-voucher' },
+      { label: 'Bank Deposit Entry', icon: Landmark, path: '/admin/accounts/bank-deposit' },
+      { label: 'Bank Withdrawl Entry', icon: Banknote, path: '/admin/accounts/bank-withdrawl' },
+      { label: 'Journal Report', icon: FileText, path: '/admin/accounts/journal-report' },
+      { label: 'Ledger Report', icon: FileText, path: '/admin/accounts/ledger-report' },
+      { label: 'Profit & Loss', icon: TrendingUp, path: '/admin/accounts/profit-loss' },
+      { label: 'Trial Balance', icon: FileText, path: '/admin/accounts/trial-balance' },
+      { label: 'Balance Sheet', icon: Landmark, path: '/admin/accounts/balance-sheet' },
     ]
   },
   {
@@ -177,13 +159,20 @@ export const ADMIN_NAV = [
     ]
   },
   {
-    id: 'loan_schemes_access', label: 'Loan Schemes Access', icon: FileText,
+    id: 'approval', label: 'Approval', icon: Wallet,
     children: [
-      { label: 'Chit Fund Loan', icon: FileText, path: '/admin/loan-schemes/chit-fund' },
-      { label: 'Gold Loan', icon: Coins, path: '/admin/loan-schemes/gold' },
-      { label: 'Personal Loan', icon: Wallet, path: '/admin/loan-schemes/personal' },
-      { label: 'MFI Loan', icon: Briefcase, path: '/admin/loan-schemes/mfi' },
-      { label: 'Two Wheeler Loan', icon: Car, path: '/admin/loan-schemes/two-wheeler' },
+      { label: 'Pending Approvals', icon: FileText, path: '/admin/approval/pending' },
+      { label: 'Loan Requisition Report', icon: FileText, path: '/admin/reports/loan-requisition-report' },
+    ]
+  },
+  {
+    id: 'denomination', label: 'Denomination', icon: Banknote, path: '/admin/denomination'
+  },
+  {
+    id: 'customer_call', label: 'Customer Call', icon: PhoneCall,
+    children: [
+      { label: 'Add Followup', icon: PhoneForwarded, path: '/admin/customer-call/add' },
+      { label: 'Call Report', icon: FileText, path: '/admin/customer-call/report' },
     ]
   },
   {
@@ -194,13 +183,6 @@ export const ADMIN_NAV = [
     ]
   },
   {
-    id: 'customer_call', label: 'Customer Call', icon: PhoneCall,
-    children: [
-      { label: 'Add Followup', icon: PhoneForwarded, path: '/admin/customer-call/add' },
-      { label: 'Call Report', icon: FileText, path: '/admin/customer-call/report' },
-    ]
-  },
-  {
     id: 'gold_stock', label: 'Gold Stock', icon: Diamond,
     children: [
       { label: 'Send Request', icon: Send, path: '/admin/gold-stock/send-request' },
@@ -208,7 +190,13 @@ export const ADMIN_NAV = [
     ]
   },
   {
-    id: 'denomination', label: 'Denomination', icon: Banknote, path: '/admin/denomination'
+    id: 'loan_schemes_access', label: 'Loan Schemes Access', icon: FileText,
+    children: [
+      { label: 'Chit Fund Loan', icon: FileText, path: '/admin/loan-schemes/chit-fund' },
+      { label: 'Gold Loan', icon: Coins, path: '/admin/loan-schemes/gold' },
+      { label: 'Personal Loan', icon: Wallet, path: '/admin/loan-schemes/personal' },
+      { label: 'MFI Loan', icon: Briefcase, path: '/admin/loan-schemes/mfi' },
+      { label: 'Two Wheeler Loan', icon: Car, path: '/admin/loan-schemes/two-wheeler' },
+    ]
   }
 ];
-

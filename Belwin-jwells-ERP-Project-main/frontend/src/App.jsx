@@ -125,7 +125,14 @@ import CallReport from './pages/admin/Customer call/CallReport';
 // Gold Stock
 import SendGoldRequest from './pages/Gold stock/SendGoldRequest';
 import GoldStockReport from './pages/Gold stock/GoldStockReport';
-function App() {
+import ChitGroupManager from './pages/admin/chit-fund/ChitGroupManager';
+import ChitMemberManager from './pages/admin/chit-fund/ChitMemberManager';
+import ChitContribution from './pages/admin/chit-fund/ChitContribution';
+import ChitEvent from './pages/admin/chit-fund/ChitEvent';
+import PrizeDisbursement from './pages/admin/chit-fund/PrizeDisbursement';
+import ChitReports from './pages/admin/chit-fund/ChitReports';
+
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -262,6 +269,21 @@ function App() {
           <Route path="/admin/chitty/scheme-allocation/edit/:id" element={<SchemeAllocationForm />} />
           <Route path="/admin/chitty/group-master" element={<ChittyGroupForm />} />
           <Route path="/admin/chitty/group-master/edit/:id" element={<ChittyGroupForm />} />
+
+          {/* Chit Fund Modules */}
+          <Route path="/admin/chit-fund/group" element={<ChitGroupManager />} />
+          <Route path="/admin/chit-fund/members" element={<ChitMemberManager />} />
+          <Route path="/admin/chit-fund/contributions" element={<ChitContribution />} />
+          <Route path="/admin/chit-fund/event" element={<ChitEvent />} />
+          <Route path="/admin/chit-fund/disbursement" element={<PrizeDisbursement />} />
+          <Route path="/admin/reports/chit-group" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-contribution" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-collection" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-due" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-auction" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-disbursement" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-discount" element={<ChitReports />} />
+          <Route path="/admin/reports/chit-member" element={<ChitReports />} />
 
           {/* Micro Finance Routes */}
           <Route path="/admin/micro-finance/scheme" element={<MicroFinanceScheme />} />

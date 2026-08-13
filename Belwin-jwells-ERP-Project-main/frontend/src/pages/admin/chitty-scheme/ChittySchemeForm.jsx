@@ -110,7 +110,7 @@ const ChittySchemeForm = () => {
         </button>
         <PageHeader 
           title={isEdit ? 'Edit Chit Fund Scheme' : 'Create Chit Fund Scheme'} 
-          subtitle="Configure the details for your chit fund scheme"
+          subtitle=""
         />
       </div>
 
