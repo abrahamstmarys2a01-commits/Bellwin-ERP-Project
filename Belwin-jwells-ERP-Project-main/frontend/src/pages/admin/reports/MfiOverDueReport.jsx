@@ -21,13 +21,12 @@ const MfiOverDueReport = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/reports/loan-report');
-      let allLoans = res.data || [];
+      const res = await api.get('/mfi-loans');
+      let allLoans = res.data?.data || [];
 
       // Filter Active and Overdue MFI loans
       const activeLoans = allLoans.filter(loan => 
-        (loan.status === 'Active' || loan.status === 'Overdue') &&
-        (loan.loanType === 'MFI' || loan.loanType === 'Micro Finance')
+        (loan.status === 'Active' || loan.status === 'Overdue')
       );
 
       const today = new Date();
@@ -61,12 +60,12 @@ const MfiOverDueReport = () => {
           }
 
           overdueList.push({
-            _id: loan.loanId || loan._id,
-            loanNo: loan.loanId,
-            borrower: loan.customerName || 'Unknown',
+            _id: loan.applicationNo || loan._id,
+            loanNo: loan.applicationNo,
+            borrower: loan.loanType === 'single' ? (loan.customerName || 'Unknown') : (loan.groupId || 'Group Loan'),
             dueDate: nextDueDate.toLocaleDateString(),
             dueDateRaw: nextDueDate,
-            outstanding: loan.remainingLoanAmount || loan.loanAmount || 0,
+            outstanding: loan.approvedLoanAmount || loan.loanAmountRequested || 0,
             overdueDays: overdueDays,
             penalty: penalty,
             branch: loanBranch,
@@ -76,14 +75,6 @@ const MfiOverDueReport = () => {
       });
 
       overdueList.sort((a, b) => b.overdueDays - a.overdueDays);
-
-      if (overdueList.length === 0) {
-        const fakePastDue = new Date(today);
-        fakePastDue.setDate(fakePastDue.getDate() - 45);
-        overdueList.push({
-          _id: '1', loanNo: 'MFI-003', borrower: 'Alice Brown', dueDate: fakePastDue.toLocaleDateString(), outstanding: 12000, overdueDays: 45, penalty: 200, status: 'Overdue', branch: 'TRICHY'
-        });
-      }
 
       setData(overdueList);
     } catch (err) {

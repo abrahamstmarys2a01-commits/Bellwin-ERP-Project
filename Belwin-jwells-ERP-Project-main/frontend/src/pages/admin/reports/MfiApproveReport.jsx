@@ -55,33 +55,25 @@ const MfiApproveReport = () => {
     try {
       const queryStr = getDateRangeParams();
       // Fetch loans from the backend. 
-      const res = await api.get(`/reports/loan-report${queryStr}`);
+      const res = await api.get(`/mfi-loans${queryStr}`);
       
-      let allLoans = res.data || [];
+      let allLoans = res.data?.data || [];
 
       // Filter only MFI loans that are Approved or Active
       const approvedLoans = allLoans.filter(loan => 
-        (loan.status === 'Approved' || loan.status === 'Active') && 
-        (loan.loanType === 'MFI' || loan.loanType === 'Micro Finance')
+        (loan.status === 'Approved' || loan.status === 'Active')
       );
 
       // Map to table data format
       const tableData = approvedLoans.map(l => ({
-        _id: l.loanId || l._id,
-        loanNo: l.loanId,
-        borrower: l.customerName || 'Unknown',
-        approvedAmount: l.loanAmount || 0,
-        approvalDate: l.updatedAt ? new Date(l.updatedAt).toLocaleDateString() : (l.loanDate ? new Date(l.loanDate).toLocaleDateString() : 'N/A'),
-        employeeName: l.employeeName || 'Admin',
+        _id: l.applicationNo || l._id,
+        loanNo: l.applicationNo,
+        borrower: l.loanType === 'single' ? (l.customerName || 'Unknown') : (l.groupId || 'Group Loan'),
+        approvedAmount: l.approvedLoanAmount || l.loanAmountRequested || 0,
+        approvalDate: l.updatedAt ? new Date(l.updatedAt).toLocaleDateString() : (l.applicationDate ? new Date(l.applicationDate).toLocaleDateString() : 'N/A'),
+        employeeName: l.employee || 'Admin',
         status: l.status
       }));
-
-      // Fallback dummy data if empty to show the UI
-      if (tableData.length === 0) {
-        tableData.push({
-           _id: '1', loanNo: 'MFI-001', borrower: 'John Doe', approvedAmount: 50000, approvalDate: new Date().toLocaleDateString(), employeeName: 'Admin', status: 'Approved'
-        });
-      }
 
       setData(tableData);
     } catch (err) {

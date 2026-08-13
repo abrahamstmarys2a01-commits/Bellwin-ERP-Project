@@ -60,6 +60,7 @@ const loanConfigRoutes = require('./routes/loanConfigRoutes');
 const ledgerRoutes = require('./routes/accounts/ledgerRoutes');
 const schemeAllocationRoutes = require('./routes/schemeAllocationRoutes');
 const chittyGroupRoutes = require('./routes/chittyGroupRoutes');
+const mfiLoanRoutes = require('./routes/mfiLoanRoutes');
 
 
 app.use('/api/auth', authRoutes);
@@ -99,6 +100,7 @@ app.use('/api/loan-config', loanConfigRoutes);
 app.use('/api/schemes', require('./routes/schemeRoutes'));
 app.use('/api/scheme-allocation', schemeAllocationRoutes);
 app.use('/api/chitty-group', chittyGroupRoutes);
+app.use('/api/mfi-loans', mfiLoanRoutes);
 app.use('/api/auctions', auctionRoutes);
 
 app.get('/', (req, res) => {

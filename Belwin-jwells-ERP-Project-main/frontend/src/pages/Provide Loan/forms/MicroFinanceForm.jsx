@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, RefreshCcw, Search, Users, User } from 'lucide-react';
 import toast from 'react-hot-toast';
+import api from '../../../services/api';
 
 const MicroFinanceForm = ({ 
   customerData, 
@@ -129,7 +130,28 @@ const MicroFinanceForm = ({
       toast.error("Customer KYC is not approved yet. Cannot provide loan.");
       return;
     }
-    toast.success("Single Person MFI Loan Application Submitted (Demo)");
+
+    try {
+      const payload = {
+        loanType: 'single',
+        customerId: customerData.customerId,
+        customerName: customerData.name,
+        customerMobile: customerData.mobile,
+        customerAddress: customerData.address,
+        schemeId: schemeData?.schemeId,
+        ...singleFormData,
+        employee: 'Admin'
+      };
+
+      const res = await api.post('/mfi-loans', payload);
+      if (res.data.success) {
+        toast.success(res.data.message || "Single Person MFI Loan Application Submitted");
+        setTimeout(() => window.location.reload(), 1500);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to submit loan application");
+    }
   };
 
   const handleGroupSubmit = async () => {
@@ -137,7 +159,25 @@ const MicroFinanceForm = ({
       toast.error("Please select a group first.");
       return;
     }
-    toast.success("Group MFI Loan Application Submitted (Demo)");
+    
+    try {
+      const payload = {
+        loanType: 'group',
+        groupId: groupFormData.selectedGroup,
+        schemeId: schemeData?.schemeId,
+        ...groupFormData,
+        employee: 'Admin'
+      };
+
+      const res = await api.post('/mfi-loans', payload);
+      if (res.data.success) {
+        toast.success(res.data.message || "Group MFI Loan Application Submitted");
+        setTimeout(() => window.location.reload(), 1500);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to submit loan application");
+    }
   };
 
   const handleClear = () => {

@@ -59,32 +59,23 @@ const MfiLedgerStatement = () => {
     setLoading(true);
     try {
       const queryStr = getDateRangeParams();
-      const res = await api.get(`/reports/loan-report${queryStr}`);
+      const res = await api.get(`/mfi-loans${queryStr}`);
       
-      const allLoans = res.data || [];
-      const mfiLoans = allLoans.filter(loan => {
-         return loan.loanType === 'MFI' || loan.loanType === 'Micro Finance';
-      });
+      const allLoans = res.data?.data || [];
+      const mfiLoans = allLoans; // no filter needed since it is mfi-loans endpoint
 
       const tableData = mfiLoans.map(l => ({
         _raw: l,
-        _id: l.loanId || l._id,
-        loanNo: l.loanId,
-        borrower: l.customerName || 'Unknown',
-        mobileNo: l.mobileNo || '', 
-        loanAmount: l.loanAmount || 0,
-        interest: l.remainingInterestAmount || 0,
-        outstanding: l.remainingLoanAmount || 0,
+        _id: l.applicationNo || l._id,
+        loanNo: l.applicationNo,
+        borrower: l.loanType === 'single' ? (l.customerName || 'Unknown') : (l.groupId || 'Group Loan'),
+        mobileNo: l.customerMobile || '', 
+        loanAmount: l.approvedLoanAmount || l.loanAmountRequested || 0,
+        interest: 0, // mock
+        outstanding: l.approvedLoanAmount || l.loanAmountRequested || 0, // mock
         status: l.status || 'Active',
-        date: l.loanDate
+        date: l.applicationDate
       }));
-
-      if (tableData.length === 0) {
-        tableData.push({
-           _raw: {},
-           _id: '1', loanNo: 'MFI-006', borrower: 'Steven Adams', mobileNo: '9876543210', loanAmount: 45000, interest: 2000, outstanding: 25000, status: 'Active', date: new Date()
-        });
-      }
 
       setData(tableData);
     } catch (err) {
@@ -126,20 +117,13 @@ const MfiLedgerStatement = () => {
       
       const filteredLedger = formattedLedger.filter(item => item.loanNo === loan.loanNo);
 
-      if (filteredLedger.length === 0) {
-        filteredLedger.push({
-          _id: '1', loanNo: loan.loanNo, date: new Date().toLocaleDateString(), description: 'EMI Payment', debit: 0, credit: 5000, balance: '20000 Dr', status: 'Success'
-        });
-      }
+
 
       setLedgerData(filteredLedger);
       
     } catch (error) {
       console.error(error);
-      // Fallback for UI visualization if API fails
-      setLedgerData([{
-        _id: '1', loanNo: loan.loanNo, date: new Date().toLocaleDateString(), description: 'Initial Disbursement', debit: loan.loanAmount, credit: 0, balance: `${loan.loanAmount} Dr`, status: 'Success'
-      }]);
+      setLedgerData([]);
     } finally {
       setLoadingDetails(false);
     }

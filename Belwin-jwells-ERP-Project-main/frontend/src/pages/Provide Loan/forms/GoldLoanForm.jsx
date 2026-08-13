@@ -311,6 +311,7 @@ const GoldLoanForm = ({
       if (selectedLoan) {
         await api.put(`/loans/${selectedLoan._id}`, payload);
         toast.success("Gold Loan details updated successfully!");
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         const res = await api.post('/loans', payload);
         toast.success("Gold Loan details saved successfully!");

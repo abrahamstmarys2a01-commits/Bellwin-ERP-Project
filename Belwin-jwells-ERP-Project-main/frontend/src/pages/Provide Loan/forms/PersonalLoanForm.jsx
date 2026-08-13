@@ -117,6 +117,7 @@ const PersonalLoanForm = ({
     }
 
     toast.success("Personal Loan Form Submitted (Demo)");
+    setTimeout(() => window.location.reload(), 1500);
   };
 
   const handleClear = () => {

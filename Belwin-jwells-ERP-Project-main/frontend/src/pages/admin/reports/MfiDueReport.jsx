@@ -21,13 +21,12 @@ const MfiDueReport = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/reports/loan-report');
-      let allLoans = res.data || [];
+      const res = await api.get('/mfi-loans');
+      let allLoans = res.data?.data || [];
 
       // Filter only Active MFI loans
       const activeLoans = allLoans.filter(loan => 
-        loan.status === 'Active' && 
-        (loan.loanType === 'MFI' || loan.loanType === 'Micro Finance')
+        loan.status === 'Active'
       );
 
       const today = new Date();
@@ -68,9 +67,9 @@ const MfiDueReport = () => {
           }
 
           dueList.push({
-            _id: loan.loanId || loan._id,
-            loanNo: loan.loanId,
-            borrower: loan.customerName || 'Unknown',
+            _id: loan.applicationNo || loan._id,
+            loanNo: loan.applicationNo,
+            borrower: loan.loanType === 'single' ? (loan.customerName || 'Unknown') : (loan.groupId || 'Group Loan'),
             dueDate: nextDueDate.toLocaleDateString(),
             dueDateRaw: nextDueDate,
             dueAmount: Math.round(dueAmount),
@@ -81,14 +80,6 @@ const MfiDueReport = () => {
       });
 
       dueList.sort((a, b) => a.dueDateRaw - b.dueDateRaw);
-
-      if (dueList.length === 0) {
-        const fakeDue = new Date(today);
-        fakeDue.setDate(fakeDue.getDate() + 1);
-        dueList.push({
-          _id: '1', loanNo: 'MFI-002', borrower: 'Jane Smith', dueDate: fakeDue.toLocaleDateString(), dueAmount: 1500, daysDue: 1, branch: 'TRICHY'
-        });
-      }
 
       setData(dueList);
     } catch (err) {

@@ -24,57 +24,43 @@ const MfiAccountLedger = () => {
     setLoading(true);
     setError('');
     try {
-      // Assuming backend /search/loan endpoint supports returning all matches and we filter for MFI,
-      // or it searches and we just verify it's an MFI loan.
-      const response = await api.get(`/search/loan/${searchQuery}`);
-      if (response.data.success && response.data.results.length > 0) {
-        const found = response.data.results[0];
-        const type = (found.scheme?.schemeName || found.loan?.schemeName || found.loan?.loanType || '').toLowerCase();
+      const response = await api.get(`/mfi-loans`);
+      if (response.data.success && response.data.data) {
+        const allLoans = response.data.data;
+        const found = allLoans.find(l => 
+          l.applicationNo === searchQuery || 
+          (l.customerName && l.customerName.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
         
-        // Let's assume we display it if it's found, but in real app we might enforce it's MFI
-        setLoanData(found);
-      } else {
-        // Dummy fallback for UI demo if no real backend data
-        if (searchQuery === 'MFI-007' || searchQuery.toLowerCase() === 'john') {
-          setLoanData({
+        if (found) {
+           setLoanData({ 
              loan: {
-                loanId: 'MFI-007', loanAmount: 40000, interestRate: 15, maturePeriod: 12,
-                status: 'Active', loanDate: new Date(), loanStartDate: new Date(), loanEndDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-                remainingLoanAmount: 20000, remainingInterestAmount: 2000, payments: [
-                    { amount: 22000, principalAmount: 20000, interestAmount: 2000, penalty: 0 }
-                ]
+                loanId: found.applicationNo,
+                loanAmount: found.approvedLoanAmount || found.loanAmountRequested || 0,
+                interestRate: found.interestRate || 0,
+                maturePeriod: found.loanTenure || 0,
+                status: found.status,
+                loanDate: found.applicationDate,
+                remainingLoanAmount: found.approvedLoanAmount || found.loanAmountRequested || 0,
+                remainingInterestAmount: 0,
+                payments: []
              },
-             customer: { customerId: 'CUST-888', customerName: 'John Doe', mobileNumber: '9998887776' },
-             scheme: { schemeName: 'MFI Standard Loan' },
-             branch: { branchName: 'TRICHY' }
-          });
+             customer: { customerId: found.customerId, customerName: found.customerName, mobileNumber: found.customerMobile }, 
+             scheme: { schemeName: 'Micro Finance' }, 
+             branch: { branchName: found.branch || 'Head Office' } 
+           });
         } else {
-          setLoanData(null);
-          setError('No MFI loan found');
+           setLoanData(null);
+           setError('No MFI loan found');
         }
+      } else {
+        setLoanData(null);
+        setError('No MFI loan found');
       }
     } catch (err) {
       console.error(err);
-      
-      // Fallback for demo
-      if (searchQuery) {
-         setLoanData({
-             loan: {
-                loanId: 'MFI-007', loanAmount: 40000, interestRate: 15, maturePeriod: 12,
-                status: 'Active', loanDate: new Date(), loanStartDate: new Date(), loanEndDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-                remainingLoanAmount: 20000, remainingInterestAmount: 2000, payments: [
-                    { amount: 22000, principalAmount: 20000, interestAmount: 2000, penalty: 0 }
-                ]
-             },
-             customer: { customerId: 'CUST-888', customerName: 'John Doe', mobileNumber: '9998887776' },
-             scheme: { schemeName: 'MFI Standard Loan' },
-             branch: { branchName: 'TRICHY' }
-          });
-          setError('');
-      } else {
-        setError('Error searching loan');
-        setLoanData(null);
-      }
+      setError('Error searching loan');
+      setLoanData(null);
     }
     setLoading(false);
   };
@@ -417,7 +403,7 @@ const MfiAccountLedger = () => {
       </>
       ) : (
         <div className="card" style={{ textAlign: 'center', padding: '40px', color: '#6b7280' }}>
-          Please search for an MFI loan number or customer name to view ledger details. Try "MFI-007" for demo.
+          Please search for an MFI loan number or customer name to view ledger details.
         </div>
       )}
 

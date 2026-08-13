@@ -52,35 +52,28 @@ const MfiOutstandingReport = () => {
     try {
       const queryStr = getDateRangeParams();
       
-      const response = await api.get(`/reports/loan-outstanding${queryStr}`);
-      let allLoans = response.data || [];
+      const response = await api.get(`/mfi-loans${queryStr}`);
+      let allLoans = response.data?.data || [];
 
-      // Filter by branch and MFI loanType locally
+      // Filter by branch locally
       const filteredLoans = allLoans.filter(loan => {
         if (filters.branch && loan.branch !== filters.branch) {
           return false;
-        }
-        if (loan.loanType !== 'MFI' && loan.loanType !== 'Micro Finance') {
-            return false;
         }
         return true;
       });
       
       const formattedData = filteredLoans.map(item => ({
-        _id: item.loanId || item._id,
-        loanNo: item.loanId,
-        borrower: item.customerName || item.customerId || 'Unknown',
-        loanAmount: item.loanAmount || 0,
-        paidAmount: (item.loanAmount || 0) - (item.remainingLoanAmount || 0),
-        outstandingBalance: item.remainingLoanAmount || 0,
+        _id: item.applicationNo || item._id,
+        loanNo: item.applicationNo,
+        borrower: item.loanType === 'single' ? (item.customerName || 'Unknown') : (item.groupId || 'Group Loan'),
+        loanAmount: item.approvedLoanAmount || item.loanAmountRequested || 0,
+        paidAmount: 0, // TODO: calculate from actual payments
+        outstandingBalance: item.approvedLoanAmount || item.loanAmountRequested || 0,
         status: item.status
       }));
 
-      if (formattedData.length === 0) {
-        formattedData.push({
-           _id: '1', loanNo: 'MFI-004', borrower: 'Emily Davis', loanAmount: 60000, paidAmount: 20000, outstandingBalance: 40000, status: 'Active'
-        });
-      }
+
 
       setData(formattedData);
     } catch (error) {

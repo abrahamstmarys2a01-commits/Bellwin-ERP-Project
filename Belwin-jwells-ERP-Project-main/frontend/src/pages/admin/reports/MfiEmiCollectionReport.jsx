@@ -79,12 +79,7 @@ const MfiEmiCollectionReport = () => {
         filteredData = filteredData.filter(d => d.collectedBy.toLowerCase().includes(filters.employee.toLowerCase()));
       }
 
-      // If empty, add a dummy one to show the UI works
-      if (filteredData.length === 0) {
-          filteredData.push({
-            _id: '1', receiptNo: 'REC-999', loanNo: 'MFI-005', borrower: 'Mark Taylor', amount: 2500, collectionDate: new Date().toLocaleDateString(), paymentMode: 'Cash', collectedBy: 'Agent 007'
-          });
-      }
+
 
       const empStats = {};
       let total = 0;
