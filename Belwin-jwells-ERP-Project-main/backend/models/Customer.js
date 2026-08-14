@@ -140,13 +140,13 @@ const customerSchema = new mongoose.Schema({
     },
 
     // Relations
-    employeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    createdBy:  { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    updatedBy:  { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    employeeId: { type: mongoose.Schema.Types.Mixed, ref: 'User' },
+    createdBy:  { type: mongoose.Schema.Types.Mixed, ref: 'User' },
+    updatedBy:  { type: mongoose.Schema.Types.Mixed, ref: 'User' },
 
     // Soft delete
     isDeleted:    { type: Boolean, default: false },
-    deletedBy:    { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    deletedBy:    { type: mongoose.Schema.Types.Mixed, ref: 'User' },
     deletedAt:    { type: Date },
     deleteReason: { type: String, trim: true, default: '' },
 
