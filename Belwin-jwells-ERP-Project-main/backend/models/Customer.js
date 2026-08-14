@@ -110,7 +110,7 @@ const customerSchema = new mongoose.Schema({
         default: 'Pending',
         index: true
     },
-    approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    approvedBy: { type: mongoose.Schema.Types.Mixed, ref: 'User' },
     approvedDate: { type: Date, default: null },
     rejectedDate: { type: Date, default: null },
     adminRemarks: { type: String, trim: true, default: '' },
@@ -120,7 +120,7 @@ const customerSchema = new mongoose.Schema({
         {
             action: { type: String, required: true },
             performedBy: {
-                id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+                id: { type: mongoose.Schema.Types.Mixed, ref: 'User' },
                 employeeId: { type: String },
                 name: { type: String },
                 role: { type: String }

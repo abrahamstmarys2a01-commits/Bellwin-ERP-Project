@@ -49,7 +49,6 @@ export const ADMIN_NAV = [
       { label: 'Customer List', icon: User, path: '/admin/borrower/list' },
       { label: 'CIBIL Check', icon: ShieldCheck, path: '/admin/borrower/cibil-check' },
       { label: 'Customer Block/Unblock', icon: ShieldBan, path: '/admin/borrower/block' },
-      { label: 'Customer Ledger', icon: BookOpen, path: '/admin/borrower/ledger' },
     ]
   },
   {

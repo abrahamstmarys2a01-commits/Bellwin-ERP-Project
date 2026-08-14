@@ -290,12 +290,12 @@ const CustomerApprovalDrawer = ({
                                 )}
                             </div>
 
-                            {/* Additional Proof */}
+                            {/* PAN Image */}
                             <div className="border rounded-none p-3 flex flex-col items-center justify-center bg-slate-50/50">
-                                <p className="text-xs font-semibold mb-3 text-slate-700 w-full text-center border-b pb-2">{customer.proof2Name ? `${customer.proof2Name} Image` : 'Additional Proof'}</p>
-                                {customer.proof2DocumentUrl ? (
-                                    <a href={customer.proof2DocumentUrl} target="_blank" rel="noreferrer" className="w-full">
-                                        <img src={customer.proof2DocumentUrl} alt={customer.proof2Name || 'Proof 2'} className="h-32 w-full object-contain rounded hover:opacity-90 transition-opacity" />
+                                <p className="text-xs font-semibold mb-3 text-slate-700 w-full text-center border-b pb-2">PAN Image</p>
+                                {customer.panDocumentUrl ? (
+                                    <a href={customer.panDocumentUrl} target="_blank" rel="noreferrer" className="w-full">
+                                        <img src={customer.panDocumentUrl} alt="PAN" className="h-32 w-full object-contain rounded hover:opacity-90 transition-opacity" />
                                     </a>
                                 ) : (
                                     <div className="h-32 flex items-center justify-center text-xs text-slate-400 italic">Document Not Uploaded</div>
