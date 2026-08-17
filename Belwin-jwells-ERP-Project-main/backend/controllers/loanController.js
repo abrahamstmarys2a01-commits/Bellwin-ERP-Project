@@ -218,7 +218,7 @@ const updateLoan = async (req, res, next) => {
     const updatedLoan = await Loan.findOneAndUpdate(
       query,
       { $set: req.body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (updatedLoan && req.body.status) {

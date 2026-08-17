@@ -36,7 +36,7 @@ exports.updateAllocation = async (req, res) => {
         const allocation = await SchemeAllocation.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidators: true }
+            { returnDocument: 'after', runValidators: true }
         );
         if (!allocation) {
             return res.status(404).json({ success: false, message: 'Allocation not found' });

@@ -90,7 +90,7 @@ exports.getSchemeById = async (req, res, next) => {
 
 exports.updateScheme = async (req, res, next) => {
     try {
-        const scheme = await LoanSchemeConfig.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const scheme = await LoanSchemeConfig.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
         if (!scheme) return next(new ApiError(404, "Scheme not found"));
         res.status(200).json({ message: "Scheme updated", scheme });
     } catch (error) {

@@ -22,7 +22,7 @@ ledgerSchema.statics.getNextId = async function () {
   const counter = await Counter.findByIdAndUpdate(
       'ledgerId',
       { $inc: { seq: 1 } },
-      { new: true, upsert: true }
+      { returnDocument: 'after', upsert: true }
   );
   return `LED${String(counter.seq).padStart(4, '0')}`;
 };

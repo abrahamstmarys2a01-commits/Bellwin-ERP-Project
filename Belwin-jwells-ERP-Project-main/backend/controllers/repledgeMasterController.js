@@ -20,7 +20,7 @@ exports.getBanks = async (req, res, next) => {
 
 exports.updateBank = async (req, res, next) => {
   try {
-    const bank = await RepledgeBank.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const bank = await RepledgeBank.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     if (!bank) return next(new ApiError(404, 'Bank not found'));
     res.json(bank);
   } catch (error) { next(error); }
@@ -51,7 +51,7 @@ exports.getSchemes = async (req, res, next) => {
 
 exports.updateScheme = async (req, res, next) => {
   try {
-    const scheme = await RepledgeScheme.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const scheme = await RepledgeScheme.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     if (!scheme) return next(new ApiError(404, 'Scheme not found'));
     res.json(scheme);
   } catch (error) { next(error); }
@@ -82,7 +82,7 @@ exports.getRepayments = async (req, res, next) => {
 
 exports.updateRepayment = async (req, res, next) => {
   try {
-    const repayment = await RepledgeRepayment.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const repayment = await RepledgeRepayment.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     if (!repayment) return next(new ApiError(404, 'Repayment not found'));
     res.json(repayment);
   } catch (error) { next(error); }

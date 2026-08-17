@@ -112,7 +112,7 @@ const updateDenomination = async (req, res, next) => {
     const updatedDenomination = await Denomination.findOneAndUpdate(
       { denominationId }, 
       updateData, 
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!updatedDenomination) {

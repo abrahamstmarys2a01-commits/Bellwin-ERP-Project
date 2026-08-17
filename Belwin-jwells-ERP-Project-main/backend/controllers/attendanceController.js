@@ -55,7 +55,7 @@ exports.markAttendance = async (req, res) => {
         note: note || '',
         markedBy: req.user?.id || null
       },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     return res.json({ success: true, message: 'Attendance marked', record });

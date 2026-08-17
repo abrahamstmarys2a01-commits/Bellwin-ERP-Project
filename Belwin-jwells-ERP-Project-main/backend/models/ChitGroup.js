@@ -24,7 +24,7 @@ chitGroupSchema.pre('save', async function() {
     const counter = await Counter.findByIdAndUpdate(
       { _id: 'chitGroupId' },
       { $inc: { seq: 1 } },
-      { new: true, upsert: true }
+      { returnDocument: 'after', upsert: true }
     );
     this.groupId = `CHG${counter.seq.toString().padStart(5, '0')}`;
   }

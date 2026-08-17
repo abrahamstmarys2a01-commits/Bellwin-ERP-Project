@@ -20,7 +20,7 @@ exports.saveConfig = async (req, res, next) => {
     let config = await Company.findOne();
     if (config) {
       // Update existing
-      config = await Company.findByIdAndUpdate(config._id, req.body, { new: true, runValidators: true });
+      config = await Company.findByIdAndUpdate(config._id, req.body, { returnDocument: 'after', runValidators: true });
     } else {
       // Create new
       config = await Company.create(req.body);
@@ -53,7 +53,7 @@ exports.createBranch = async (req, res, next) => {
 
 exports.updateBranch = async (req, res, next) => {
   try {
-    const branch = await Branch.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const branch = await Branch.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after', runValidators: true });
     if (!branch) {
       return res.status(404).json({ message: 'Branch not found' });
     }

@@ -38,6 +38,7 @@ import TwoWheelerLoanManager from './pages/admin/loan-config/Loanscheme/TwoWheel
 import { Landmark, Coins, Wallet, Briefcase, Car } from 'lucide-react';
 
 import ChittySchemeList from './pages/admin/chitty-scheme/ChittySchemeList';
+import DailySummaryReportView from './pages/admin/reports/DailySummaryReportView';
 import ChittySchemeForm from './pages/admin/chitty-scheme/ChittySchemeForm';
 import SchemeAllocationForm from './pages/admin/chitty-scheme/SchemeAllocationForm';
 import ChittyGroupForm from './pages/admin/chitty-scheme/ChittyGroupForm';
@@ -104,6 +105,10 @@ import MfiOutstandingReport from './pages/admin/reports/MfiOutstandingReport';
 import MfiEmiCollectionReport from './pages/admin/reports/MfiEmiCollectionReport';
 import MfiLedgerStatement from './pages/admin/reports/MfiLedgerStatement';
 import MfiAccountLedger from './pages/admin/reports/MfiAccountLedger';
+// Expense Pages
+import AddExpense from './pages/admin/Expensive/AddExpense';
+import ExpenseReport from './pages/admin/Expensive/ExpenseReport';
+
 // Employee Pages
 import LoginForm from './components/LoginForm';
 
@@ -284,6 +289,11 @@ const App = () => {
           <Route path="/admin/reports/chit-disbursement" element={<ChitReports />} />
           <Route path="/admin/reports/chit-discount" element={<ChitReports />} />
           <Route path="/admin/reports/chit-member" element={<ChitReports />} />
+
+          <Route path="/admin/reports/daily-summary" element={<DailySummaryReportView />} />
+          <Route path="/admin/expense/add" element={<AddExpense />} />
+          <Route path="/admin/expense/edit/:id" element={<AddExpense />} />
+          <Route path="/admin/expense/report" element={<ExpenseReport />} />
 
           {/* Micro Finance Routes */}
           <Route path="/admin/micro-finance/scheme" element={<MicroFinanceScheme />} />

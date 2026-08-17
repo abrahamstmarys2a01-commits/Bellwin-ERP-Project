@@ -44,7 +44,7 @@ const initializeEmployeeIds = async () => {
             await Counter.findByIdAndUpdate(
                 'employeeId',
                 { $max: { seq: currentSeq } },
-                { new: true, upsert: true }
+                { returnDocument: 'after', upsert: true }
             );
         }
         // console.log('Employee IDs initialized successfully.');
@@ -140,7 +140,7 @@ const createEmployee = async (req, res, next) => {
         const counter = await Counter.findByIdAndUpdate(
             'employeeId',
             { $inc: { seq: 1 } },
-            { new: true, upsert: true }
+            { returnDocument: 'after', upsert: true }
         );
         const nextId = `BEL-${counter.seq.toString().padStart(4, '0')}`;
 
@@ -321,7 +321,7 @@ const promoteEmployee = async (req, res, next) => {
                     }
                 }
             },
-            { new: true }
+            { returnDocument: 'after' }
         );
 
         // Update associated User account role if role changed

@@ -104,7 +104,7 @@ const updateIncome = async (req, res, next) => {
     const updatedIncome = await Income.findOneAndUpdate(
       { incomeId }, 
       updateData, 
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!updatedIncome) {

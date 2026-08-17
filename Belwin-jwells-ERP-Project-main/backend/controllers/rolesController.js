@@ -60,7 +60,7 @@ exports.updateRole = async (req, res) => {
     const updated = await Role.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     return res.json({ success: true, message: 'Role updated', role: updated });
@@ -108,7 +108,7 @@ exports.assignPermissions = async (req, res) => {
     const updated = await Employee.findByIdAndUpdate(
       employeeId,
       { $set: updateData },
-      { new: true }
+      { returnDocument: 'after' }
     ).select('-passwordHash');
 
     // Sync role to User account if it exists
@@ -167,7 +167,7 @@ exports.seedDefaultRoles = async (req, res) => {
       await Role.findOneAndUpdate(
         { name: d.name },
         d,
-        { upsert: true, new: true }
+        { upsert: true, returnDocument: 'after' }
       );
     }
 

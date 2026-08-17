@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { exportToExcel, exportTableToPDF } from '../../../utils/exportUtils';
 import { FileDown } from 'lucide-react';
@@ -14,7 +14,7 @@ const CallReport = () => {
 
   const fetchFollowups = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/followups');
+      const response = await api.get('/followups');
       if (response.data.success) {
         setFollowups(response.data.data);
       }

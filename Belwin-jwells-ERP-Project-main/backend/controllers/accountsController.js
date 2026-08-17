@@ -442,7 +442,7 @@ const createCRUD = (Model) => ({
   },
   update: async (req, res) => {
     try {
-      const updatedDoc = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+      const updatedDoc = await Model.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after', runValidators: true });
       if (!updatedDoc) return res.status(404).json({ success: false, message: 'Not found' });
       res.status(200).json({ success: true, data: updatedDoc });
     } catch (error) {

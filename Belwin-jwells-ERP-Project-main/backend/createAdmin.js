@@ -18,7 +18,7 @@ mongoose.connect(uri)
         const user = await User.findOneAndUpdate(
             { username },
             { password: hashedPassword, role: 'admin' },
-            { upsert: true, new: true }
+            { upsert: true, returnDocument: 'after' }
         );
         console.log('Admin user updated on remote DB:', user);
         process.exit();

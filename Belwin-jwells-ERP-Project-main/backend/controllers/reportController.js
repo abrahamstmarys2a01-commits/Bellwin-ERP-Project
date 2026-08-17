@@ -6,7 +6,7 @@ const Repledge = require('../models/Repledge');
 const Customer = require('../models/Customer').Customer;
 const Income = require('../models/Income');
 const Expense = require('../models/Expense');
-const Remittance = require('../models/Remittance').Remittance;
+const Remittance = require('../models/Remittance');
 const Denomination = require('../models/Denomination');
 const GoldStock = require('../models/GoldStock');
 
@@ -1219,40 +1219,48 @@ const getBusinessReport = async (req, res, next) => {
 // @access  Public
 const getDailyClosingSummary = async (req, res, next) => {
   try {
-    const { date } = req.query;
+    const { date, period } = req.query;
     const targetDate = date ? new Date(date) : new Date();
     
-    const startOfDay = new Date(targetDate);
-    startOfDay.setUTCHours(0, 0, 0, 0);
-    const endOfDay = new Date(targetDate);
-    endOfDay.setUTCHours(23, 59, 59, 999);
+    const endOfPeriod = new Date(targetDate);
+    endOfPeriod.setUTCHours(23, 59, 59, 999);
+
+    const startOfPeriod = new Date(targetDate);
+    if (period === 'weekly') {
+      startOfPeriod.setDate(startOfPeriod.getDate() - 7);
+    } else if (period === 'monthly') {
+      startOfPeriod.setMonth(startOfPeriod.getMonth() - 1);
+    } else if (period === 'yearly') {
+      startOfPeriod.setFullYear(startOfPeriod.getFullYear() - 1);
+    }
+    startOfPeriod.setUTCHours(0, 0, 0, 0);
 
     const getSum = (arr) => arr.length > 0 ? arr[0].total : 0;
 
-    // 1. OPENING BALANCE (All prior to startOfDay)
+    // 1. OPENING BALANCE (All prior to startOfPeriod)
     const [pInc, pPay, pRemIn, pExp, pLoan, pTop, pRep, pRemOut] = await Promise.all([
       // Inflows
-      Income.aggregate([{ $match: { incomeDate: { $lt: startOfDay } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }]),
-      Payment.aggregate([{ $match: { paymentDate: { $lt: startOfDay } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$paymentAmount" } } } }]),
-      Remittance.aggregate([{ $match: { remittanceDate: { $lt: startOfDay }, type: 'Received' } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }]),
+      Income.aggregate([{ $match: { incomeDate: { $lt: startOfPeriod } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }]),
+      Payment.aggregate([{ $match: { paymentDate: { $lt: startOfPeriod } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$paymentAmount" } } } }]),
+      Remittance.aggregate([{ $match: { remittanceDate: { $lt: startOfPeriod }, type: 'Received' } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }]),
       // Outflows
-      Expense.aggregate([{ $match: { expenseDate: { $lt: startOfDay } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }]),
-      Loan.aggregate([{ $match: { loanDate: { $lt: startOfDay } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$loanAmount" } } } }]),
-      TopUp.aggregate([{ $match: { topupDate: { $lt: startOfDay } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$topupAmount" } } } }]),
-      Repledge.aggregate([{ $match: { repledgeDate: { $lt: startOfDay } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$additionalLoanAmount" } } } }]),
-      Remittance.aggregate([{ $match: { remittanceDate: { $lt: startOfDay }, type: 'Sent' } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }])
+      Expense.aggregate([{ $match: { expenseDate: { $lt: startOfPeriod } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }]),
+      Loan.aggregate([{ $match: { loanDate: { $lt: startOfPeriod } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$loanAmount" } } } }]),
+      TopUp.aggregate([{ $match: { topupDate: { $lt: startOfPeriod } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$topupAmount" } } } }]),
+      Repledge.aggregate([{ $match: { repledgeDate: { $lt: startOfPeriod } } }, { $group: { _id: null, total: { $sum: { $toDouble: "$additionalLoanAmount" } } } }]),
+      Remittance.aggregate([{ $match: { remittanceDate: { $lt: startOfPeriod }, type: 'Sent' } }, { $group: { _id: null, total: { $sum: { $toDouble: "$amount" } } } }])
     ]);
 
     const openingBalance = (getSum(pInc) + getSum(pPay) + getSum(pRemIn)) - (getSum(pExp) + getSum(pLoan) + getSum(pTop) + getSum(pRep) + getSum(pRemOut));
 
-    // 2. TODAY'S TRANSACTIONS
+    // 2. PERIOD'S TRANSACTIONS
     const [incomes, expenses, payments, denominations, goldStocks, remittances] = await Promise.all([
-      Income.find({ incomeDate: { $gte: startOfDay, $lte: endOfDay } }),
-      Expense.find({ expenseDate: { $gte: startOfDay, $lte: endOfDay } }),
-      Payment.find({ paymentDate: { $gte: startOfDay, $lte: endOfDay } }),
-      Denomination.find({ date: { $gte: startOfDay, $lte: endOfDay } }),
-      Loan.find({ loanDate: { $gte: startOfDay, $lte: endOfDay } }).populate('customerId'),
-      Remittance.find({ remittanceDate: { $gte: startOfDay, $lte: endOfDay } })
+      Income.find({ incomeDate: { $gte: startOfPeriod, $lte: endOfPeriod } }),
+      Expense.find({ expenseDate: { $gte: startOfPeriod, $lte: endOfPeriod } }),
+      Payment.find({ paymentDate: { $gte: startOfPeriod, $lte: endOfPeriod } }),
+      Denomination.find({ entryDate: { $gte: startOfPeriod, $lte: endOfPeriod } }),
+      Loan.find({ loanDate: { $gte: startOfPeriod, $lte: endOfPeriod } }).populate('customerId'),
+      Remittance.find({ remittanceDate: { $gte: startOfPeriod, $lte: endOfPeriod } })
     ]);
 
     // Income Mapping (Varavu)
@@ -1311,21 +1319,28 @@ const getDailyClosingSummary = async (req, res, next) => {
       "50": { count: 0, amount: 0 },
       "20": { count: 0, amount: 0 },
       "10": { count: 0, amount: 0 },
+      "5": { count: 0, amount: 0 },
+      "2": { count: 0, amount: 0 },
+      "1": { count: 0, amount: 0 },
       "Coins": { count: 0, amount: 0 }
     };
     let denominationTotal = 0;
+    let rawDenomObj = null;
 
     if (denominations.length > 0) {
       const latestDenom = denominations[denominations.length - 1];
-      latestDenom.notes.forEach(n => {
-        if (notes[n.value.toString()]) {
-          notes[n.value.toString()] = { count: n.count, amount: n.value * n.count };
-          denominationTotal += (n.value * n.count);
-        }
+      rawDenomObj = latestDenom;
+      const noteValues = [500, 200, 100, 50, 20, 10, 5, 2, 1];
+      noteValues.forEach(val => {
+        const fieldName = `notes${val}`;
+        const count = latestDenom[fieldName] || 0;
+        notes[val.toString()] = { count, amount: val * count };
+        denominationTotal += val * count;
       });
       // Handle coins
-      notes["Coins"] = { count: latestDenom.coins || 0, amount: latestDenom.coins || 0 };
-      denominationTotal += (latestDenom.coins || 0);
+      const coinsAmount = latestDenom.coinsTotal || 0;
+      notes["Coins"] = { count: coinsAmount, amount: coinsAmount };
+      denominationTotal += coinsAmount;
     }
 
     // Gold Stock from Loans created today
@@ -1349,7 +1364,8 @@ const getDailyClosingSummary = async (req, res, next) => {
       },
       denominations: {
         notes,
-        total: denominationTotal
+        total: denominationTotal,
+        rawDenomination: rawDenomObj
       },
       goldStock
     });

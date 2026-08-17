@@ -23,7 +23,7 @@ goldRequestSchema.pre('save', async function() {
     const counter = await Counter.findByIdAndUpdate(
       { _id: 'goldRequestId' },
       { $inc: { seq: 1 } },
-      { new: true, upsert: true }
+      { returnDocument: 'after', upsert: true }
     );
     this.requestNo = `REQ${counter.seq.toString().padStart(6, '0')}`;
   }

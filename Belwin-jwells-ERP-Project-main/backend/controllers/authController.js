@@ -51,6 +51,7 @@ const loginUser = async (req, res, next) => {
             next(new ApiError(401, 'Invalid username or password' ));
         }
     } catch (error) {
+        console.error("Login Controller Error:", error);
         next(new ApiError(500, 'Server error' ));
     }
 };

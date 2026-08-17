@@ -36,7 +36,7 @@ exports.updateGroup = async (req, res) => {
         const group = await ChittyGroup.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidators: true }
+            { returnDocument: 'after', runValidators: true }
         );
         if (!group) {
             return res.status(404).json({ success: false, message: 'Chitty Group not found' });

@@ -1,5 +1,6 @@
 const ApiError = require('../utils/ApiError');
-const { Remittance, RemittanceCounter } = require('../models/Remittance');
+const Remittance = require('../models/Remittance');
+const RemittanceCounter = require('../models/Counter');
 
 // Get next remittance ID
 exports.getNextId = async (req, res, next) => {

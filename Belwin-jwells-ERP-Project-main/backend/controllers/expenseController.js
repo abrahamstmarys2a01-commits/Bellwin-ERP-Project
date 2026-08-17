@@ -178,7 +178,7 @@ const updateExpense = async (req, res, next) => {
     const updatedExpense = await Expense.findOneAndUpdate(
       { expenseId: id }, 
       updateData, 
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!updatedExpense) {

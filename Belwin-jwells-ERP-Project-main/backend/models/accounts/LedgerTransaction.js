@@ -32,7 +32,7 @@ ledgerTransactionSchema.statics.getNextId = async function () {
   const counter = await Counter.findByIdAndUpdate(
       'ledgerTransactionId',
       { $inc: { seq: 1 } },
-      { new: true, upsert: true }
+      { returnDocument: 'after', upsert: true }
   );
   return `LTX${String(counter.seq).padStart(8, '0')}`;
 };

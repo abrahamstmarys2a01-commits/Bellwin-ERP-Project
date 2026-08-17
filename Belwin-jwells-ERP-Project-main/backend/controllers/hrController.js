@@ -53,7 +53,7 @@ const createHR = async (req, res, next) => {
         const counter = await Counter.findByIdAndUpdate(
             'employeeId',
             { $inc: { seq: 1 } },
-            { new: true, upsert: true, session }
+            { returnDocument: 'after', upsert: true, session }
         );
         const employeeId = `BEL-${counter.seq.toString().padStart(4, '0')}`;
 

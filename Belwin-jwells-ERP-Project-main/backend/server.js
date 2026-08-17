@@ -77,7 +77,7 @@ app.use('/api/incomes', incomeRoutes);
 app.use('/api/denominations', denominationRoutes);
 app.use('/api/followups', followupRoutes);
 app.use('/api/remittances', remittanceRoutes);
-// trigger nodemon restart
+// trigger nodemon restart now
 app.use('/api/gold-stocks', goldStockRoutes);
 app.use('/api/gold-requests', goldRequestRoutes);
 app.use('/api/calls', callLogRoutes);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { Save, RefreshCcw, PhoneCall, Eye, X } from 'lucide-react';
 
@@ -30,10 +30,7 @@ const AddFollowup = () => {
   const fetchLoans = async () => {
     try {
       // Fetch all loans and filter for overdue (End Date passed or Overdue status)
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/loans', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/loans');
       
       const allLoans = response.data;
       const today = new Date();
@@ -123,7 +120,7 @@ const AddFollowup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/followups', formData);
+      const response = await api.post('/followups', formData);
       if (response.data.success) {
         toast.success('Followup logged successfully!');
         setShowForm(false);

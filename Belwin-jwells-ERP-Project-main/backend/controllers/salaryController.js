@@ -101,7 +101,7 @@ exports.generateSalary = async (req, res) => {
         generatedBy: req.user?.id,
         remarks: remarks || ''
       },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     return res.json({ success: true, message: 'Salary generated', salary });
@@ -119,7 +119,7 @@ exports.markAsPaid = async (req, res) => {
     const salary = await Salary.findByIdAndUpdate(
       req.params.id,
       { status: 'Paid', paidOn: new Date() },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!salary) return res.status(404).json({ success: false, message: 'Salary record not found' });

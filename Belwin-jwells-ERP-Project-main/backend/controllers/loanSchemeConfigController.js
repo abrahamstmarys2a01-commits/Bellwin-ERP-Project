@@ -16,7 +16,7 @@ exports.getSchemes = async (req, res, next) => {
 
 exports.updateScheme = async (req, res, next) => {
   try {
-    const scheme = await LoanSchemeConfig.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const scheme = await LoanSchemeConfig.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(scheme);
   } catch (err) { next(err); }
 };
