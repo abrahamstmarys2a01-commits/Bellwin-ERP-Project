@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Card from '../../../components/ui/card';
+import Card from '../../../components/ui/Card';
 import { FileText, Printer, Download } from 'lucide-react';
 import api from '../../../services/api';
 

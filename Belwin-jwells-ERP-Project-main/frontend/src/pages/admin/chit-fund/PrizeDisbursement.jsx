@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Card from '../../../components/ui/card';
+import Card from '../../../components/ui/Card';
 import { Banknote, CheckCircle, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
