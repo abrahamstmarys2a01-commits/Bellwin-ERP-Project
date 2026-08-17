@@ -59,6 +59,9 @@ const loanConfigRoutes = require('./routes/loanConfigRoutes');
 const ledgerRoutes = require('./routes/accounts/ledgerRoutes');
 const mfiLoanRoutes = require('./routes/mfiLoanRoutes');
 const chitFundRoutes = require('./routes/chitFundRoutes');
+const chittySchemeRoutes = require('./routes/chittySchemeRoutes');
+const chittyGroupRoutes = require('./routes/chittyGroupRoutes');
+const schemeAllocationRoutes = require('./routes/schemeAllocationRoutes');
 
 
 app.use('/api/auth', authRoutes);
@@ -98,6 +101,9 @@ app.use('/api/schemes', require('./routes/schemeRoutes'));
 app.use('/api/mfi-loans', mfiLoanRoutes);
 app.use('/api/auctions', auctionRoutes);
 app.use('/api/chit-fund', chitFundRoutes);
+app.use('/api/chitty-schemes', chittySchemeRoutes);
+app.use('/api/chitty-group', chittyGroupRoutes);
+app.use('/api/scheme-allocation', schemeAllocationRoutes);
 
 app.get('/', (req, res) => {
     res.status(200).json({ status: 'ok', message: 'API is running' });
