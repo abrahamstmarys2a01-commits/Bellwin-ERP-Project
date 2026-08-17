@@ -124,11 +124,11 @@ const GoldLoanManager = ({ showAddForm, setShowAddForm }) => {
               <input required type="number" step="any" name="minimumGram" value={formData.minimumGram} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-erp-green focus:border-erp-green transition-colors" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mature Period (Months) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Mature Period (Days) *</label>
               <input required type="number" name="maturePeriodMonths" value={formData.maturePeriodMonths} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-erp-green focus:border-erp-green transition-colors" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Interest Repayment (Months) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Interest Repayment (Days) *</label>
               <input required type="number" name="interestRepaymentMonths" value={formData.interestRepaymentMonths} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-erp-green focus:border-erp-green transition-colors" />
             </div>
             <div>
@@ -147,7 +147,7 @@ const GoldLoanManager = ({ showAddForm, setShowAddForm }) => {
           </form>
         </div>
       )}
-
+ 
       <div className="flex-1 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto h-full p-4">
           <h3 className="font-bold text-gray-700 mb-4">Existing Bellwin Gold Loans</h3>
@@ -174,7 +174,7 @@ const GoldLoanManager = ({ showAddForm, setShowAddForm }) => {
                   <td className="p-3 text-sm font-medium">₹{s.amountLimit != null ? Number(s.amountLimit).toFixed(2) : ''}</td>
                   <td className="p-3 text-sm">₹{s.gramRate}</td>
                   <td className="p-3 text-sm">{s.minimumGram}g</td>
-                  <td className="p-3 text-sm">{s.maturePeriodMonths} mo</td>
+                  <td className="p-3 text-sm">{s.maturePeriodMonths} Days</td>
                   <td className="p-3 text-sm text-red-600">{s.penalty}%</td>
                   <td className="p-3 text-sm text-right">
                     <button onClick={() => handleDelete(s._id)} className="text-red-500 hover:text-red-700 font-bold px-3 py-1 bg-red-50 rounded-md">Delete</button>

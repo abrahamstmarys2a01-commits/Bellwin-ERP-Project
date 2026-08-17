@@ -275,8 +275,34 @@ const getCustomers = async (req, res, next) => {
             .sort(sort)
             .skip(skip)
             .limit(Number(limit))
-            .populate('createdBy', 'username role')
             .lean();
+
+        // Manual populate for createdBy to avoid CastError with admin-override-id
+        const mongoose = require('mongoose');
+        const userIds = [];
+        customers.forEach(c => {
+            if (c.createdBy && mongoose.Types.ObjectId.isValid(c.createdBy)) {
+                userIds.push(c.createdBy);
+            }
+        });
+
+        const User = mongoose.model('User');
+        const users = await User.find({ _id: { $in: userIds } }).select('username role').lean();
+        const userMap = {};
+        users.forEach(u => {
+            userMap[u._id.toString()] = u;
+        });
+
+        customers = customers.map(c => {
+            if (c.createdBy === 'admin-override-id') {
+                c.createdBy = { _id: 'admin-override-id', username: 'admin', role: 'admin' };
+            } else if (c.createdBy && userMap[c.createdBy.toString()]) {
+                c.createdBy = userMap[c.createdBy.toString()];
+            } else {
+                c.createdBy = null;
+            }
+            return c;
+        });
 
         res.json({
             success: true,
@@ -309,13 +335,51 @@ const getCustomerById = async (req, res, next) => {
             query.customerId = { $regex: `^${id.trim()}$`, $options: 'i' };
         }
 
-        const customer = await Customer
-            .findOne(query)
-            .populate('createdBy', 'username role')
-            .populate('auditLog.performedBy', 'username role');
+        const customer = await Customer.findOne(query).lean();
 
         if (!customer) {
             return next(new ApiError(404, 'Customer not found' ));
+        }
+
+        // Manual populate for createdBy
+        if (customer.createdBy) {
+            if (customer.createdBy === 'admin-override-id') {
+                customer.createdBy = { _id: 'admin-override-id', username: 'admin', role: 'admin' };
+            } else if (mongoose.Types.ObjectId.isValid(customer.createdBy)) {
+                const User = mongoose.model('User');
+                const creator = await User.findById(customer.createdBy).select('username role').lean();
+                customer.createdBy = creator || null;
+            } else {
+                customer.createdBy = null;
+            }
+        }
+
+        // Manual populate for auditLog.performedBy
+        if (customer.auditLog && customer.auditLog.length > 0) {
+            const userIds = [];
+            customer.auditLog.forEach(log => {
+                if (log.performedBy && mongoose.Types.ObjectId.isValid(log.performedBy)) {
+                    userIds.push(log.performedBy);
+                }
+            });
+
+            const User = mongoose.model('User');
+            const users = await User.find({ _id: { $in: userIds } }).select('username role').lean();
+            const userMap = {};
+            users.forEach(u => {
+                userMap[u._id.toString()] = u;
+            });
+
+            customer.auditLog = customer.auditLog.map(log => {
+                if (log.performedBy === 'admin-override-id') {
+                    log.performedBy = { _id: 'admin-override-id', username: 'admin', role: 'admin' };
+                } else if (log.performedBy && userMap[log.performedBy.toString()]) {
+                    log.performedBy = userMap[log.performedBy.toString()];
+                } else {
+                    log.performedBy = null;
+                }
+                return log;
+            });
         }
 
         const isGuest = req.user._id === '000000000000000000000000';
@@ -537,8 +601,36 @@ const getAuditLog = async (req, res, next) => {
     try {
         const customer = await Customer
             .findOne({ _id: req.params.id })
-            .populate('auditLog.performedBy', 'username role')
-            .select('customerId customerName auditLog');
+            .select('customerId customerName auditLog')
+            .lean();
+
+        if (customer && customer.auditLog && customer.auditLog.length > 0) {
+            const mongoose = require('mongoose');
+            const userIds = [];
+            customer.auditLog.forEach(log => {
+                if (log.performedBy && mongoose.Types.ObjectId.isValid(log.performedBy)) {
+                    userIds.push(log.performedBy);
+                }
+            });
+
+            const User = mongoose.model('User');
+            const users = await User.find({ _id: { $in: userIds } }).select('username role').lean();
+            const userMap = {};
+            users.forEach(u => {
+                userMap[u._id.toString()] = u;
+            });
+
+            customer.auditLog = customer.auditLog.map(log => {
+                if (log.performedBy === 'admin-override-id') {
+                    log.performedBy = { _id: 'admin-override-id', username: 'admin', role: 'admin' };
+                } else if (log.performedBy && userMap[log.performedBy.toString()]) {
+                    log.performedBy = userMap[log.performedBy.toString()];
+                } else {
+                    log.performedBy = null;
+                }
+                return log;
+            });
+        }
 
         if (!customer) return next(new ApiError(404, 'Customer not found' ));
 
@@ -572,10 +664,36 @@ const getPendingCustomers = async (req, res, next) => {
 
         const customers = await Customer
             .find(query)
-            .populate('createdBy', 'username role')
             .lean();
 
-        res.json({ success: true, data: customers });
+        // Manual populate for createdBy to avoid CastError with admin-override-id
+        const mongoose = require('mongoose');
+        const userIds = [];
+        customers.forEach(c => {
+            if (c.createdBy && mongoose.Types.ObjectId.isValid(c.createdBy)) {
+                userIds.push(c.createdBy);
+            }
+        });
+
+        const User = mongoose.model('User');
+        const users = await User.find({ _id: { $in: userIds } }).select('username role').lean();
+        const userMap = {};
+        users.forEach(u => {
+            userMap[u._id.toString()] = u;
+        });
+
+        const populatedCustomers = customers.map(c => {
+            if (c.createdBy === 'admin-override-id') {
+                c.createdBy = { _id: 'admin-override-id', username: 'admin', role: 'admin' };
+            } else if (c.createdBy && userMap[c.createdBy.toString()]) {
+                c.createdBy = userMap[c.createdBy.toString()];
+            } else {
+                c.createdBy = null;
+            }
+            return c;
+        });
+
+        res.json({ success: true, data: populatedCustomers });
     } catch (error) { next(error); }
 };
 
@@ -695,7 +813,42 @@ const getBlockLogs = async (req, res, next) => {
     try {
         const customers = await Customer.find({
             'auditLog.action': { $in: ['BLOCKED', 'UNBLOCKED'] }
-        }).populate('auditLog.performedBy', 'username name').lean();
+        }).lean();
+
+        // Collect performedBy user ids
+        const mongoose = require('mongoose');
+        const userIds = [];
+        customers.forEach(c => {
+            if (c.auditLog && c.auditLog.length > 0) {
+                c.auditLog.forEach(a => {
+                    if (a.performedBy && mongoose.Types.ObjectId.isValid(a.performedBy)) {
+                        userIds.push(a.performedBy);
+                    }
+                });
+            }
+        });
+
+        const User = mongoose.model('User');
+        const users = await User.find({ _id: { $in: userIds } }).select('username name').lean();
+        const userMap = {};
+        users.forEach(u => {
+            userMap[u._id.toString()] = u;
+        });
+
+        // Perform manual mapping
+        customers.forEach(c => {
+            if (c.auditLog && c.auditLog.length > 0) {
+                c.auditLog.forEach(a => {
+                    if (a.performedBy === 'admin-override-id') {
+                        a.performedBy = { _id: 'admin-override-id', username: 'admin', name: 'admin' };
+                    } else if (a.performedBy && userMap[a.performedBy.toString()]) {
+                        a.performedBy = userMap[a.performedBy.toString()];
+                    } else {
+                        a.performedBy = null;
+                    }
+                });
+            }
+        });
 
         let logs = [];
         customers.forEach(c => {

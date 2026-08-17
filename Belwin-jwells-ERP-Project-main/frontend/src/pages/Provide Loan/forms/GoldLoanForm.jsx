@@ -183,6 +183,21 @@ const GoldLoanForm = ({
     }
   }, [schemeData]);
 
+  // --- Auto-calculate Matured Date on Start Date or Scheme change ---
+  useEffect(() => {
+    if (!selectedLoan && loanDetails.loanStartDate && schemeData && schemeData.maturePeriodMonths) {
+      const days = parseInt(schemeData.maturePeriodMonths, 10);
+      if (!isNaN(days)) {
+        const start = new Date(loanDetails.loanStartDate);
+        start.setDate(start.getDate() + days);
+        setLoanDetails(prev => ({
+          ...prev,
+          loanEndDate: start.toISOString().split('T')[0]
+        }));
+      }
+    }
+  }, [loanDetails.loanStartDate, schemeData, selectedLoan]);
+
   // Input Class Names
   const inp = "w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-erp-green bg-white text-sm";
   const lbl = "text-sm font-medium text-gray-700 whitespace-nowrap min-w-[180px]";
@@ -455,7 +470,7 @@ const GoldLoanForm = ({
               <div className="grid grid-cols-[140px_10px_1fr] items-center">
                 <span className="text-sm font-bold text-black">Interest Repayment</span>
                 <span className="text-sm font-bold text-black">:</span>
-                <span className="text-sm font-bold text-black">{schemeData.interestRepaymentMonths ? `${schemeData.interestRepaymentMonths} Months` : '0 Months'}</span>
+                <span className="text-sm font-bold text-black">{schemeData.interestRepaymentMonths ? `${schemeData.interestRepaymentMonths} Days` : '0 Days'}</span>
               </div>
               <div className="grid grid-cols-[120px_10px_1fr] items-center">
                 <span className="text-sm font-bold text-black">Amount Rs</span>

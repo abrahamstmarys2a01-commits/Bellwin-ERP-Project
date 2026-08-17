@@ -1,17 +1,48 @@
+const mongoose = require('mongoose');
 const { Customer } = require('../models/Customer');
 
 const getPendingApprovals = async () => {
-    return await Customer.find({ 
+    const customers = await Customer.find({ 
         status: 'Customer Approval Pending', 
         isDeleted: { $ne: true } 
-    }).populate({
-        path: 'createdBy',
-        select: 'username role employeeId',
-        populate: {
+    }).lean();
+
+    const userIds = [];
+    customers.forEach(c => {
+        if (c.createdBy && mongoose.Types.ObjectId.isValid(c.createdBy)) {
+            userIds.push(c.createdBy);
+        }
+    });
+
+    const User = mongoose.model('User');
+    const users = await User.find({ _id: { $in: userIds } })
+        .populate({
             path: 'employeeId',
             model: 'Employee',
             select: 'firstName lastName employeeId branch'
+        })
+        .select('username role employeeId')
+        .lean();
+
+    const userMap = {};
+    users.forEach(u => {
+        userMap[u._id.toString()] = u;
+    });
+
+    return customers.map(c => {
+        if (c.createdBy === 'admin-override-id') {
+            c.createdBy = {
+                _id: 'admin-override-id',
+                username: 'admin',
+                role: 'admin',
+                employeeId: null
+            };
+        } else if (c.createdBy && userMap[c.createdBy.toString()]) {
+            c.createdBy = userMap[c.createdBy.toString()];
+        } else {
+            c.createdBy = null;
         }
+        return c;
     });
 };
 

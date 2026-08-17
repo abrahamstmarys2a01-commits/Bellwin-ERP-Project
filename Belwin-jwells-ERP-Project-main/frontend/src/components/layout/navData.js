@@ -124,7 +124,6 @@ export const ADMIN_NAV = [
       { label: 'Loan Due Report', icon: FileText, path: '/admin/reports/loan-due-report' },
       { label: 'Loan Over Due Report', icon: FileText, path: '/admin/reports/loan-over-due-report' },
       { label: 'Loan Outstanding Report', icon: FileText, path: '/admin/reports/loan-outstanding-report' },
-      { label: 'Loan Emi Collection Report', icon: FileText, path: '/admin/reports/loan-emi-collection-report' },
       { label: 'Ledger Statement', icon: FileText, path: '/admin/reports/ledger-statement' },
       { label: 'Cash Book Statement', icon: FileText, path: '/admin/reports/cash-book-statement' },
       { label: 'Gold Loan Auction Report', icon: FileText, path: '/admin/reports/gold-loan-auction' },

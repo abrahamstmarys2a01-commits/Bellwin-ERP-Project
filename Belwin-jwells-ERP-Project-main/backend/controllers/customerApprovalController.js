@@ -78,12 +78,15 @@ const getPendingCustomers = async (req, res, next) => {
         const customers = await customerApprovalService.getPendingApprovals();
         
         const mappedCustomers = customers.map(c => {
-            const customerObj = c.toObject();
+            const customerObj = typeof c.toObject === 'function' ? c.toObject() : JSON.parse(JSON.stringify(c));
             if (customerObj.createdBy && customerObj.createdBy.employeeId) {
                 const emp = customerObj.createdBy.employeeId;
-                customerObj.createdBy.name = `${emp.firstName || ''} ${emp.lastName || ''}`.trim();
+                customerObj.createdBy.name = `${emp.firstName || ''} ${emp.lastName || ''}`.trim() || customerObj.createdBy.username || 'System';
                 customerObj.createdBy.employeeId = emp.employeeId; // the string ID like BEL-0001
                 customerObj.branchName = emp.branch || customerObj.branchName;
+            } else if (customerObj.createdBy) {
+                customerObj.createdBy.name = customerObj.createdBy.username || 'System';
+                customerObj.createdBy.employeeId = null;
             }
             return customerObj;
         });

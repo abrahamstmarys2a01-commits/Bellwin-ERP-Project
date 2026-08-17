@@ -16,7 +16,12 @@ const protect = async (req, res, next) => {
             // console.log('[Auth Middleware] Decoded JWT:', decoded);
 
             if (decoded.id === 'admin-override-id') {
-                req.user = { _id: 'admin-override-id', username: 'admin', role: 'admin', employeeId: null };
+                req.user = await User.findOne({ username: { $regex: /^admin$/i } })
+                    .populate('employeeId')
+                    .select('-password');
+                if (!req.user) {
+                    req.user = { _id: 'admin-override-id', username: 'admin', role: 'admin', employeeId: null };
+                }
             } else {
                 req.user = await User.findById(decoded.id)
                     .populate('employeeId')
